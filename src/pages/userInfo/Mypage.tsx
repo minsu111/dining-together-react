@@ -1,11 +1,11 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
-function SignUp() {
+function Mypage() {
     return <Section></Section>;
 }
 
-export default SignUp;
+export default Mypage;
 
 const Section = styled.section`
     width: 390px;

@@ -1,7 +1,14 @@
-import React from "react";
+import React from 'react';
+import { styled } from 'styled-components';
 
 function DevideLine() {
-  return <div></div>;
+    return <Line />;
 }
 
 export default DevideLine;
+
+const Line = styled.div`
+    width: 100%;
+    height: 8px;
+    background-color: #ececec;
+`;

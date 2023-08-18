@@ -1,19 +1,22 @@
 import React from "react";
+import styled from 'styled-components';
 
-const TopNaviBar: React.FC<{title:string}> = ({title}) => {
-    return (
-    <div
-      style={{
-        width: 390,
-        height: 50,
-        // border: "1px solid black",
-        display: "flex",
-        alignItems: "center",
-        paddingLeft: 10,
-      }}>
-        <h3>{title}</h3>
-    </div>
-    );
+const Container = styled.div`
+    width: 390px;
+    height: 48px;
+    // border: 1px solid black;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+`;
+
+const TopNaviBar: React.FC<{pageName:string}> = ({pageName}) => {
+
+  return (
+    <Container>
+      <h3>{pageName}</h3>
+    </Container>
+  );
 };
 
 

@@ -4,9 +4,10 @@ module.exports = {
         es2021: true,
     },
     extends: [
-        'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:react/recommended',
+        'airbnb',
+        'airbnb/hooks',
+        'airbnb-typescript',
     ],
     overrides: [
         {
@@ -16,6 +17,7 @@ module.exports = {
             files: ['.eslintrc.{js,cjs}'],
             parserOptions: {
                 sourceType: 'script',
+                project: './tsconfig.json',
             },
         },
     ],

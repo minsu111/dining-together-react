@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-// import { Link } from 'react-router-dom';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
-import DimmedLayer from '../../components/common/DimmedLayer';
 import MainButton from '../../components/common/MainButton';
 import { ConfirmPopupText } from '../../components/common/ConfirmPopup';
 
@@ -18,6 +16,7 @@ function Login() {
     const [password, setPassword] = useState<string>('');
     const [isFailLogin, setIsFailLogin] = useState<boolean>(false);
 
+    // 로그인 버튼 활성화 조건
     const activeButton = email.includes('@') && password.length >= 4;
 
     const navigate = useNavigate();

@@ -5,10 +5,15 @@ import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 function DatetimeSelector() {
+
+    const handleSpanClick = () => {
+        alert("test");
+    };
+
     return (
         <Div>
             <FontAwesomeIcon icon={faCalendar} style={{marginTop: '2px'}}/>
-            <Span>8.15(화) / 20명</Span>
+            <Span onClick={handleSpanClick}>8.15(화) / 20명</Span>
             <FontAwesomeIcon icon={faAngleDown} style={{marginTop: '2px', marginRight: '10px', color: "#FFB100"}}/>
         </Div>
     );
@@ -28,4 +33,5 @@ const Span = styled.span`
     width: 100%;
     margin: 0 7px;
     font-size: 15px;
+    cursor: pointer;
 `;

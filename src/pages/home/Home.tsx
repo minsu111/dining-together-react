@@ -1,5 +1,4 @@
 import React from 'react';
-import DevideLine from '../../components/common/DevideLine';
 import { styled } from 'styled-components';
 
 function Home() {

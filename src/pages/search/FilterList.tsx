@@ -7,13 +7,15 @@ import FilterButton from './FilterButton';
 function FilterList() {
     return (
         <Div>
-            <TotalFilterButton></TotalFilterButton>
-            <VerticalDivider></VerticalDivider>
-            <FilterButton category='지역'></FilterButton>
-            <FilterButton category='음식 유형'></FilterButton>
-            <FilterButton category='인당 가격'></FilterButton>
-            <FilterButton category='분위기'></FilterButton>
-            <FilterButton category='좌석'></FilterButton>
+            <TotalFilterButton/>
+            <VerticalDivider/>
+            <div style={{overflow:"hidden", display:"flex"}}>
+                <FilterButton category='지역'/>
+                <FilterButton category='음식 유형'/>
+                <FilterButton category='인당 가격'/>
+                <FilterButton category='분위기'/>
+                <FilterButton category='좌석'/>
+            </div>
         </Div>
     );
 }
@@ -22,8 +24,8 @@ export default FilterList;
 
 const Div = styled.div`
     display: flex;
-    alignItems: center;
-    flex-wrap: wrap;
+    align-items: center;
+    //flex-wrap: wrap;
 `;
 
 const VerticalDivider = styled.span`

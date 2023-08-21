@@ -5,7 +5,7 @@ import SearchInput from './SearchInput';
 import DatetimeSelector from './DatetimeSelector';
 import FilterList from './FilterList';
 import DevideLine from '../../components/common/DevideLine';
-import MainButton from '../../components/common/MainButton';
+import Button from '../../components/common/Button';
 import GNBArea from '../../components/common/GNB';
 
 function Search() {
@@ -17,21 +17,21 @@ function Search() {
         <section>         
             <Div>
                 <div>
-                    <TopNaviBar pageName='검색하기'></TopNaviBar>
-                    <SearchInput onInputChange={handleInputChange}></SearchInput>
-                    <SolidLine></SolidLine>
-                    <DatetimeSelector></DatetimeSelector>
-                    <SolidLine></SolidLine>
-                    <FilterList></FilterList>
-                    <DevideLine></DevideLine>
+                    <TopNaviBar pageName='검색하기'/>
+                    <SearchInput onInputChange={handleInputChange}/>
+                    <SolidLine/>
+                    <DatetimeSelector/>
+                    <SolidLine/>
+                    <FilterList/>
+                    <DevideLine/>
                 </div>
                 <div style={{margin: "0 auto"}}>
-                    <MainButton value="검색"></MainButton>
+                    <Button text="검색" onClick={() => {}}/>
                 </div>
             </Div>
             
             <footer>
-                <GNBArea></GNBArea>
+                <GNBArea/>
             </footer>
         </section>
     );

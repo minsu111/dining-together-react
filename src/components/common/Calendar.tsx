@@ -7,10 +7,8 @@ import styled from 'styled-components';
 export default function Calendar() {
   const [selected, setSelected] = React.useState<Date>();
 
-  let footer = <p>날짜를 입력해주세요.</p>;
-  if (selected) {
-    footer = <p>{format(selected, 'PP')}.</p>;
-  }
+  const footer=  selected ? <p>{format(selected, 'PP')}</p> : <p>날짜를 입력해주세요.</p>;
+
   return (
     <CalendarSC>
     <DayPicker

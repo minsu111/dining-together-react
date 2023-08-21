@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
-import MainButton from '../../components/common/MainButton';
+import Button from '../../components/common/Button';
 import { ConfirmPopupText } from '../../components/common/ConfirmPopup';
 
 // dummy data
@@ -34,7 +34,7 @@ function Login() {
 
     return (
         <Section>
-            <TopNaviBarBack prevPath={'/'} />
+            <TopNaviBarBack pageName=" " prevPath={'/'} />
             <Title>
                 반가워요🍻 <br />
                 회식을 시작해볼까요?
@@ -57,7 +57,7 @@ function Login() {
                 />
             </InputWrapper>
             <div style={{ textAlign: 'center', marginTop: '50px' }}>
-                <MainButton
+                <Button
                     onClick={loginConfirm}
                     value="로그인"
                     disabled={!activeButton}

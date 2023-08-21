@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -34,7 +34,7 @@ function Login() {
 
     return (
         <Section>
-            <TopNaviBarBack pageName=" " prevPath={'/'} />
+            <TopNaviBarBack pageName=" " prevPath="/" />
             <Title>
                 반가워요🍻 <br />
                 회식을 시작해볼까요?
@@ -47,7 +47,7 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                 />
             </InputWrapper>
-            <div style={{ textAlign: 'left', marginTop: '10px' }}></div>
+            {/* <div style={{ textAlign: 'left', marginTop: '10px' }}></div> */}
             <InputWrapper>
                 <PasswordInput
                     placeholder="비밀번호"
@@ -59,10 +59,10 @@ function Login() {
             <div style={{ textAlign: 'center', marginTop: '50px' }}>
                 <Button
                     onClick={loginConfirm}
-                    value="로그인"
+                    text="로그인"
                     disabled={!activeButton}
                 />
-                {isFailLogin && <ConfirmPopupText value={'로그인 실패'} />}
+                {isFailLogin && <ConfirmPopupText value="로그인 실패" />}
             </div>
             <SignInButton to="/join">이메일 회원가입</SignInButton>
         </Section>

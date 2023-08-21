@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../../components/common/Button';
 import styled from 'styled-components';
+import Button from '../../components/common/Button';
 import DevideLine from '../../components/common/DevideLine';
 
 function StoreDetail() {
@@ -8,9 +8,9 @@ function StoreDetail() {
         <Section>
             음식 유형
             <Heading>가게명</Heading>
-
             <Content>
-            가게 소개 #분위기 #태그
+            가게 소개 <br />
+            #분위기 #태그
             </Content>
 
             <DevideLine />
@@ -52,9 +52,14 @@ function StoreDetail() {
             <DevideLine />
 
             <Heading>매장 위치</Heading>
+            <Content>
+                매장 주소
+            </Content>
 
             <DevideLine />
-            <Button text="예약하기" onClick={()=>{}}/>
+            <BottomFixed>
+                <Button text="예약하기" onClick={()=>{}}/>
+            </BottomFixed>
         </Section>
     );
 }
@@ -62,15 +67,36 @@ function StoreDetail() {
 export default StoreDetail;
 
 const Section = styled.section`
-    width: 390px;
-`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    max-width: 390px;
+
+    left: 50%;
+    transform: translate(-50%, 0);
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e8e8e8;
+`;
+
 const Heading = styled.h3`
-    margin: 10px;
+    margin: 22px 0 0 20px;
 `
 const Content = styled.div`
-    font-size: 16px;
-        margin-left: 12px;
+    font-size: 15px;
+        margin: 10px 0 10px 26px;
     td{
         padding: 5px 12px 5px 0;
     }
+`
+const BottomFixed = styled.div`
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    max-width: 390px;
+    text-align: center;
+    margin-bottom: 10px;
 `

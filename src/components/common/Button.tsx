@@ -3,22 +3,27 @@ import styled from 'styled-components';
 
 type ButtonProps = {
     text : string;
+    width?: string;
+    disabled?: boolean;
     backgroundColor?: string; 
     textColor?: string; 
-    width?: string;
+    onClick: ()=> void;
 }
 
 type ButtonSCProps = {
+    width?: string;
     backgroundColor?: string; 
     textColor?: string; 
-    width?: string;
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
     return <ButtonSC 
+    width={props.width}
+    disabled={props.disabled}
     backgroundColor={props.backgroundColor} 
     textColor={props.textColor} 
-    width={props.width}>{props.text}</ButtonSC>
+    onClick={()=>{props.onClick();}}
+    >{props.text}</ButtonSC>
 }
 
 export default Button;
@@ -27,11 +32,16 @@ const ButtonSC = styled.button<ButtonSCProps>`
     width: ${(props) => props.width || '350px'};
     height: 50px;
     border-radius : 5px;
-    border: 2px solid #FFB100;
+    border: none;
     box-sizing: content-box;
     font-size: 16px;
     font-weight: bold;
     background-color: ${(props) => props.backgroundColor || '#FFB100'};
     color: ${(props) => props.textColor || '#FFFFFF'};
+
+    ${(props)=> props.disabled && `
+        background-color: #d3d7db;
+        color: #ececec;
+    `}
 `;
 

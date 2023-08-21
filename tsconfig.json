@@ -15,7 +15,8 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "types": ["node", "react"]
+        "types": ["node", "react"],
+        "outDir": "./dist" // eslint 오류 방지
     },
     "include": ["src"]
 }

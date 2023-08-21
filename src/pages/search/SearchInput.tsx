@@ -21,7 +21,7 @@ const Div = styled.div`
     display: flex;
     justify-content: space-around;
     padding-left: 15px;
-    border: 1px solid black;
+    //border: 1px solid black;
 `;
 
 const Input = styled.input`

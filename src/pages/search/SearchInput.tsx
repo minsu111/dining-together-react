@@ -8,8 +8,7 @@ const SearchInput: React.FC<{onInputChange:(React.ChangeEventHandler<HTMLInputEl
     return (
         <Div>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
-            <Input onChange={onInputChange} placeholder="식당명, 키워드로 찾아보세요">
-            </Input>
+            <Input onChange={onInputChange} placeholder="식당명, 키워드로 찾아보세요"/>
         </Div>
     );
 };

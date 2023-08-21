@@ -54,7 +54,7 @@ function StoreDetail() {
             <Heading>매장 위치</Heading>
 
             <DevideLine />
-            <Button text="예약하기"/>
+            <Button text="예약하기" onClick={()=>{}}/>
         </Section>
     );
 }

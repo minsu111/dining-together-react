@@ -9,8 +9,8 @@ function Reservation() {
         <StoreDetail />
         <ModalBottom>
             <Calendar />
-            <Button text="이전" width="150px" backgroundColor='#FFFFFF' textColor='#FFB100'/>
-            <Button text="다음" width="150px"/>
+            <Button text="이전" width="150px" backgroundColor='#E2E2E3' textColor='#FFFFFF' onClick={()=>{}}/>
+            <Button text="다음" width="150px" onClick={()=>{}}/>
         </ModalBottom>
     </section>;
 }

@@ -58,8 +58,8 @@ function Login() {
             </InputWrapper>
             <div style={{ textAlign: 'center', marginTop: '50px' }}>
                 <Button
-                    onClick={loginConfirm}
                     text="로그인"
+                    onClick={loginConfirm}
                     disabled={!activeButton}
                 />
                 {isFailLogin && <ConfirmPopupText value="로그인 실패" />}

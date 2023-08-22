@@ -34,7 +34,7 @@ const Welcome = () => {
                             style={{ width: '50%', marginBottom: '80px' }}
                         />
                         <Button
-                            type="button"
+                            // type="button"
                             text="회식장소 보러 가기"
                             onClick={() => {}}
                         />
@@ -46,7 +46,6 @@ const Welcome = () => {
             )}
             {switchContent && (
                 <Section>
-                    {' '}
                     <Title>
                         <br />
                         회원가입 완료!
@@ -62,7 +61,7 @@ const Welcome = () => {
                             style={{ width: '50%', marginBottom: '80px' }}
                         />
                         <Button
-                            type="button"
+                            // type="button"
                             text="회식장소 등록하러 가기"
                             onClick={() => {}}
                         />

@@ -4,10 +4,9 @@ import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import LandscapeImg from '../../assets/landscape_photographer.svg';
 import Button from '../../components/common/Button';
-import SignUpForm from '../../components/auth/SignUpForm';
-import AgreementCheckBox from '../../components/auth/AgreementCheckBox';
-import CheckBox from '../../components/auth/CheckBox';
-import ExtraInfo from '../../components/auth/ExtraInfo';
+import CheckBox from '../../components/Auth/CheckBox';
+import SignUpForm from '../../components/Auth/SignUpForm';
+import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
 
 const SignUp = () => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
@@ -37,7 +36,7 @@ const SignUp = () => {
                         />
                         <CheckBox />
                         <Button text="다음" onClick={handleNextClick} />
-                        <ExtraInfo />
+                        {/* <ExtraInfo /> */}
                     </Wrapper>
                 </Section>
             )}
@@ -49,7 +48,7 @@ const SignUp = () => {
                     <Wrapper>
                         <Button
                             text="시작하기"
-                            type="submit"
+                            // type="submit"
                             onClick={goToWelcome}
                         />
                     </Wrapper>

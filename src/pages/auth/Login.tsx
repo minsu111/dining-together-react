@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Button from '../../components/common/Button';
-import { ConfirmPopupText } from '../../components/common/ConfirmPopup';
+import ConfirmPopup from '../../components/common/ConfirmPopup';
 
 // dummy data
 const UserInfo = {
@@ -62,7 +62,13 @@ function Login() {
                     onClick={loginConfirm}
                     disabled={!activeButton}
                 />
-                {isFailLogin && <ConfirmPopupText value="로그인 실패" />}
+                {isFailLogin && (
+                    <ConfirmPopup
+                        title="로그인 실패"
+                        contents="존재하지 않는 아이디거나
+비밀번호가 일치하지 않습니다."
+                    />
+                )}
             </div>
             <SignInButton to="/join">이메일 회원가입</SignInButton>
         </Section>

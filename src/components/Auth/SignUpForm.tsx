@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import InputTextArea from '../common/InputText';
+import Input from '../common/Input';
 import TopNaviBarBack from '../common/TopNaviBarBack';
 
 function SignUpForm() {
@@ -10,38 +10,35 @@ function SignUpForm() {
             <Section>
                 <Form onSubmit={() => {}}>
                     <InputWrapper>
-                        <InputTextArea
-                            type="email"
-                            prop1={{ value: '이메일(아이디)*' }}
-                            prop2={{ value: '이메일을 입력해주세요.' }}
+                        <Input
+                            inputType="email"
+                            label="이메일(아이디)*"
+                            placeholder="이메일을 입력해주세요."
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <InputTextArea
-                            type="text"
-                            prop1={{ value: '이름*' }}
-                            prop2={{ value: '이름 입력해주세요.' }}
+                        <Input
+                            inputType="text"
+                            label="이름*"
+                            placeholder="이름 입력해주세요."
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <InputTextArea
-                            type="tel"
-                            prop1={{ value: '휴대폰 번호*' }}
-                            prop2={{ value: '숫자만 입력해주세요.' }}
+                        <Input
+                            inputType="tel"
+                            label="휴대폰 번호*"
+                            placeholder="숫자만 입력해주세요."
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <InputTextArea
-                            type="password"
-                            prop1={{ value: '비밀번호*' }}
-                            prop2={{ value: '비밀번호를 입력해주세요.' }}
+                        <Input
+                            inputType="password"
+                            label="비밀번호*"
+                            placeholder="비밀번호를 입력해주세요."
                         />
-                        <InputTextArea
-                            type="password"
-                            prop1={{ value: '' }}
-                            prop2={{
-                                value: '비밀번호를 다시 한 번 입력해주세요.',
-                            }}
+                        <Input
+                            inputType="password"
+                            placeholder="비밀번호를 다시 한 번 입력해주세요."
                         />
                     </InputWrapper>
                 </Form>

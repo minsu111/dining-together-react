@@ -30,7 +30,7 @@ function Search() {
                     <FilterList/>
                     <DevideLine/>
                 </div>
-                <div style={{margin: "0 auto"}}>
+                <div style={{margin: "20px auto"}}>
                     <Button text="검색" onClick={() => {}}/>
                 </div>
             </Div>

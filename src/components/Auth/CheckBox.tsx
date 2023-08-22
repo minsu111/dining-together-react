@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 
@@ -16,7 +15,11 @@ const CheckBox: React.FC<CheckBoxProps> = () => {
 
     return (
         <CheckBoxContainer>
-            <CheckBoxLabel checked={selectedOption === 'option1'}>
+            <CheckBoxLabel
+                htmlFor="input"
+                checked={selectedOption === 'option1'}
+                onClick={() => setSelectedOption('option1')}
+            >
                 <CheckBoxInput
                     type="radio"
                     value="option1"
@@ -27,7 +30,11 @@ const CheckBox: React.FC<CheckBoxProps> = () => {
                     (일반회원) 회식장소 예약
                 </CheckBoxSpan>
             </CheckBoxLabel>
-            <CheckBoxLabel checked={selectedOption === 'option2'}>
+            <CheckBoxLabel
+                htmlFor="input"
+                checked={selectedOption === 'option2'}
+                onClick={() => setSelectedOption('option2')}
+            >
                 <CheckBoxInput
                     type="radio"
                     value="option2"

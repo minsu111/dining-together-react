@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 
 function Home() {
-    return <Section></Section>;
+    return <Section>홈화면</Section>;
 }
 
 export default Home;

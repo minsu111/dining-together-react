@@ -1,7 +1,15 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { Reset } from 'styled-reset';
+import GlobalStyle from './styles/globalStyle';
 
 function App() {
-  return <Routes></Routes>;
+    return (
+        <div>
+            <Reset />
+            <GlobalStyle />
+            <Outlet />
+        </div>
+    );
 }
 export default App;

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import Calendar from "../../../components/common/Calendar";
 import SolidLine from "../SolidLine";
-import InputTextArea from "../../../components/common/InputText";
+import Input from "../../../components/common/Input";
 import Button from '../../../components/common/Button';
 
 const DatetimeSelectorModal: React.FC<{visitDate:Date, visitorCount:number}> = ({visitDate, visitorCount}) => {
@@ -41,10 +41,7 @@ const DatetimeSelectorModal: React.FC<{visitDate:Date, visitorCount:number}> = (
             <Text>{formattedDate}</Text>
         </div>
         <div style={{marginTop:30}}>
-            <InputTextArea 
-                prop1={{ value: "인원" }}
-                prop2={{ value: `${visitorCount}`}}
-                />
+            <Input label="인원" inputType="number" placeholder={`${visitorCount}`}/>
         </div>
         <FooterDiv>
            <Button text="검색" onClick={() => {}}/>

@@ -25,6 +25,11 @@
         "arrow-body-style": "off",
         "react/function-component-definition": "off",
         "no-console": "off",
-        "no-alert": "off"
+        "no-alert": "off",
+        "no-unused-vars": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "react/self-closing-comp": "warn",
+        "import/order": "warn",
+        "jsx-a11y/alt-text": "warn"
     }
 }

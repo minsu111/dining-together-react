@@ -16,10 +16,11 @@ import EditName from './pages/mypage/EditName';
 import EditPhoneNumber from './pages/mypage/EditPhoneNumber';
 import EditPassword from './pages/mypage/EditPassword';
 import AddStore from './pages/mypage/AddStore';
-import Login from './pages/mypage/Login';
-import SignUp from './pages/mypage/SignUp';
+import SignUp from './pages/auth/SignUp';
 import SearchResult from './pages/search/SearchResult';
 import AdminStore from './pages/Admin/AdminStore';
+import Welcome from './pages/auth/Welcome';
+import Login from './pages/auth/Login';
 
 const router = createBrowserRouter([
     {
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
             { path: '/login', element: <Login /> },
             { path: '/join', element: <SignUp /> },
             { path: '/admin', element: <AdminStore /> },
+            { path: '/join/welcome', element: <Welcome /> },
         ],
     },
 ]);
@@ -53,6 +55,7 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <RouterProvider router={router} />
+            <App />
         </Provider>
     </React.StrictMode>,
 );

@@ -21,7 +21,7 @@ const SelectRegion: React.FC<{ data: string }> = ({ data }) => {
                 >
                     <CityName>서울</CityName>
                 </CityTab>
-                <CityTab
+                {/* <CityTab
                     onClick={() => {
                         setNowCity(City.경기);
                     }}
@@ -36,7 +36,7 @@ const SelectRegion: React.FC<{ data: string }> = ({ data }) => {
                     className={nowCity === City.인천 ? 'selected' : ''}
                 >
                     <CityName>인천</CityName>
-                </CityTab>
+                </CityTab> */}
             </CityDiv>
             <AreaDiv>
                 <CheckLabel name="서울 전체" />

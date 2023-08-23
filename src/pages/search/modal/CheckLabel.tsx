@@ -25,7 +25,7 @@ export default CheckLabel;
 
 const Div = styled.div`
     width: 100%;
-    height: 50px;
+    height: 70px;
     padding: 0 10px;
     box-sizing: border-box;
     gap: 10px;

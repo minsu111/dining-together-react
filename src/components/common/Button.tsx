@@ -8,6 +8,7 @@ type ButtonProps = {
     backgroundColor?: string; 
     textColor?: string; 
     onClick: ()=> void;
+    type?: 'button' | 'submit' | 'reset';
 }
 
 type ButtonSCProps = {
@@ -23,7 +24,9 @@ const Button: React.FC<ButtonProps> = (props) => {
     backgroundColor={props.backgroundColor} 
     textColor={props.textColor} 
     onClick={()=>{props.onClick();}}
-    >{props.text}</ButtonSC>
+    type={props.type}
+    >{props.text}
+    </ButtonSC>
 }
 
 export default Button;

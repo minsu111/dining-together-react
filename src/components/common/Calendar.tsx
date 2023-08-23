@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export default function Calendar() {
   const [selected, setSelected] = React.useState<Date>();
 
-  const footer=  selected ? <p>{format(selected, 'PP')}</p> : <p>날짜를 입력해주세요.</p>;
+  const footer=  selected ? <p>{format(selected, 'PP')}</p> : <p>날짜를 선택해주세요.</p>;
 
   return (
     <CalendarSC>

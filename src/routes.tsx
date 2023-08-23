@@ -13,10 +13,12 @@ import EditName from './pages/mypage/EditName';
 import EditPhoneNumber from './pages/mypage/EditPhoneNumber';
 import EditPassword from './pages/mypage/EditPassword';
 import AddStore from './pages/mypage/AddStore';
-import Login from './pages/mypage/Login';
-import SignUp from './pages/mypage/SignUp';
+import SignUp from './pages/auth/SignUp';
 import SearchResult from './pages/search/SearchResult';
 import AdminStore from './pages/Admin/AdminStore';
+import Welcome from './pages/auth/Welcome';
+import Login from './pages/auth/Login';
+import SearchKeyword from './pages/search/SearchKeyword';
 
 const router = createBrowserRouter([
     {
@@ -25,10 +27,19 @@ const router = createBrowserRouter([
         errorElement: <NotFound />,
         children: [
             { index: true, path: '/', element: <Home /> },
+            { path: '/login', element: <Login /> },
+            { path: '/join', element: <SignUp /> },
+            { path: '/join/welcome', element: <Welcome /> },
+
+            { path: '/admin', element: <AdminStore /> },
+
             { path: '/store/:storeId', element: <StoreDetail /> },
             { path: '/store/reservation', element: <Reservation /> },
+
             { path: '/search', element: <Search /> },
             { path: '/search/list', element: <SearchResult /> },
+            { path: '/search/keyword', element: <SearchKeyword /> },
+
             { path: '/my/list', element: <ReservationList /> },
             { path: '/my', element: <Mypage /> },
             { path: '/my/info', element: <MyInfo /> },
@@ -36,11 +47,8 @@ const router = createBrowserRouter([
             { path: '/my/infoEdit/phoneNumber', element: <EditPhoneNumber /> },
             { path: '/my/infoEdit/password', element: <EditPassword /> },
             { path: '/my/store', element: <AddStore /> },
-            { path: '/login', element: <Login /> },
-            { path: '/join', element: <SignUp /> },
-            { path: '/admin', element: <AdminStore /> },
         ],
     },
 ]);
 
-export { router };
+export default router;

@@ -2,11 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import SearchInput from './SearchInput';
+import SolidLine from './SolidLine';
 import DatetimeSelector from './DatetimeSelector';
 import FilterList from './FilterList';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
 import GNBArea from '../../components/common/GNB';
+
+// modal들
+import DatetimeSelectorModal from './modal/DatetimeSelectorModal';
+import TotalFilterModal from './modal/TotalFilterModal';
 
 function Search() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +19,9 @@ function Search() {
     };
 
     return (
-        <section>         
+        <section>    
+            <DatetimeSelectorModal visitDate={new Date()} visitorCount={10}/> 
+            <TotalFilterModal test='testtest' />
             <Div>
                 <div>
                     <TopNaviBar pageName='검색하기'/>
@@ -25,7 +32,7 @@ function Search() {
                     <FilterList/>
                     <DevideLine/>
                 </div>
-                <div style={{margin: "0 auto"}}>
+                <div style={{margin: "20px auto"}}>
                     <Button text="검색" onClick={() => {}}/>
                 </div>
             </Div>
@@ -46,10 +53,4 @@ const Div = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-`;
-
-const SolidLine = styled.div`
-    width: 100%;
-    height: 1px;
-    background-color: #ececec;
 `;

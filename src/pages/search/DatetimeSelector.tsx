@@ -31,7 +31,7 @@ const Div = styled.div`
 
 const Span = styled.span`
     width: 100%;
-    margin: 0 7px;
+    margin: 3px 7px 0 7px;
     font-size: 15px;
     cursor: pointer;
 `;

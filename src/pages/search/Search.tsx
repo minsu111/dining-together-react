@@ -16,6 +16,7 @@ import TotalFilter from './modal/TotalFilter';
 import SelectRegion from './modal/SelectRegion';
 import SelectFoodType from './modal/SelectFoodType';
 import SelectPricePerPerson from './modal/SelectPricePerPerson';
+import SelectAtmosphere from './modal/SelectAtmosphere';
 
 function Search() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,8 +36,11 @@ function Search() {
             <FilterModal title="음식 유형" isOpen={false} onConfirm={() => {}}>
                 <SelectFoodType data="123" />
             </FilterModal>
-            <FilterModal title="인당 가격" isOpen onConfirm={() => {}}>
+            <FilterModal title="인당 가격" isOpen={false} onConfirm={() => {}}>
                 <SelectPricePerPerson data="123" />
+            </FilterModal>
+            <FilterModal title="분위기" isOpen onConfirm={() => {}}>
+                <SelectAtmosphere data="123" />
             </FilterModal>
 
             <Div>

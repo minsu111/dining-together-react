@@ -16,11 +16,11 @@ import EditName from './pages/mypage/EditName';
 import EditPhoneNumber from './pages/mypage/EditPhoneNumber';
 import EditPassword from './pages/mypage/EditPassword';
 import AddStore from './pages/mypage/AddStore';
-import Login from './pages/auth/Login';
 import SignUp from './pages/auth/SignUp';
 import SearchResult from './pages/search/SearchResult';
 import AdminStore from './pages/Admin/AdminStore';
 import Welcome from './pages/auth/Welcome';
+import Login from './pages/auth/Login';
 
 const router = createBrowserRouter([
     {

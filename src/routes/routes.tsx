@@ -1,6 +1,5 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import App from '../App';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/home/Home';
 import StoreDetail from '../pages/reservation/StoreDetail';
@@ -19,16 +18,19 @@ import AdminStore from '../pages/Admin/AdminStore';
 import Welcome from '../pages/auth/Welcome';
 import Login from '../pages/auth/Login';
 import SearchKeyword from '../pages/search/SearchKeyword';
+import ExtraInfo from '../pages/auth/ExtraInfo';
+import Layout from '../components/common/Layout';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: <Layout />,
         errorElement: <NotFound />,
         children: [
             { index: true, path: '/', element: <Home /> },
             { path: '/login', element: <Login /> },
             { path: '/join', element: <SignUp /> },
+            { path: '/join/extra', element: <ExtraInfo /> },
             { path: '/join/welcome', element: <Welcome /> },
 
             { path: '/admin', element: <AdminStore /> },

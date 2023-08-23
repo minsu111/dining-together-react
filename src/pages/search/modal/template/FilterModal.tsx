@@ -30,7 +30,7 @@ const FilterModal: React.FC<ModalProps> = (props) => {
                 content: {
                     width: '390px',
                     height: '100%',
-                    padding: '0 10px',
+                    padding: '0',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -56,14 +56,14 @@ const FilterModal: React.FC<ModalProps> = (props) => {
             <FooterDiv>
                 <Button
                     text="닫기"
-                    width="110px"
+                    width="100px"
                     backgroundColor="#F2F2F2"
                     textColor="black"
                     onClick={() => {
                         setIsOpen(false);
                     }}
                 />
-                <Button text="적용" width="240px" onClick={props.onConfirm} />
+                <Button text="적용" width="230px" onClick={props.onConfirm} />
             </FooterDiv>
         </Modal>
     );
@@ -75,6 +75,8 @@ const HeaderDiv = styled.div`
     width: 100%;
     height: 48px;
     // border: 1px solid black;
+    padding: 0 10px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -82,6 +84,7 @@ const HeaderDiv = styled.div`
 
 const ContentDiv = styled.div`
     width: 100%;
+    height: calc(100% - 160px);
     margin-top: 20px;
 `;
 

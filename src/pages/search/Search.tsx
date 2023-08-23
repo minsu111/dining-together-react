@@ -13,6 +13,7 @@ import GNBArea from '../../components/common/GNB';
 import DatetimeSelectorModal from './modal/DatetimeSelectorModal';
 import FilterModal from './modal/template/FilterModal';
 import TotalFilter from './modal/TotalFilter';
+import SelectRegion from './modal/SelectRegion';
 
 function Search() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +24,11 @@ function Search() {
         <section>
             <DatetimeSelectorModal visitDate={new Date()} visitorCount={10} />
 
-            <FilterModal title="필터" isOpen onConfirm={() => {}}>
+            <FilterModal title="필터" isOpen={false} onConfirm={() => {}}>
                 <TotalFilter data="123" />
+            </FilterModal>
+            <FilterModal title="지역" isOpen onConfirm={() => {}}>
+                <SelectRegion data="123" />
             </FilterModal>
 
             <Div>

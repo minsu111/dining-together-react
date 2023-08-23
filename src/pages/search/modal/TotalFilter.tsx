@@ -6,17 +6,7 @@ import { FilterType } from './Enum';
 
 const TotalFilter: React.FC<{ data: string }> = ({ data }) => {
     return (
-        <div
-            style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '20px',
-                inset: 0,
-            }}
-        >
+        <Div>
             <FilterButtonInModal filterType={FilterType.Region} selectData="" />
             <FilterButtonInModal
                 filterType={FilterType.FoodType}
@@ -31,8 +21,18 @@ const TotalFilter: React.FC<{ data: string }> = ({ data }) => {
                 selectData="7만원 ~ 40만원"
             />
             <FilterButtonInModal filterType={FilterType.Seat} selectData="홀" />
-        </div>
+        </Div>
     );
 };
 
 export default TotalFilter;
+
+const Div = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    inset: 0;
+`;

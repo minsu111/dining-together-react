@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 type StoreInfoProps = {
+    isKeywordSearch?: boolean;
     name: string;
     description: string;
-    subInfo: string;
-    price: string;
+    subInfo?: string;
+    price?: string;
 };
 
 const StoreItem: React.FC<StoreInfoProps> = (props) => {
@@ -27,7 +28,7 @@ const StoreItem: React.FC<StoreInfoProps> = (props) => {
                     <StoreName>{props.name}</StoreName>
                     <StoreDesc>{props.description}</StoreDesc>
                 </InfoSubDiv>
-                <InfoSubDiv>
+                <InfoSubDiv className={props.isKeywordSearch ? 'isHide' : ''}>
                     <StoreEtcInfo>{props.subInfo}</StoreEtcInfo>
                     <StoreEtcInfo>{props.price}</StoreEtcInfo>
                 </InfoSubDiv>
@@ -58,6 +59,10 @@ const InfoSubDiv = styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
+
+    &.isHide {
+        display: none;
+    }
 `;
 
 const StoreName = styled.h1`

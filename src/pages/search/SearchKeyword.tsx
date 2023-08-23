@@ -1,18 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 import backArrowIcon from '../../assets/arrow-left-solid.svg';
 import DevideLine from '../../components/common/DevideLine';
 import SolidLine from './SolidLine';
 import Button from '../../components/common/Button';
+import StoreItem from './StoreItem';
 
 function SearchKeyword() {
+    const [showResult, setShowResult] = useState(false);
+
+    console.log(showResult);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value);
     };
 
     return (
         <Div>
-            <div>
+            <Div2>
                 <HeaderDiv>
                     <BackButton onClick={() => {}}>
                         <img src={backArrowIcon} alt="back arrow icon" />
@@ -20,11 +25,68 @@ function SearchKeyword() {
                     <Input placeholder="식당명, 키워드로 찾아보세요" />
                 </HeaderDiv>
                 <DevideLine />
-            </div>
+                <ResultDiv isHidden={!showResult}>
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                    <StoreItem
+                        isKeywordSearch
+                        name="가게1"
+                        description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                    />
+                </ResultDiv>
+            </Div2>
             <FooterDiv>
                 <SolidLine />
                 <div style={{ margin: '20px auto' }}>
-                    <Button text="검색" onClick={() => {}} />
+                    <Button
+                        text="검색"
+                        onClick={() => {
+                            setShowResult(true);
+                        }}
+                    />
                 </div>
             </FooterDiv>
         </Div>
@@ -39,6 +101,12 @@ const Div = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+`;
+
+const Div2 = styled.div`
+    height: calc(100% - 93px);
+    display: flex;
+    flex-direction: column;
 `;
 
 const HeaderDiv = styled.div`
@@ -70,4 +138,26 @@ const Input = styled.input`
 const FooterDiv = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+interface ResultDivProps {
+    isHidden: boolean;
+}
+const ResultDiv = styled.div<ResultDivProps>`
+    flex: 1;
+    //width: 100%;
+    //height: 100%;
+    padding-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    overflow-y: auto;
+
+    ${(props) =>
+        props.isHidden &&
+        css`
+            display: none;
+        `}
 `;

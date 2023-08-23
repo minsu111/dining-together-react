@@ -38,9 +38,11 @@ const AgreementCheckBox = () => {
                     checked={isAllChecked}
                     onChange={handleAllChange}
                 />
-                <span>이용약관 전체 동의</span>
+                <span style={{ fontWeight: '700', fontSize: '18px' }}>
+                    이용약관 전체 동의
+                </span>
             </CheckBoxLabel>
-
+            <Line />
             <BoxWrapper>
                 <CheckBoxLabel htmlFor="input">
                     <CheckInput
@@ -91,7 +93,13 @@ const CheckInput = styled.input`
     cursor: pointer;
 `;
 
-const CheckBoxLabel = styled.label``;
+const CheckBoxLabel = styled.label`
+    & > span {
+        font-size: 16px;
+    }
+`;
+
+const Line = styled.hr``;
 
 const BoxWrapper = styled.div`
     width: 100%;

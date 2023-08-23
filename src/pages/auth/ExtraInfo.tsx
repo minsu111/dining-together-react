@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import CommonButton from '../../components/common/Button';
 import {
     Menu,
     MenuButton,
@@ -12,6 +11,7 @@ import {
     defineStyle,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import CommonButton from '../../components/common/Button';
 import TagButton from '../../components/common/Tag';
 
 const ExtraInfo = () => {

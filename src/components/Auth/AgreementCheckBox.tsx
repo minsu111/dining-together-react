@@ -31,43 +31,77 @@ const AgreementCheckBox = () => {
     };
 
     return (
-        <div>
-            <label htmlFor="input">
-                <input
+        <Container>
+            <CheckBoxLabel htmlFor="input">
+                <CheckInput
                     type="checkbox"
                     checked={isAllChecked}
                     onChange={handleAllChange}
                 />
-                이용약관 전체 동의
-            </label>
+                <span>이용약관 전체 동의</span>
+            </CheckBoxLabel>
 
-            <div>
-                <label htmlFor="input">
-                    <input
+            <BoxWrapper>
+                <CheckBoxLabel htmlFor="input">
+                    <CheckInput
                         type="checkbox"
                         checked={isTermsChecked}
                         onChange={handleTermsChange}
                     />
-                    [필수] 회식어때 이용 약관 동의
-                    <Link to="/terms">보기</Link>
-                </label>
-            </div>
+                    <span>[필수] 회식어때 이용 약관 동의</span>
+
+                    <GoToContents to="/terms">보기</GoToContents>
+                </CheckBoxLabel>
+            </BoxWrapper>
 
             <div>
-                <label htmlFor="input">
-                    <input
+                <CheckBoxLabel htmlFor="input">
+                    <CheckInput
                         type="checkbox"
                         checked={isPrivacyChecked}
                         onChange={handlePrivacyChange}
                     />
-                    [필수] 개인정보 처리방침 동의
-                    <Link to="/terms">보기</Link>
-                </label>
+                    <span>[필수] 개인정보 처리방침 동의</span>
+                    <GoToContents to="/terms">보기</GoToContents>
+                </CheckBoxLabel>
             </div>
-        </div>
+        </Container>
     );
 };
 
 export default AgreementCheckBox;
 
+const Container = styled.div`
+    height: 150px;
+    line-height: 30px;
+    padding: 10px 20px;
+`;
+
 const CheckAll = styled.label``;
+
+const CheckInput = styled.input`
+    appearance: none;
+    margin: 0 10px 2px 0px;
+    vertical-align: middle;
+    border: max(2px, 0.1em) solid gray;
+    border-radius: 4px;
+    width: 1.2em;
+    height: 1.2em;
+    transition: border 0.3s ease-in-out;
+    cursor: pointer;
+`;
+
+const CheckBoxLabel = styled.label``;
+
+const BoxWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`;
+
+const GoToContents = styled(Link)`
+    all: unset;
+    cursor: pointer;
+    border-bottom: 1px solid #afb1b6;
+`;

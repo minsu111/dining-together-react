@@ -11,6 +11,7 @@ import GNBArea from '../../components/common/GNB';
 
 // modal들
 import DatetimeSelectorModal from './modal/DatetimeSelectorModal';
+import TotalFilterModal from './modal/TotalFilterModal';
 
 function Search() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +20,8 @@ function Search() {
 
     return (
         <section>    
-            <DatetimeSelectorModal visitDate={new Date()} visitorCount={10}/>     
+            <DatetimeSelectorModal visitDate={new Date()} visitorCount={10}/> 
+            <TotalFilterModal test='testtest' />
             <Div>
                 <div>
                     <TopNaviBar pageName='검색하기'/>

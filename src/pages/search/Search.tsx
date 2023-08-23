@@ -11,7 +11,8 @@ import GNBArea from '../../components/common/GNB';
 
 // modal들
 import DatetimeSelectorModal from './modal/DatetimeSelectorModal';
-import TotalFilterModal from './modal/TotalFilterModal';
+import FilterModal from './modal/template/FilterModal';
+import TotalFilter from './modal/TotalFilter';
 
 function Search() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,26 +20,30 @@ function Search() {
     };
 
     return (
-        <section>    
-            <DatetimeSelectorModal visitDate={new Date()} visitorCount={10}/> 
-            <TotalFilterModal test='testtest' />
+        <section>
+            <DatetimeSelectorModal visitDate={new Date()} visitorCount={10} />
+
+            <FilterModal title="필터" isOpen onConfirm={() => {}}>
+                <TotalFilter data="123" />
+            </FilterModal>
+
             <Div>
                 <div>
-                    <TopNaviBar pageName='검색하기'/>
-                    <SearchInput onInputChange={handleInputChange}/>
-                    <SolidLine/>
-                    <DatetimeSelector/>
-                    <SolidLine/>
-                    <FilterList/>
-                    <DevideLine/>
+                    <TopNaviBar pageName="검색하기" />
+                    <SearchInput onInputChange={handleInputChange} />
+                    <SolidLine />
+                    <DatetimeSelector />
+                    <SolidLine />
+                    <FilterList />
+                    <DevideLine />
                 </div>
-                <div style={{margin: "20px auto"}}>
-                    <Button text="검색" onClick={() => {}}/>
+                <div style={{ margin: '20px auto' }}>
+                    <Button text="검색" onClick={() => {}} />
                 </div>
             </Div>
-            
+
             <footer>
-                <GNBArea/>
+                <GNBArea />
             </footer>
         </section>
     );

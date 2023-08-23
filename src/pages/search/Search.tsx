@@ -17,6 +17,7 @@ import SelectRegion from './modal/SelectRegion';
 import SelectFoodType from './modal/SelectFoodType';
 import SelectPricePerPerson from './modal/SelectPricePerPerson';
 import SelectAtmosphere from './modal/SelectAtmosphere';
+import SelectSeat from './modal/SelectSeat';
 
 function Search() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +40,11 @@ function Search() {
             <FilterModal title="인당 가격" isOpen={false} onConfirm={() => {}}>
                 <SelectPricePerPerson data="123" />
             </FilterModal>
-            <FilterModal title="분위기" isOpen onConfirm={() => {}}>
+            <FilterModal title="분위기" isOpen={false} onConfirm={() => {}}>
                 <SelectAtmosphere data="123" />
+            </FilterModal>
+            <FilterModal title="좌석" isOpen onConfirm={() => {}}>
+                <SelectSeat data="123" />
             </FilterModal>
 
             <Div>

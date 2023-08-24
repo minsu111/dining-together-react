@@ -63,7 +63,7 @@ function StoreDetail() {
 
             <BottomFixed>
                 <DevideLine />
-                <Button text="예약하기" onClick={()=>{}}/>
+                <Button text="예약하기" onClick={()=>{window.location.href=('http://localhost:3000/store/reservation')}} />
             </BottomFixed>
         </Section>
     );

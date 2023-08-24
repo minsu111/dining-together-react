@@ -5,7 +5,7 @@ import Calendar from '../../components/common/Calendar';
 import StoreDetail from './StoreDetail';
 import Button from '../../components/common/Button';
 import DimmedLayer from '../../components/common/DimmedLayer';
-import Store from '../../assets/store.svg';
+import BigImageSample from '../../assets/ImageSampleB.svg'
 import CalendarIcon from '../../assets/calendar.svg';
 import PeopleIcon from '../../assets/people.svg'
 import WatchIcon from '../../assets/watch.svg';
@@ -19,30 +19,39 @@ function Reservation() {
         <DimmedLayer />
         <DrawerBox>
 
-            {pageNum === 1 ? <SetTime /> : null}
-            {pageNum === 2 ? <SetHeadcount /> : null}
-            {pageNum === 3 ? <SetTable /> : null}
+            {pageNum === 1 ? <SetCondition /> : null}
+            {pageNum === 2 ? <SetTable /> : null}
+            {pageNum === 3 ? <SetVisitTime /> : null}
             {pageNum === 4 ? <ShowReservation /> : null}
 
             <BottomButton>
                 {(pageNum !== 1 && pageNum !==4) ? <Button text="이전" width="155px" backgroundColor='#E2E2E3' textColor='#FFFFFF' onClick={()=>{setPageNum(pageNum-1)}}/> : null}
                 {pageNum !== 4 ? <Button text="다음" width="155px" onClick={()=>{setPageNum(pageNum+1)}}/> : null}
-                {pageNum === 4 ? <Button text="완료" width="350px" onClick={()=>{}}/> : null}
+                {pageNum === 4 ? <Button text="완료" width="350px" onClick={()=>{window.location.href=('http://localhost:3000/store/:storeId');
+
+}}/> : null}
             </BottomButton>
         </DrawerBox>
     </Section>
     );
 }
 
-function SetTime(){
+function SetCondition(){
+    const InputHeadCount = styled.input`
+        width: 300px;
+        height: 30px;
+        border: 1px solid #AFBCCF;
+        border-radius: 10px;
+        padding: 25px 30px;
+        font-size: 18px;
+    `
     return(
     <>   
         <Calendar />
-        <Select placeholder='Select option'>
-            <option value='option1'>Option 1</option>
-            <option value='option2'>Option 2</option>
-            <option value='option3'>Option 3</option>
-        </Select>
+        <div>
+            <h4>인원 수를 입력해주세요.</h4>
+            <InputHeadCount type="number" />
+        </div>
     </>
     )
 }
@@ -55,50 +64,66 @@ function SetTable(){
         flex-wrap: wrap;
     `
 
+    const TableBox = styled.label`
+       input{
+        visibility: hidden;
+       }
+
+       : checked + img{
+        border: 3px solid #FFB100;
+        border-radius: 5px;
+       }
+    `
+
     return(
         <>
             <DrawerBoxTitle>테이블을 선택해주세요.</DrawerBoxTitle>
             <TableBoxGroup>
                 
-                <label htmlFor='table1'>
+                <TableBox htmlFor='table1'>
                 <input type="radio" name="table" id="table1"/>
-                <img alt="" src={Store} style={{width: '150px', height: '100px'}} />
+                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
                 10인석
-                </label>
+                </TableBox>
+
+                <TableBox htmlFor='table2'>
+                <input type="radio" name="table" id="table2"/>
+                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
+                10인석
+                </TableBox>
+
+                <TableBox htmlFor='table3'>
+                <input type="radio" name="table" id="table3"/>
+                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
+                10인석
+                </TableBox>
+
+                
+                <TableBox htmlFor='table4'>
+                <input type="radio" name="table" id="table4"/>
+                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
+                10인석
+                </TableBox>
+
             </ TableBoxGroup>
         </>
     )
 }
 
-function SetHeadcount(){
-    const [headcount, setHeadcount] = useState(8);
-    const CountButton = styled.button`
-        width: 30px;
-        height: 30px;
-        border: solid #21272A;
-        border-width: 3px; 
-        border-radius: 100%;
-        background: none;
-        font-size: 200%;
-        font-weight: bold;
-        color: #21272A;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `
-    const CountNum = styled.span`
-        font-size: 50px;
-        font-weight: bold;
-        color: #21272A;
+function SetVisitTime(){
+    const ContentWidth = styled.div`
+        width: 300px;
     `
     return(
         <>
-            <DrawerBoxTitle>인원 수를 선택해주세요.</DrawerBoxTitle>
-            <BorderBox>
-                <CountButton type="button" onClick={()=>{setHeadcount(headcount-1)}}>−</CountButton>
-                <CountNum>{headcount}</CountNum>
-                <CountButton type="button" onClick={()=>{setHeadcount(headcount+1)}}>+</CountButton>
-            </BorderBox>
+            <DrawerBoxTitle>방문 시간을 입력해주세요.</DrawerBoxTitle>
+            <ContentWidth>
+                <Select size='lg'>
+                    <option value='option1'>Option 1</option>
+                    <option value='option2'>Option 2</option>
+                    <option value='option3'>Option 3</option>
+                </Select>
+            </ContentWidth>
         </>
     )
 }
@@ -165,7 +190,6 @@ const BorderBox = styled.div`
     justify-content: space-evenly;
     align-items: center;
 `
-
 const DrawerBoxTitle = styled.h3`
     font-size: 22px;
     font-weight: bolder;

@@ -1,5 +1,15 @@
-import React from "react";
+import React from 'react';
 import styled from 'styled-components';
+
+const TopNaviBar: React.FC<{ pageName: string }> = ({ pageName }) => {
+    return (
+        <Container>
+            <Title>{pageName}</Title>
+        </Container>
+    );
+};
+
+export default TopNaviBar;
 
 const Container = styled.div`
     width: 390px;
@@ -10,14 +20,7 @@ const Container = styled.div`
     padding-left: 10px;
 `;
 
-const TopNaviBar: React.FC<{pageName:string}> = ({pageName}) => {
-
-  return (
-    <Container>
-      <h3>{pageName}</h3>
-    </Container>
-  );
-};
-
-
-export default TopNaviBar;
+const Title = styled.h3`
+    font-size: 20px;
+    font-weight: bold;
+`;

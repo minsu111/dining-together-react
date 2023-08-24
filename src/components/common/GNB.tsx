@@ -34,7 +34,7 @@ const GNBAreaSC = styled.div`
     height: 65px;
     position: fixed;
     left: 0;
-    // bottom: 0;
+    bottom: 0;
 
     ul {
         width: 100%;

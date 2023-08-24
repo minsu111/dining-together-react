@@ -62,14 +62,15 @@ function Login() {
                     onClick={loginConfirm}
                     disabled={!activeButton}
                 />
-                {isFailLogin && (
-                    <ConfirmPopup
-                        title="로그인 실패"
-                        contents="존재하지 않는 아이디거나
-비밀번호가 일치하지 않습니다."
-                    />
-                )}
             </div>
+            {isFailLogin && (
+                <ConfirmPopup
+                    title="로그인 실패"
+                    contents="존재하지 않는 아이디거나
+비밀번호가 일치하지 않습니다."
+                />
+            )}
+
             <SignInButton to="/join">이메일 회원가입</SignInButton>
         </Section>
     );

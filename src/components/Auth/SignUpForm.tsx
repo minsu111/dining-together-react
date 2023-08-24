@@ -28,7 +28,7 @@ function SignUpForm() {
                     </InputWrapper>
                     <InputWrapper>
                         <Input
-                            inputType="tel"
+                            inputType="number"
                             label="휴대폰 번호*"
                             placeholder="숫자만 입력해주세요."
                             width="350px"

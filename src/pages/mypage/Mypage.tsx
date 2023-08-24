@@ -2,11 +2,17 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
 
 function Mypage() {
+    const navigate = useNavigate();
+    const goToMyInfo = () => {
+        navigate('/my/info');
+    };
+
     return (
         <div>
             <Container>
@@ -22,14 +28,14 @@ function Mypage() {
                     <hr />
                     <OwnerPageText>
                         가게 등록하고 <span>간편하게</span>
-                        <br /> <span>단체 예약</span> 받으세요!
+                        <br /> <span>단체 예약</span> 받으세요
                     </OwnerPageText>
                     <Button text="가게 등록하기" onClick={() => {}} />
                 </TitleSection>
             </Container>
             <DevideLine />
             <Container>
-                <InfoMenu>
+                <InfoMenu onClick={goToMyInfo}>
                     <span>내 정보</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>

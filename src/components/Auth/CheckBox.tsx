@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
+import { setSelectedOption } from '../../app/store';
 
 type CheckBoxProps = {
     disabled?: boolean;
@@ -7,10 +9,12 @@ type CheckBoxProps = {
 };
 
 const CheckBox: React.FC<CheckBoxProps> = () => {
-    const [selectedOption, setSelectedOption] = useState('');
+    //@ts-ignore
+    const selectedOption = useSelector((state) => state.radio);
+    const dispatch = useDispatch();
 
     const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedOption(e.target.value);
+        dispatch(setSelectedOption(e.target.value));
     };
 
     return (

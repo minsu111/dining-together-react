@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { useSelector } from 'react-redux';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import LandscapeImg from '../../assets/landscape_photographer.svg';
 import Button from '../../components/common/Button';
@@ -10,6 +11,8 @@ import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
 
 const SignUp = () => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
+    //@ts-ignore
+    const selectedOption = useSelector((state) => state.radio);
 
     const handleNextClick = () => {
         setShowSignUpForm(true);
@@ -35,7 +38,11 @@ const SignUp = () => {
                             style={{ width: '54%' }}
                         />
                         <CheckBox />
-                        <Button text="다음" onClick={handleNextClick} />
+                        <Button
+                            text="다음"
+                            onClick={handleNextClick}
+                            disabled={!selectedOption}
+                        />
                         {/* <ExtraInfo /> */}
                     </Wrapper>
                 </Section>

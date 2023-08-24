@@ -1,9 +1,49 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import Input from '../common/Input';
 import TopNaviBarBack from '../common/TopNaviBarBack';
+import { emailRegEx, passwordRegEx } from '../../utils/utils';
 
 function SignUpForm() {
+    const [emailValid, setEmailValid] = useState(true);
+    const [pwValid, setPwValid] = useState(false);
+    const [pw, setPw] = useState('');
+    const [pwConfirm, setPwConfirm] = useState('');
+    const [pwMatch, setPwMatch] = useState(true);
+
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (emailRegEx.test(e.target.value)) {
+            console.log(
+                '🚀 ~ file: SignUpForm.tsx:14 ~ handleEmail ~ e.target.value:',
+                e.target.value,
+            );
+            setEmailValid(true);
+        } else {
+            setEmailValid(false);
+        }
+        console.dir(e.target.value);
+    };
+
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPw(e.target.value);
+        if (passwordRegEx.test(e.target.value)) {
+            setPwValid(true);
+        } else {
+            setPwValid(false);
+        }
+    };
+
+    const handlePwConfirm = (e: any) => {
+        const newPasswordConfirm = e.target.value;
+        setPwConfirm(newPasswordConfirm);
+
+        if (newPasswordConfirm === pw) {
+            setPwMatch(true);
+        } else {
+            setPwMatch(false);
+        }
+    };
+
     return (
         <div>
             <TopNaviBarBack pageName="회원가입" prevPath="/login" />
@@ -15,8 +55,14 @@ function SignUpForm() {
                             label="이메일(아이디)*"
                             placeholder="이메일을 입력해주세요."
                             width="350px"
+                            onChange={handleEmail}
                         />
-                        <AlertMessage>이미 가입된 이메일입니다.</AlertMessage>
+
+                        {!emailValid && (
+                            <AlertMessage>
+                                이메일 형식에 알맞게 입력해주세요.
+                            </AlertMessage>
+                        )}
                     </InputWrapper>
                     <InputWrapper>
                         <Input
@@ -40,18 +86,24 @@ function SignUpForm() {
                             label="비밀번호*"
                             placeholder="비밀번호를 입력해주세요."
                             width="350px"
+                            onChange={handlePassword}
                         />
                         <Input
                             inputType="password"
                             placeholder="비밀번호를 다시 한 번 입력해주세요."
                             width="350px"
+                            onChange={handlePwConfirm}
                         />
-                        <AlertMessage>
-                            영문/숫자/특수기호 혼합 8~20자로 입력해주세요.
-                        </AlertMessage>
-                        <AlertMessage>
-                            비밀번호가 일치하지 않습니다.
-                        </AlertMessage>
+                        {!pwValid && pw.length > 0 && (
+                            <AlertMessage>
+                                영문/숫자/특수기호 혼합 8~15자로 입력해주세요.
+                            </AlertMessage>
+                        )}
+                        {!pwMatch && pwConfirm.length > 0 && (
+                            <AlertMessage>
+                                비밀번호가 일치하지 않습니다.
+                            </AlertMessage>
+                        )}
                     </InputWrapper>
                 </Form>
             </Section>
@@ -73,6 +125,6 @@ const InputWrapper = styled.div`
 
 const AlertMessage = styled.div`
     font-size: 12px;
-    // color: red;
+    color: red;
     padding: 8px 0 0 6px;
 `;

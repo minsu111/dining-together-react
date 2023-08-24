@@ -20,6 +20,7 @@ import Login from '../pages/auth/Login';
 import SearchKeyword from '../pages/search/SearchKeyword';
 import ExtraInfo from '../pages/auth/ExtraInfo';
 import Layout from '../components/common/Layout';
+import DeleteAccount from '../pages/mypage/DeleteAccount';
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
             { path: '/my/infoEdit/name', element: <EditName /> },
             { path: '/my/infoEdit/phoneNumber', element: <EditPhoneNumber /> },
             { path: '/my/infoEdit/password', element: <EditPassword /> },
+            { path: '/my/infoEdit/withdraw', element: <DeleteAccount /> },
             { path: '/my/store', element: <AddStore /> },
         ],
     },

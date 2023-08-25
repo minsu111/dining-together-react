@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { useSelector } from 'react-redux';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import LandscapeImg from '../../assets/landscape_photographer.svg';
 import Button from '../../components/common/Button';
-// import CheckBox from '../../components/Auth/CheckBox';
+import CheckBox from '../../components/Auth/CheckBox';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
 
-const SignUp = () => {
+const SignUpTest = () => {
+    // 회원 유형 선택 상태 관리
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
-    //@ts-ignore
-    const selectedOption = useSelector((state) => state.radio);
+    const [selectedOption, setSelectedOption] = useState('');
+    const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+
+    const handleOptionChange = (option: any) => {
+        setSelectedOption(option);
+        setIsNextButtonEnabled(true);
+    };
+    console.log(selectedOption);
 
     const handleNextClick = () => {
         setShowSignUpForm(true);
@@ -37,13 +43,15 @@ const SignUp = () => {
                             alt="가입목적을 알려주세요"
                             style={{ width: '54%' }}
                         />
-                        {/* <CheckBox /> */}
+                        <CheckBox
+                            selectedOption={selectedOption}
+                            onOptionChange={handleOptionChange}
+                        />
                         <Button
                             text="다음"
                             onClick={handleNextClick}
-                            disabled={!selectedOption}
+                            disabled={!isNextButtonEnabled}
                         />
-                        {/* <ExtraInfo /> */}
                     </Wrapper>
                 </Section>
             )}
@@ -65,7 +73,7 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default SignUpTest;
 
 const Section = styled.section`
     position: absolute;

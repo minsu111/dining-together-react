@@ -12,7 +12,7 @@ import EditName from '../pages/mypage/EditName';
 import EditPhoneNumber from '../pages/mypage/EditPhoneNumber';
 import EditPassword from '../pages/mypage/EditPassword';
 import AddStore from '../pages/mypage/AddStore';
-import SignUpTest from '../pages/auth/SignUpTest';
+import SignUp from '../pages/auth/SignUp';
 import SearchResult from '../pages/search/SearchResult';
 import AdminStore from '../pages/Admin/AdminStore';
 import Welcome from '../pages/auth/Welcome';
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, path: '/home', element: <Home /> },
             { path: '/login', element: <Login /> },
-            { path: '/join', element: <SignUpTest /> },
+            { path: '/join', element: <SignUp /> },
             { path: '/join/extra', element: <ExtraInfo /> },
             { path: '/join/welcome', element: <Welcome /> },
             { path: '/join/terms', element: <Terms /> },

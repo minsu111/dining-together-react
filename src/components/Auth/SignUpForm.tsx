@@ -58,8 +58,8 @@ function SignUpForm() {
                         label="이메일(아이디)*"
                         placeholder="이메일을 입력해주세요."
                         width="350px"
-                        onBlur={checkDuplicates}
-                        onChange={handleEmail}
+                        // onBlur={checkDuplicates}
+                        // onChange={handleEmail}
                     />
 
                     {!emailValid && email.length > 0 && (
@@ -90,13 +90,13 @@ function SignUpForm() {
                         label="비밀번호*"
                         placeholder="비밀번호를 입력해주세요."
                         width="350px"
-                        onChange={handlePassword}
+                        // onChange={handlePassword}
                     />
                     <Input
                         inputType="password"
                         placeholder="비밀번호를 다시 한 번 입력해주세요."
                         width="350px"
-                        onChange={handlePwConfirm}
+                        // onChange={handlePwConfirm}
                     />
                     {!pwValid && pw.length > 0 && (
                         <AlertMessage>

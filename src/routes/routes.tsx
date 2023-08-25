@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             { path: '/search/list', element: <SearchResult /> },
             { path: '/search/keyword', element: <SearchKeyword /> },
 
-            { path: '/my/list', element: <ReservationList /> },
+            { path: '/reservationList', element: <ReservationList /> },
             { path: '/my', element: <Mypage /> },
             { path: '/my/info', element: <MyInfo /> },
             { path: '/my/infoEdit/name', element: <EditName /> },

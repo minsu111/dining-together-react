@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import DevideLine from '../../components/common/DevideLine';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
+import BigImageSample from '../../assets/ImageSampleB.svg'
 
 function StoreDetail() {
     return (
         <Section>
             <TopNaviBarBack pageName='' prevPath='' />
-            <ImgBox />
+            <StoreImg />
             <Heading>
                 <SubCategory>음식 유형</SubCategory>
                 가게명
@@ -63,13 +64,20 @@ function StoreDetail() {
 
             <BottomFixed>
                 <DevideLine />
-                <Button text="예약하기" onClick={()=>{}}/>
+                <Button text="예약하기" onClick={()=>{window.location.href=('http://localhost:3000/store/reservation')}} />
             </BottomFixed>
         </Section>
     );
 }
 
 export default StoreDetail;
+
+function StoreImg(){
+// 슬라이드 기능 추가
+    return(
+        <img alt="" src={BigImageSample} />
+    )
+}
 
 const Section = styled.section`
     position: absolute;
@@ -86,13 +94,6 @@ const Section = styled.section`
     flex-direction: column;
     border: 1px solid #e8e8e8;
 `;
-
-const ImgBox = styled.div`
-    width: 100%;
-    height: 200px;
-    background-color: lightgrey;
-`
-
 const Heading = styled.h3`
     font-size: 18px;
     font-weight: bolder;
@@ -113,7 +114,6 @@ const BottomFixed = styled.div`
     text-align: center;
     margin-bottom: 10px;
 `
-
 const SubCategory = styled.p`
     font-size: 14px;
     color: #D9D9D9;

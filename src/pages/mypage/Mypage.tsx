@@ -9,8 +9,8 @@ import Button from '../../components/common/Button';
 
 function Mypage() {
     const navigate = useNavigate();
-    const goToMyInfo = () => {
-        navigate('/my/info');
+    const goToMy = (path: string) => {
+        navigate(`/my/${path}`);
     };
 
     return (
@@ -30,16 +30,19 @@ function Mypage() {
                         가게 등록하고 <span>간편하게</span>
                         <br /> <span>단체 예약</span> 받으세요
                     </OwnerPageText>
-                    <Button text="가게 등록하기" onClick={() => {}} />
+                    <Button
+                        text="가게 등록하기"
+                        onClick={() => goToMy('store')}
+                    />
                 </TitleSection>
             </Container>
             <DevideLine />
             <Container>
-                <InfoMenu onClick={goToMyInfo}>
+                <InfoMenu onClick={() => goToMy('info')}>
                     <span>내 정보</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>
-                <InfoMenu>
+                <InfoMenu onClick={() => goToMy('list')}>
                     <span>내 예약 내역</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>
@@ -56,6 +59,7 @@ const Container = styled.section`
 
 const TitleSection = styled.section`
     margin: 30px 0;
+    cursor: default;
 `;
 
 const TitleWrapper = styled.div`
@@ -85,6 +89,7 @@ const OwnerBadge = styled.div`
     font-weight: 800;
     text-align: center;
     padding: 6px 8px;
+    cursor: default;
 `;
 
 const Account = styled.h3`

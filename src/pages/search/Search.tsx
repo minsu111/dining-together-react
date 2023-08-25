@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import SearchInput from './SearchInput';
@@ -20,8 +21,10 @@ import SelectAtmosphere from './modal/SelectAtmosphere';
 import SelectSeat from './modal/SelectSeat';
 
 function Search() {
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
+    const navigate = useNavigate();
+
+    const goTo = (url: string) => {
+        navigate(url);
     };
 
     return (
@@ -50,7 +53,7 @@ function Search() {
             <Div>
                 <div>
                     <TopNaviBar pageName="검색하기" />
-                    <SearchInput onInputChange={handleInputChange} />
+                    <SearchInput onClick={() => goTo('/search/keyword')} />
                     <SolidLine />
                     <DatetimeSelector />
                     <SolidLine />
@@ -58,7 +61,7 @@ function Search() {
                     <DevideLine />
                 </div>
                 <div style={{ margin: '20px auto' }}>
-                    <Button text="검색" onClick={() => {}} />
+                    <Button text="검색" onClick={() => goTo('/search/list')} />
                 </div>
             </Div>
 

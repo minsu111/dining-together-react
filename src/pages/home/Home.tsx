@@ -12,10 +12,10 @@ function Home() {
             <img alt="" src={Logo}/>
         </TopBar>
         <img alt="" src={BigImageSample}/>
-        <RecommendList />
-        <RecommendList />
-        <RecommendList />
-        <RecommendList />
+        <RecommendList title="건대/성수/왕십리 회식 명소"/>
+        <RecommendList title="이런 장소 어때요?"/>
+        <RecommendList title="30인 이상 단체 가능!"/>
+        <RecommendList title="새로 입점했어요"/>
         <GNBArea />
     </Section>
     ) 
@@ -56,7 +56,11 @@ const StoreCard: React.FC<StoreCardProps> = (props) => {
     )
 }
 
-const RecommendList = () =>{
+type RecommendListProps={
+    title: string;
+}
+
+const RecommendList:React.FC<RecommendListProps> = (props) =>{
     const List = styled.div`
         width: 650px;
         display: flex;
@@ -69,9 +73,11 @@ const RecommendList = () =>{
     const Container = styled.div`
         margin: 30px 0 0 20px;
     `
+
+    // 가로 스크롤
     return (
         <Container>
-            <Title>건대/성수/왕십리 회식 명소</Title>
+            <Title>{props.title}</Title>
             <List>
                 <StoreCard imgUrl={SmallImageSmaple} storeName='더즌 오이스터' minCount={10} maxCount={40} foodType='일식'/>
                 <StoreCard imgUrl={SmallImageSmaple} storeName='더즌 오이스터' minCount={10} maxCount={40} foodType='일식'/>
@@ -82,7 +88,6 @@ const RecommendList = () =>{
         </Container>
     )
 }
-
 
 export default Home;
 
@@ -101,10 +106,10 @@ const Section = styled.section`
     flex-direction: column;
     border: 1px solid #e8e8e8;
 `;
-
 const TopBar = styled.div`
     width: 390px;
-    height: 48px;
+    height: 50px;
+    padding: 10px 0;
     border-bottom: 1px solid grey;
     display: flex;
     align-items: center;

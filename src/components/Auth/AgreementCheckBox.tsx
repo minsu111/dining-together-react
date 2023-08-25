@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-const AgreementCheckBox = () => {
+type CheckBoxProps = {
+    disabled?: boolean;
+    checked?: boolean;
+};
+
+const AgreementCheckBox: React.FC<CheckBoxProps> = () => {
     const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
     const [isTermsChecked, setIsTermsChecked] = useState<boolean>(false);
     const [isPrivacyChecked, setIsPrivacyChecked] = useState<boolean>(false);
@@ -51,12 +56,11 @@ const AgreementCheckBox = () => {
                         onChange={handleTermsChange}
                     />
                     <span>[필수] 회식어때 이용 약관 동의</span>
-
-                    <GoToContents to="/terms">보기</GoToContents>
                 </CheckBoxLabel>
+                <GoToContents to="/join/terms">보기</GoToContents>
             </BoxWrapper>
 
-            <div>
+            <BoxWrapper>
                 <CheckBoxLabel htmlFor="input">
                     <CheckInput
                         type="checkbox"
@@ -64,9 +68,9 @@ const AgreementCheckBox = () => {
                         onChange={handlePrivacyChange}
                     />
                     <span>[필수] 개인정보 처리방침 동의</span>
-                    <GoToContents to="/terms">보기</GoToContents>
                 </CheckBoxLabel>
-            </div>
+                <GoToContents to="/join/terms">보기</GoToContents>
+            </BoxWrapper>
         </Container>
     );
 };
@@ -81,7 +85,7 @@ const Container = styled.div`
 
 const CheckAll = styled.label``;
 
-const CheckInput = styled.input`
+const CheckInput = styled.input<{ checked: boolean }>`
     appearance: none;
     margin: 0 10px 2px 0px;
     vertical-align: middle;
@@ -94,22 +98,31 @@ const CheckInput = styled.input`
 `;
 
 const CheckBoxLabel = styled.label`
+    input:checked {
+        border: 0.4em solid #ffb100;
+        background-image: url('../../assets/square-check-solid.svg');
+        background: $white no-repeat center center;
+    }
     & > span {
         font-size: 16px;
     }
 `;
 
-const Line = styled.hr``;
+const Line = styled.hr`
+    margin: 4px 0;
+`;
 
 const BoxWrapper = styled.div`
     width: 100%;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 `;
 
 const GoToContents = styled(Link)`
     all: unset;
+    font-size: 14px;
     cursor: pointer;
     border-bottom: 1px solid #afb1b6;
+    line-height: 18px;
 `;

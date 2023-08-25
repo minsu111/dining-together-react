@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Button from '../../components/common/Button';
 import WelcomCustomerImg from '../../assets/party.svg';
@@ -12,6 +13,14 @@ const Welcome = () => {
     };
     const handleImsi2Click = () => {
         setSwitchContent(false);
+    };
+
+    const navigate = useNavigate();
+    const goToHome = () => {
+        navigate('/home');
+    };
+    const goToAddStore = () => {
+        navigate('/my/store');
     };
 
     return (
@@ -34,9 +43,9 @@ const Welcome = () => {
                             style={{ width: '50%', marginBottom: '80px' }}
                         />
                         <Button
-                            // type="button"
+                            type="button"
                             text="회식장소 보러 가기"
-                            onClick={() => {}}
+                            onClick={goToHome}
                         />
                         <ImsiButton onClick={handleImsi1Click}>
                             사장님 가입완료 뷰
@@ -63,7 +72,7 @@ const Welcome = () => {
                         <Button
                             // type="button"
                             text="회식장소 등록하러 가기"
-                            onClick={() => {}}
+                            onClick={goToAddStore}
                         />
                         <ImsiButton onClick={handleImsi2Click}>
                             일반회원 가입완료 뷰
@@ -95,6 +104,7 @@ const Section = styled.section`
 const Title = styled.h1`
     font-size: 34px;
     line-height: 45px;
+    font-weight: 600;
     padding: 50px 20px 10px 20px;
 `;
 

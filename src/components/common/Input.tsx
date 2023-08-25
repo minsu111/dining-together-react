@@ -7,24 +7,37 @@ type InputProps = {
     inputType: string;
     placeholder?: string;
     width?: string;
+    onBlur?: () => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: React.FC<InputProps> = ({ label, inputType, placeholder, width }) => {
+const Input: React.FC<InputProps> = ({
+    label,
+    inputType,
+    placeholder,
+    width,
+    onBlur,
+    onChange,
+}) => {
     const [input, setInput] = useState('');
 
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
         console.log(e.target.value);
-    } 
+    };
     return (
         <InputForm>
             <label htmlFor="input">{label}</label>
             <InputArea
-                id='input'
-                type= {inputType}
+                id="input"
+                type={inputType}
                 placeholder={placeholder}
                 value={input}
-                onChange={onChangeInput}
+                onBlur={onBlur}
+                onChange={(e) => {
+                    onChangeInput(e);
+                    onChange?.(e);
+                }}
                 widthProp={width}
             />
         </InputForm>
@@ -32,8 +45,6 @@ const Input: React.FC<InputProps> = ({ label, inputType, placeholder, width }) =
 };
 
 export default Input;
-
-
 
 const InputForm = styled.div`
     display: flex;
@@ -54,7 +65,7 @@ const InputArea = styled.input<{ widthProp?: string }>`
     border-radius: 7px;
     border: none;
     outline: none;
-    font-size: 16px;
+    font-size: 14px; //수정 요청
 
     &::placeholder {
         color: #666;

@@ -6,6 +6,8 @@ import { setSelectedOption } from '../../app/store';
 type CheckBoxProps = {
     disabled?: boolean;
     checked?: boolean;
+    onChange?: (isChecked: boolean) => void;
+    singleCheck?: boolean;
 };
 
 const CheckBox: React.FC<CheckBoxProps> = () => {

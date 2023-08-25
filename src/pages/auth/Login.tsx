@@ -21,7 +21,7 @@ function Login() {
 
     const navigate = useNavigate();
     const goToHome = () => {
-        navigate('/');
+        navigate('/home');
     };
 
     const loginConfirm = () => {

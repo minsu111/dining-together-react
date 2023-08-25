@@ -27,7 +27,7 @@ function Search() {
         <section>
             <DatetimeSelectorModal
                 visitDate={new Date()}
-                isOpen
+                isOpen={false}
                 onConfirm={() => {}}
             />
 

@@ -7,22 +7,26 @@ import { faRotate } from '@fortawesome/free-solid-svg-icons';
 import SolidLine from '../../SolidLine';
 import Button from '../../../../components/common/Button';
 
+import { SearchModalType } from '../Enum';
+
 type ModalProps = {
     title: string;
     children: React.ReactNode;
     isOpen: boolean;
+    modalType: SearchModalType;
     onConfirm: () => void;
+    onClose: (modalType: SearchModalType) => void;
 };
 
 const FilterModal: React.FC<ModalProps> = (props) => {
-    const [modalIsOpen, setIsOpen] = React.useState(props.isOpen);
+    const handleClose = () => {
+        props.onClose(props.modalType);
+    };
 
     return (
         <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={() => {
-                setIsOpen(false);
-            }}
+            isOpen={props.isOpen}
+            onRequestClose={handleClose}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -59,9 +63,7 @@ const FilterModal: React.FC<ModalProps> = (props) => {
                     width="100px"
                     backgroundColor="#F2F2F2"
                     textColor="black"
-                    onClick={() => {
-                        setIsOpen(false);
-                    }}
+                    onClick={handleClose}
                 />
                 <Button text="적용" width="230px" onClick={props.onConfirm} />
             </FooterDiv>

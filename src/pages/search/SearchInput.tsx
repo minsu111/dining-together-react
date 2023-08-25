@@ -18,13 +18,14 @@ const Div = styled.div`
     margin: 10px 0;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     padding-left: 15px;
     //border: 1px solid black;
 `;
 
 const Span = styled.span`
     width: 100%;
-    margin: 0 7px;
+    margin: 0 10px;
     padding: 0;
     font-size: 15px;
     cursor: pointer;

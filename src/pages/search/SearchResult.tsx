@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import SolidLine from './SolidLine';
@@ -7,7 +7,23 @@ import FilterList from './FilterList';
 import DevideLine from '../../components/common/DevideLine';
 import StoreItem from './StoreItem';
 
+import { SearchModalType } from './modal/Enum';
+
 function SearchResult() {
+    const [modalStateArray, setModalStateArray] = useState([
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ]);
+
+    const handleModalToggle = (modalType: SearchModalType) => {
+        modalStateArray[modalType] = !modalStateArray[modalType];
+        setModalStateArray([...modalStateArray]);
+    };
+
     return (
         <section
             style={{
@@ -21,9 +37,13 @@ function SearchResult() {
                 <div>
                     <TopNaviBarBack pageName="검색결과" prevPath="/search" />
                     <SolidLine />
-                    <DatetimeSelector />
+                    <DatetimeSelector
+                        onClick={() => {
+                            handleModalToggle(SearchModalType.DatetimeSelector);
+                        }}
+                    />
                     <SolidLine />
-                    <FilterList />
+                    <FilterList onClickFilter={handleModalToggle} />
                     <DevideLine />
                 </div>
             </Div>

@@ -9,16 +9,16 @@ import DetailInfo from '../../components/ReservationList/DetailInfo';
 function ReservationList() {
     return (
         <section>
-            <WholeWrap>
-                <Wrap>
-                    <TopNaviBar pageName="예약조회" />
-                    <Inner>
-                        <StatusList />
-                    </Inner>
-                    <DetailInfo/>
-                    <GNBArea />
-                </Wrap>
-            </WholeWrap>
+            <header>
+                <TopNaviBar pageName="예약조회" />
+            </header>
+            <Inner>
+                <StatusList />
+            </Inner>
+            <DetailInfo/>
+            <footer>
+                <GNBArea />
+            </footer>
         </section>
     );
 }

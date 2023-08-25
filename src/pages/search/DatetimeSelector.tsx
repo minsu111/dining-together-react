@@ -4,15 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
-function DatetimeSelector() {
-    const handleSpanClick = () => {
-        alert('test');
+const DatetimeSelector: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    const handleClick = () => {
+        onClick();
     };
 
     return (
-        <Div>
+        <Div onClick={handleClick}>
             <FontAwesomeIcon icon={faCalendar} style={{ marginTop: '2px' }} />
-            <Span onClick={handleSpanClick}>2023.8.15(화)</Span>
+            <Span>2023.8.15(화)</Span>
             <FontAwesomeIcon
                 icon={faAngleDown}
                 style={{
@@ -23,7 +23,7 @@ function DatetimeSelector() {
             />
         </Div>
     );
-}
+};
 
 export default DatetimeSelector;
 

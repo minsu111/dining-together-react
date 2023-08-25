@@ -4,5 +4,15 @@ export enum FilterType {
     FoodType = '음식 유형',
     PricePerPerson = '인당가격',
     Atmosphere = '분위기',
-    Seat = '좌석'
+    Seat = '좌석',
+}
+
+export enum SearchModalType {
+    DatetimeSelector,
+    Total,
+    Region,
+    FoodType,
+    PricePerPerson,
+    Atmosphere,
+    Seat,
 }

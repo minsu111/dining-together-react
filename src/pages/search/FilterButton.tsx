@@ -1,12 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FilterButton: React.FC<{ category: string }> = ({ category }) => {
-    const handleSpanClick = () => {
-        alert('FilterButton 클릭');
-    };
+import { SearchModalType } from './modal/Enum';
 
-    return <Button onClick={handleSpanClick}>{category}</Button>;
+type Props = {
+    category: string;
+    modalType: SearchModalType;
+    onClick: (modalType: SearchModalType) => void;
+};
+
+const FilterButton: React.FC<Props> = (props) => {
+    return (
+        <Button
+            onClick={() => {
+                props.onClick(props.modalType);
+            }}
+        >
+            {props.category}
+        </Button>
+    );
 };
 
 export default FilterButton;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TopNaviBar from '../../components/common/TopNaviBar';
@@ -20,33 +20,87 @@ import SelectPricePerPerson from './modal/SelectPricePerPerson';
 import SelectAtmosphere from './modal/SelectAtmosphere';
 import SelectSeat from './modal/SelectSeat';
 
+import { SearchModalType } from './modal/Enum';
+
 function Search() {
     const navigate = useNavigate();
+
+    const [modalStateArray, setModalStateArray] = useState([
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ]);
+
+    const handleModalToggle = (modalType: SearchModalType) => {
+        modalStateArray[modalType] = !modalStateArray[modalType];
+        setModalStateArray([...modalStateArray]);
+    };
 
     return (
         <section>
             <DatetimeSelectorModal
                 visitDate={new Date()}
-                isOpen={false}
+                isOpen={modalStateArray[SearchModalType.DatetimeSelector]}
+                modalType={SearchModalType.DatetimeSelector}
                 onConfirm={() => {}}
+                onClose={handleModalToggle}
             />
 
-            <FilterModal title="필터" isOpen={false} onConfirm={() => {}}>
+            <FilterModal
+                title="필터"
+                isOpen={modalStateArray[SearchModalType.Total]}
+                modalType={SearchModalType.Total}
+                onConfirm={() => {}}
+                onClose={handleModalToggle}
+            >
                 <TotalFilter data="123" />
             </FilterModal>
-            <FilterModal title="지역" isOpen={false} onConfirm={() => {}}>
+            <FilterModal
+                title="지역"
+                isOpen={modalStateArray[SearchModalType.Region]}
+                modalType={SearchModalType.Region}
+                onConfirm={() => {}}
+                onClose={handleModalToggle}
+            >
                 <SelectRegion data="123" />
             </FilterModal>
-            <FilterModal title="음식 유형" isOpen={false} onConfirm={() => {}}>
+            <FilterModal
+                title="음식 유형"
+                isOpen={modalStateArray[SearchModalType.FoodType]}
+                modalType={SearchModalType.FoodType}
+                onConfirm={() => {}}
+                onClose={handleModalToggle}
+            >
                 <SelectFoodType data="123" />
             </FilterModal>
-            <FilterModal title="인당 가격" isOpen={false} onConfirm={() => {}}>
+            <FilterModal
+                title="인당 가격"
+                isOpen={modalStateArray[SearchModalType.PricePerPerson]}
+                modalType={SearchModalType.PricePerPerson}
+                onConfirm={() => {}}
+                onClose={handleModalToggle}
+            >
                 <SelectPricePerPerson data="123" />
             </FilterModal>
-            <FilterModal title="분위기" isOpen={false} onConfirm={() => {}}>
+            <FilterModal
+                title="분위기"
+                isOpen={modalStateArray[SearchModalType.Atmosphere]}
+                modalType={SearchModalType.Atmosphere}
+                onConfirm={() => {}}
+                onClose={handleModalToggle}
+            >
                 <SelectAtmosphere data="123" />
             </FilterModal>
-            <FilterModal title="좌석" isOpen={false} onConfirm={() => {}}>
+            <FilterModal
+                title="좌석"
+                isOpen={modalStateArray[SearchModalType.Seat]}
+                modalType={SearchModalType.Seat}
+                onConfirm={() => {}}
+                onClose={handleModalToggle}
+            >
                 <SelectSeat data="123" />
             </FilterModal>
 
@@ -55,9 +109,13 @@ function Search() {
                     <TopNaviBar pageName="검색하기" />
                     <SearchInput onClick={() => navigate('/search/keyword')} />
                     <SolidLine />
-                    <DatetimeSelector />
+                    <DatetimeSelector
+                        onClick={() => {
+                            handleModalToggle(SearchModalType.DatetimeSelector);
+                        }}
+                    />
                     <SolidLine />
-                    <FilterList />
+                    <FilterList onClickFilter={handleModalToggle} />
                     <DevideLine />
                 </div>
                 <div style={{ margin: '20px auto' }}>

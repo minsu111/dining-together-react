@@ -6,17 +6,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import Calendar from '../../../components/common/Calendar';
 import SolidLine from '../SolidLine';
-import Input from '../../../components/common/Input';
+// import Input from '../../../components/common/Input';
 import Button from '../../../components/common/Button';
+
+import { SearchModalType } from './Enum';
 
 type ModalProps = {
     visitDate: Date;
     isOpen: boolean;
+    modalType: SearchModalType;
     onConfirm: () => void;
+    onClose: (modalType: SearchModalType) => void;
 };
 
 const DatetimeSelectorModal: React.FC<ModalProps> = (props) => {
-    const [modalIsOpen, setIsOpen] = React.useState(props.isOpen);
+    const handleClose = () => {
+        props.onClose(props.modalType);
+    };
 
     const formattedDate = Intl.DateTimeFormat('ko', {
         dateStyle: 'full',
@@ -24,10 +30,8 @@ const DatetimeSelectorModal: React.FC<ModalProps> = (props) => {
 
     return (
         <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={() => {
-                setIsOpen(false);
-            }}
+            isOpen={props.isOpen}
+            onRequestClose={handleClose}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -51,7 +55,9 @@ const DatetimeSelectorModal: React.FC<ModalProps> = (props) => {
                         height: 30,
                         marginTop: 16,
                         marginRight: 16,
+                        cursor: 'pointer',
                     }}
+                    onClick={handleClose}
                 />
             </HeaderDiv>
             <Calendar />

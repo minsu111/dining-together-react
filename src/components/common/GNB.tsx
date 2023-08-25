@@ -1,26 +1,39 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faMagnifyingGlass, faCalendar, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link, useLocation } from 'react-router-dom';
+
 
 const GNBArea: React.FC = () => {
+    const location = useLocation();
+    const homeActive = location.pathname.includes('/home');
+    const searchActive = location.pathname.includes('/search');
+    const myListActive = location.pathname.includes('/reservationList');
+    const myPageActive = location.pathname.includes('/my');
+
     return (
         <GNBAreaSC>
             <ul>
-                <li>
-                    <FontAwesomeIcon icon={faHouse} />
+                <li className={`${homeActive ? 'select_on' : ''}`}>
+                    <Link to="/home">
+                        <FontAwesomeIcon icon={faHouse} />
+                    </Link>
                 </li>
-                <li>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                <li className={`${searchActive ? 'select_on' : ''}`}> 
+                    <Link to="/search">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    </Link>
                 </li>
-                <li>
-                    <FontAwesomeIcon icon={faCalendar} />
+                <li className={`${myListActive ? 'select_on' : ''}`}>
+                    <Link to="/reservationList">
+                        <FontAwesomeIcon icon={faCalendar} />
+                    </Link>
                 </li>
-                <li>
-                    <FontAwesomeIcon icon={faUser} />
+                <li className={`${myPageActive ? 'select_on' : ''}`}>
+                    <Link to="/my">
+                        <FontAwesomeIcon icon={faUser} />
+                    </Link>
                 </li>
             </ul>
         </GNBAreaSC>

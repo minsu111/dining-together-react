@@ -1,51 +1,52 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-import { setSelectedOption } from '../../app/store';
 
 type CheckBoxProps = {
-    disabled?: boolean;
-    checked?: boolean;
-    onChange?: (isChecked: boolean) => void;
-    singleCheck?: boolean;
+    selectedOption: string;
+    onOptionChange: (value: string) => void;
 };
 
-const CheckBox: React.FC<CheckBoxProps> = () => {
-    //@ts-ignore
-    const selectedOption = useSelector((state) => state.radio);
-    const dispatch = useDispatch();
-
-    const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(setSelectedOption(e.target.value));
-    };
-
+const CheckBox: React.FC<CheckBoxProps> = ({
+    selectedOption,
+    onOptionChange,
+}) => {
     return (
         <CheckBoxContainer>
             <CheckBoxLabel
-                htmlFor="input"
+                htmlFor="option1"
                 checked={selectedOption === 'option1'}
-                onClick={() => setSelectedOption('option1')}
+                onClick={() => {
+                    onOptionChange('option1');
+                }}
             >
                 <CheckBoxInput
                     type="radio"
+                    id="option1"
                     value="option1"
                     checked={selectedOption === 'option1'}
-                    onChange={handleOptionChange}
+                    onChange={() => {
+                        onOptionChange('option1');
+                    }}
                 />
                 <CheckBoxSpan checked={selectedOption === 'option1'}>
                     (일반회원) 회식장소 예약
                 </CheckBoxSpan>
             </CheckBoxLabel>
             <CheckBoxLabel
-                htmlFor="input"
+                htmlFor="option2"
                 checked={selectedOption === 'option2'}
-                onClick={() => setSelectedOption('option2')}
+                onClick={() => {
+                    onOptionChange('option2');
+                }}
             >
                 <CheckBoxInput
                     type="radio"
+                    id="option2"
                     value="option2"
                     checked={selectedOption === 'option2'}
-                    onChange={handleOptionChange}
+                    onChange={() => {
+                        onOptionChange('option2');
+                    }}
                 />
                 <CheckBoxSpan checked={selectedOption === 'option2'}>
                     (사장님) 회식장소 등록

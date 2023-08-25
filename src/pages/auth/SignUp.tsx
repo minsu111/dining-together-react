@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import LandscapeImg from '../../assets/landscape_photographer.svg';
 import Button from '../../components/common/Button';
-import CheckBox from '../../components/Auth/CheckBox';
+// import CheckBox from '../../components/Auth/CheckBox';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
 
@@ -37,7 +37,7 @@ const SignUp = () => {
                             alt="가입목적을 알려주세요"
                             style={{ width: '54%' }}
                         />
-                        <CheckBox />
+                        {/* <CheckBox /> */}
                         <Button
                             text="다음"
                             onClick={handleNextClick}

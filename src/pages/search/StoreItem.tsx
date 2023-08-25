@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type StoreInfoProps = {
@@ -10,8 +11,15 @@ type StoreInfoProps = {
 };
 
 const StoreItem: React.FC<StoreInfoProps> = (props) => {
+    const navigate = useNavigate();
+
+    const isoDateString = new Date().toISOString();
+    const yearMonthDay = isoDateString.split('T')[0];
+
     return (
-        <Div>
+        <Div
+            onClick={() => navigate(`/store/test?selectedDate=${yearMonthDay}`)}
+        >
             <div
                 style={{
                     width: 80,

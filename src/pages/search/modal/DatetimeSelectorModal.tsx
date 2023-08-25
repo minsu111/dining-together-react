@@ -1,56 +1,74 @@
-import React from "react";
+import React from 'react';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import Modal from "react-modal";  // 공식문서: https://reactcommunity.org/react-modal/
+import Modal from 'react-modal'; // 공식문서: https://reactcommunity.org/react-modal/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import Calendar from "../../../components/common/Calendar";
-import SolidLine from "../SolidLine";
-import Input from "../../../components/common/Input";
+import Calendar from '../../../components/common/Calendar';
+import SolidLine from '../SolidLine';
+import Input from '../../../components/common/Input';
 import Button from '../../../components/common/Button';
 
-const DatetimeSelectorModal: React.FC<{visitDate:Date, visitorCount:number}> = ({visitDate, visitorCount}) => {
+type ModalProps = {
+    visitDate: Date;
+    isOpen: boolean;
+    onConfirm: () => void;
+};
 
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+const DatetimeSelectorModal: React.FC<ModalProps> = (props) => {
+    const [modalIsOpen, setIsOpen] = React.useState(props.isOpen);
 
-    const formattedDate = Intl.DateTimeFormat("ko", { dateStyle: 'full' }).format(visitDate);
+    const formattedDate = Intl.DateTimeFormat('ko', {
+        dateStyle: 'full',
+    }).format(props.visitDate);
 
     return (
-      <Modal 
-        isOpen={modalIsOpen}
-        onRequestClose={() => { setIsOpen(false); }}
-        style={{
-            overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            content: {
-            width: '390px',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            inset: 0,
-            },
-      }}>
-        <HeaderDiv>
-            <FontAwesomeIcon icon={faXmark} style={{width: 30, height: 30}}/>
-        </HeaderDiv>
-        <Calendar/>
-        <SolidLine/>
-        <div style={{width:'100%', marginTop:30}}>
-            <Text>{formattedDate}</Text>
-        </div>
+        <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={() => {
+                setIsOpen(false);
+            }}
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                content: {
+                    width: '390px',
+                    height: '100%',
+                    padding: '0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    inset: 0,
+                },
+            }}
+        >
+            <HeaderDiv>
+                <FontAwesomeIcon
+                    icon={faXmark}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        marginTop: 16,
+                        marginRight: 16,
+                    }}
+                />
+            </HeaderDiv>
+            <Calendar />
+            <SolidLine />
+            <div style={{ width: '100%', marginTop: 30 }}>
+                <Text>{formattedDate}</Text>
+                {/* </div>
         <div style={{marginTop:30}}>
-            <Input label="인원" inputType="number" placeholder={`${visitorCount}`}/>
-        </div>
-        <FooterDiv>
-           <Button text="검색" onClick={() => {}}/>
-        </FooterDiv>
-            
-      </Modal>
+            <Input label="인원" inputType="number" placeholder={`${visitorCount}`}/> */}
+            </div>
+            <FooterDiv>
+                <Button text="확인" onClick={props.onConfirm} />
+            </FooterDiv>
+        </Modal>
     );
 };
-  
+
 export default DatetimeSelectorModal;
 
 const HeaderDiv = styled.div`
@@ -65,6 +83,6 @@ const FooterDiv = styled.div`
 `;
 
 const Text = styled.span`
-    color: #FFB100;
+    color: #ffb100;
     margin-bottom: 20px;
 `;

@@ -23,13 +23,13 @@ import SelectSeat from './modal/SelectSeat';
 function Search() {
     const navigate = useNavigate();
 
-    const goTo = (url: string) => {
-        navigate(url);
-    };
-
     return (
         <section>
-            <DatetimeSelectorModal visitDate={new Date()} visitorCount={10} />
+            <DatetimeSelectorModal
+                visitDate={new Date()}
+                isOpen
+                onConfirm={() => {}}
+            />
 
             <FilterModal title="필터" isOpen={false} onConfirm={() => {}}>
                 <TotalFilter data="123" />
@@ -46,14 +46,14 @@ function Search() {
             <FilterModal title="분위기" isOpen={false} onConfirm={() => {}}>
                 <SelectAtmosphere data="123" />
             </FilterModal>
-            <FilterModal title="좌석" isOpen onConfirm={() => {}}>
+            <FilterModal title="좌석" isOpen={false} onConfirm={() => {}}>
                 <SelectSeat data="123" />
             </FilterModal>
 
             <Div>
                 <div>
                     <TopNaviBar pageName="검색하기" />
-                    <SearchInput onClick={() => goTo('/search/keyword')} />
+                    <SearchInput onClick={() => navigate('/search/keyword')} />
                     <SolidLine />
                     <DatetimeSelector />
                     <SolidLine />
@@ -61,7 +61,10 @@ function Search() {
                     <DevideLine />
                 </div>
                 <div style={{ margin: '20px auto' }}>
-                    <Button text="검색" onClick={() => goTo('/search/list')} />
+                    <Button
+                        text="검색"
+                        onClick={() => navigate('/search/list')}
+                    />
                 </div>
             </Div>
 

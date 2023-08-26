@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-const TagButton: React.FC<{ name: string }> = ({ name }) => {
-    const [isSelected, setSelected] = useState(false);
+type TagButtonProps = {
+    name: string;
+    onClick: () => void;
+    selected: boolean | string[];
+};
+
+const TagButton: React.FC<TagButtonProps> = ({ name, onClick, selected }) => {
+    const [checkedButton, setCheckedButton] = useState(false);
+
     const toggle = () => {
-        console.log(name, isSelected);
-        setSelected(!isSelected);
+        setCheckedButton(!checkedButton);
     };
 
     return (
-        <TagButtonSC isSelected={isSelected} onClick={toggle}>
+        <TagButtonSC
+            checkedButton={checkedButton}
+            onClick={() => {
+                toggle();
+                onClick();
+            }}
+        >
             {name}
         </TagButtonSC>
     );
@@ -18,7 +30,7 @@ const TagButton: React.FC<{ name: string }> = ({ name }) => {
 export default TagButton;
 
 type ButtonProps = {
-    isSelected: boolean;
+    checkedButton: boolean;
 };
 
 const TagButtonSC = styled.button<ButtonProps>`
@@ -29,7 +41,8 @@ const TagButtonSC = styled.button<ButtonProps>`
     border-radius: 7px;
     margin: 0 15px 15px 0;
     cursor: pointer;
-    background-color: ${(props) => (props.isSelected ? '#ffb100' : '#f1f1f1')};
-    color: ${(props) => (props.isSelected ? '#fff' : '#000')};
+    background-color: ${(props) =>
+        props.checkedButton ? '#ffb100' : '#f1f1f1'};
+    color: ${(props) => (props.checkedButton ? '#fff' : '#000')};
     }
 `;

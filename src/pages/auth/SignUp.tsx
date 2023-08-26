@@ -7,10 +7,13 @@ import Button from '../../components/common/Button';
 import CheckBox from '../../components/Auth/CheckBox';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
+import ExtraInfo from '../../components/Auth/ExtraInfo';
+import axiosRequest from '../../api/api';
 
 const SignUpTest = () => {
     // 회원 유형 선택 상태 관리
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
+    const [showExtraInfo, setShowExtraInfo] = useState<boolean>(false);
     const [isNextBtnEnabled, setIsNextBtnEnabled] = useState(false);
     const [isStartBtnEnabled, setIsStartBtnEnabled] = useState(false);
     // const [checkValid, setCheckValid] = useState({})
@@ -23,9 +26,9 @@ const SignUpTest = () => {
         password: '',
     });
 
-    const handleStartBtn = () => {
-        setIsStartBtnEnabled(true);
-    };
+    // const handleStartBtn = () => {
+    //     setIsStartBtnEnabled(true);
+    // };
 
     const setSignUpForm = (key: string, value: string) => {
         setSignUpData((prev) => ({ ...prev, [key]: value }));
@@ -42,16 +45,36 @@ const SignUpTest = () => {
 
     const navigate = useNavigate();
     const goToWelcome = () => {
-        console.log(
-            '🚀 ~ file: SignUp.tsx:27 ~ setSignUpForm ~ setSignUpData:',
-            signUpData,
-        );
-
         navigate('/join/welcome');
     };
+
+    const handleStartClick = async () => {
+        if (signUpData.userType === '2') {
+            try {
+                const result = await axiosRequest('POST', '/user/signup', {
+                    signUpData,
+                });
+                // 로컬스토리지에 토큰 저장
+                if (result.data.token) {
+                    localStorage.setItem('jwt_token', result.data.token);
+                    goToWelcome();
+                }
+                console.log(
+                    '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
+                    result,
+                );
+            } catch (error: any) {
+                alert('회원가입 실패');
+            }
+        } else {
+            setShowSignUpForm(false);
+            setShowExtraInfo(true);
+        }
+    };
+
     return (
         <div>
-            {!showSignUpForm && (
+            {!showSignUpForm && !showExtraInfo && (
                 <Section>
                     <TopNaviBarBack pageName=" " prevPath="/login" />
                     <Title>
@@ -88,12 +111,13 @@ const SignUpTest = () => {
                         <Button
                             text="시작하기"
                             // type="submit"
-                            onClick={goToWelcome}
+                            onClick={handleStartClick}
                             disabled={false}
                         />
                     </Wrapper>
                 </Section>
             )}
+            {showExtraInfo && <ExtraInfo signUpData={signUpData} />}
         </div>
     );
 };

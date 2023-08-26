@@ -10,24 +10,18 @@ const authInstance = axios.create({
     timeout: 3000,
 });
 
-// Contetnt-type 헤더 요청
-// const contentInstance = () => {
-//     return axios.create({
-//         baseURL: REACT_APP_BASE_URL,
-//         headers: {
-//             'Content-Type': 'multipart/form-data',
-//         },
-//         timeout: 3000,
-//     });
-// };
-
 authInstance.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('jwt_token');
         const result = config;
         if (token) {
-            result.headers.common.Authorization = `Bearer ${token}`;
+            result.headers.Authorization = `Bearer ${token}`;
         }
+        // multi 타입 헤더 요청
+        if (result.data.dataType === 'multi') {
+            result.headers['Content-Type'] = 'multipart/form-data';
+        }
+
         return result;
     },
     (error) => {

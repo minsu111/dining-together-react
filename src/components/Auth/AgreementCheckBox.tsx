@@ -13,11 +13,7 @@ const AgreementCheckBox: React.FC<CheckBoxProps> = () => {
     const [isPrivacyChecked, setIsPrivacyChecked] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isTermsChecked && isPrivacyChecked) {
-            setIsAllChecked(true);
-        } else {
-            setIsAllChecked(false);
-        }
+        setIsAllChecked(isTermsChecked && isPrivacyChecked);
     }, [isTermsChecked, isPrivacyChecked]);
 
     const handleAllChange = () => {

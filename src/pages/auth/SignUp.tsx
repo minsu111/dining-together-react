@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -11,14 +11,30 @@ import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
 const SignUpTest = () => {
     // 회원 유형 선택 상태 관리
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = useState('');
-    const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+    const [isNextBtnEnabled, setIsNextBtnEnabled] = useState(false);
+    const [isStartBtnEnabled, setIsStartBtnEnabled] = useState(false);
+    // const [checkValid, setCheckValid] = useState({})
+    // 회원가입 폼 관리
+    const [signUpData, setSignUpData] = useState({
+        userType: '',
+        email: '',
+        name: '',
+        phoneNum: '',
+        password: '',
+    });
+
+    const handleStartBtn = () => {
+        setIsStartBtnEnabled(true);
+    };
+
+    const setSignUpForm = (key: string, value: string) => {
+        setSignUpData((prev) => ({ ...prev, [key]: value }));
+    };
 
     const handleOptionChange = (option: any) => {
-        setSelectedOption(option);
-        setIsNextButtonEnabled(true);
+        setSignUpForm('userType', option);
+        setIsNextBtnEnabled(true);
     };
-    console.log(selectedOption);
 
     const handleNextClick = () => {
         setShowSignUpForm(true);
@@ -26,6 +42,11 @@ const SignUpTest = () => {
 
     const navigate = useNavigate();
     const goToWelcome = () => {
+        console.log(
+            '🚀 ~ file: SignUp.tsx:27 ~ setSignUpForm ~ setSignUpData:',
+            signUpData,
+        );
+
         navigate('/join/welcome');
     };
     return (
@@ -44,27 +65,31 @@ const SignUpTest = () => {
                             style={{ width: '54%' }}
                         />
                         <CheckBox
-                            selectedOption={selectedOption}
+                            userType={signUpData.userType}
                             onOptionChange={handleOptionChange}
                         />
                         <Button
                             text="다음"
                             onClick={handleNextClick}
-                            disabled={!isNextButtonEnabled}
+                            disabled={!isNextBtnEnabled}
                         />
                     </Wrapper>
                 </Section>
             )}
-
             {showSignUpForm && (
                 <Section>
-                    <SignUpForm />
+                    <SignUpForm
+                        signUpData={signUpData}
+                        setSignUpForm={setSignUpForm}
+                        // handleStartBtn={handleStartBtn}
+                    />
                     <AgreementCheckBox />
                     <Wrapper>
                         <Button
                             text="시작하기"
                             // type="submit"
                             onClick={goToWelcome}
+                            disabled={false}
                         />
                     </Wrapper>
                 </Section>

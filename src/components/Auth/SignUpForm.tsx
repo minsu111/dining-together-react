@@ -3,49 +3,76 @@ import styled from 'styled-components';
 import Input from '../common/Input';
 import TopNaviBarBack from '../common/TopNaviBarBack';
 import { emailRegEx, passwordRegEx } from '../../utils/utils';
+import axiosRequest from '../../api/api';
 
-function SignUpForm() {
-    const [emailValid, setEmailValid] = useState(true);
-    const [pwValid, setPwValid] = useState(false);
+type SignUpFormProps = {
+    setSignUpForm: (key: string, value: string) => void;
+    signUpData: { email: string; password: string };
+    // handleStartBtn: () => void;
+};
+
+const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
     const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
+    const [name, setName] = useState('');
+    const [phoneNum, setPhoneNum] = useState('');
+
+    const [emailValid, setEmailValid] = useState(true);
+    const [pwValid, setPwValid] = useState(false);
     const [pwConfirm, setPwConfirm] = useState('');
     const [pwMatch, setPwMatch] = useState(true);
+    const [isDuplicated, setIsDuplicated] = useState(true);
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
-        if (emailRegEx.test(e.target.value)) {
-            console.log(
-                '🚀 ~ file: SignUpForm.tsx:14 ~ handleEmail ~ e.target.value:',
-                e.target.value,
-            );
-            setEmailValid(true);
-        } else {
-            setEmailValid(false);
-        }
-        console.dir(e.target.value);
+        setEmailValid(emailRegEx.test(e.target.value));
     };
 
-    const checkDuplicates = () => {};
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    };
+    const handlePhoneNum = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPhoneNum(e.target.value);
+    };
 
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPw(e.target.value);
-        if (passwordRegEx.test(e.target.value)) {
-            setPwValid(true);
-        } else {
-            setPwValid(false);
-        }
+        setPwValid(passwordRegEx.test(e.target.value));
     };
 
     const handlePwConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newPasswordConfirm = e.target.value;
         setPwConfirm(newPasswordConfirm);
-
-        if (newPasswordConfirm === pw) {
-            setPwMatch(true);
-        } else {
-            setPwMatch(false);
+        setPwMatch(newPasswordConfirm === pw);
+    };
+    // 이메일 중복 체크
+    const checkDuplication = async () => {
+        try {
+            const result = await axiosRequest(
+                'GET',
+                `/user/check?email=${email}`,
+                {},
+            );
+            setIsDuplicated(result.isDuplicated);
+            console.log(
+                '🚀 ~ file: SignUpForm.tsx:55 ~ checkDuplication ~ result:',
+                result,
+            );
+        } catch (error: any) {
+            console.log(
+                '🚀 ~ file: SignUpForm.tsx:56 ~ checkDuplication ~ error:',
+                error,
+            );
         }
+    };
+
+    const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('🚀 ~ file: SignUpForm.tsx:28 ~ handleBlur ~ e:', e);
+
+        setSignUpForm('email', email);
+        setSignUpForm('password', pw);
+        setSignUpForm('name', name);
+        setSignUpForm('phoneNum', phoneNum);
     };
 
     return (
@@ -58,14 +85,28 @@ function SignUpForm() {
                         label="이메일(아이디)*"
                         placeholder="이메일을 입력해주세요."
                         width="350px"
-                        onBlur={checkDuplicates}
                         onChange={handleEmail}
+                        onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            handleBlur(e);
+                            checkDuplication();
+                        }}
                     />
 
                     {!emailValid && email.length > 0 && (
-                        <AlertMessage>
+                        <AlertMessageRed>
                             이메일 형식에 알맞게 입력해주세요.
-                        </AlertMessage>
+                        </AlertMessageRed>
+                    )}
+
+                    {!isDuplicated && emailValid && (
+                        <AlertMessageGreen>
+                            사용 가능한 이메일입니다.
+                        </AlertMessageGreen>
+                    )}
+                    {isDuplicated && emailValid && (
+                        <AlertMessageRed>
+                            사용 불가한 이메일입니다.
+                        </AlertMessageRed>
                     )}
                 </InputWrapper>
                 <InputWrapper>
@@ -74,6 +115,8 @@ function SignUpForm() {
                         label="이름*"
                         placeholder="이름 입력해주세요."
                         width="350px"
+                        onChange={handleName}
+                        onBlur={handleBlur}
                     />
                 </InputWrapper>
                 <InputWrapper>
@@ -82,6 +125,8 @@ function SignUpForm() {
                         label="휴대폰 번호*"
                         placeholder="숫자만 입력해주세요."
                         width="350px"
+                        onChange={handlePhoneNum}
+                        onBlur={handleBlur}
                     />
                 </InputWrapper>
                 <InputWrapper>
@@ -91,6 +136,7 @@ function SignUpForm() {
                         placeholder="비밀번호를 입력해주세요."
                         width="350px"
                         onChange={handlePassword}
+                        onBlur={handleBlur}
                     />
                     <Input
                         inputType="password"
@@ -99,20 +145,20 @@ function SignUpForm() {
                         onChange={handlePwConfirm}
                     />
                     {!pwValid && pw.length > 0 && (
-                        <AlertMessage>
+                        <AlertMessageRed>
                             영문/숫자/특수기호 혼합 8~15자로 입력해주세요.
-                        </AlertMessage>
+                        </AlertMessageRed>
                     )}
                     {!pwMatch && pwConfirm.length > 0 && (
-                        <AlertMessage>
+                        <AlertMessageRed>
                             비밀번호가 일치하지 않습니다.
-                        </AlertMessage>
+                        </AlertMessageRed>
                     )}
                 </InputWrapper>
             </Section>
         </div>
     );
-}
+};
 
 export default SignUpForm;
 
@@ -126,8 +172,14 @@ const InputWrapper = styled.div`
     padding: 20px;
 `;
 
-const AlertMessage = styled.div`
+const AlertMessageRed = styled.div`
     font-size: 12px;
     color: red;
+    padding: 8px 0 0 6px;
+`;
+
+const AlertMessageGreen = styled.div`
+    font-size: 12px;
+    color: green;
     padding: 8px 0 0 6px;
 `;

@@ -1,63 +1,49 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FoodType } from './enum/Enum';
 
-const SelectFoodType: React.FC<{ data: string }> = ({ data }) => {
-    enum FoodType {
-        한식,
-        중식,
-        일식,
-        퓨전음식,
-        기타,
-    }
+/**
+ * 음식 유형 필터 Modal
+ */
+function SelectFoodType() {
+    const checkedListData: Array<FoodType> = new Array<FoodType>(); // 원래 이 컴포넌트의 props로 받아와야하는 데이터
+    checkedListData.push(FoodType.Asian); // 테스트용
 
-    const [checkedArray, setCheckArray] = useState([
-        false,
-        false,
-        false,
-        false,
-        false,
-    ]);
+    const foodTypes = Object.values(FoodType);
+
+    const [checkedList, setCheckedList] =
+        useState<Array<FoodType>>(checkedListData);
+
+    // 체크 상태가 바뀐 음식유형을 checkedList에 넣거나 뺀다
+    const handleCheck = (checkFoodType: FoodType) => {
+        if (checkedList.includes(checkFoodType)) {
+            setCheckedList(
+                checkedList.filter((item) => item !== checkFoodType),
+            );
+        } else {
+            setCheckedList([...checkedList, checkFoodType]);
+        }
+    };
+
+    // checkedList가 업데이트될 때마다 실행
+    // React.useEffect(() => {
+    //     checkedList.forEach((item) => {
+    //         console.log(`현재선택된타입 / ${item}`);
+    //     });
+    // }, [checkedList]);
 
     return (
         <Div>
-            <CheckBoxLabel
-                htmlFor="Korean"
-                isChecked={checkedArray[FoodType.한식]}
-            >
-                <input type="checkbox" id="Korean" />
-                한식
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="Chinese"
-                isChecked={checkedArray[FoodType.중식]}
-            >
-                <input type="checkbox" id="Chinese" />
-                중식
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="Japanese"
-                isChecked={checkedArray[FoodType.일식]}
-            >
-                <input type="checkbox" id="Japanese" />
-                일식
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="Fusion"
-                isChecked={checkedArray[FoodType.퓨전음식]}
-            >
-                <input type="checkbox" id="Fusion" />
-                퓨전 음식
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="etc"
-                isChecked={checkedArray[FoodType.기타]}
-            >
-                <input type="checkbox" id="etc" />
-                기타
-            </CheckBoxLabel>
+            {foodTypes.map((type) => (
+                <CheckBoxLabel
+                    checkState={checkedList.includes(type)}
+                    foodType={type}
+                    onChange={handleCheck}
+                />
+            ))}
         </Div>
     );
-};
+}
 
 export default SelectFoodType;
 
@@ -71,18 +57,42 @@ const Div = styled.div`
     gap: 40px;
 `;
 
-type InputProps = {
-    isChecked: boolean;
+type CheckBoxProps = {
+    checkState: boolean;
+    foodType: FoodType;
+    onChange: (foodType: FoodType) => void;
 };
-const CheckBoxLabel = styled.label<InputProps>`
+function CheckBoxLabel({ checkState, foodType, onChange }: CheckBoxProps) {
+    return (
+        <CheckBoxLabelSC htmlFor={foodType}>
+            <input
+                type="checkbox"
+                id={foodType}
+                checked={checkState}
+                onChange={() => {
+                    onChange(foodType);
+                }}
+                // onClick={(e) => {
+                //     console.log(
+                //         `${checkState} ${foodType} ${e.currentTarget.checked}`,
+                //     );
+                // }}
+            />
+            {foodType}
+        </CheckBoxLabelSC>
+    );
+}
+
+const CheckBoxLabelSC = styled.label`
     font-size: 18px;
     display: inline-flex;
+    align-items: center;
     gap: 10px;
 
     input[type='checkbox'] {
         width: 18px;
         height: 18px;
-        accent-color: ${(props) => (props.isChecked ? 'yellow' : '#ffb100')};
+        accent-color: #ffb100;
         cursor: pointer;
     }
 `;

@@ -20,7 +20,7 @@ import SelectPricePerPerson from './modal/SelectPricePerPerson';
 import SelectAtmosphere from './modal/SelectAtmosphere';
 import SelectSeat from './modal/SelectSeat';
 
-import { SearchModalType } from './modal/Enum';
+import { FoodType, SearchModalType } from './modal/enum/Enum';
 
 function Search() {
     const navigate = useNavigate();
@@ -74,7 +74,7 @@ function Search() {
                 onConfirm={() => {}}
                 onClose={handleModalToggle}
             >
-                <SelectFoodType data="123" />
+                <SelectFoodType />
             </FilterModal>
             <FilterModal
                 title="인당 가격"

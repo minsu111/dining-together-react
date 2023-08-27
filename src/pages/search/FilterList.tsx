@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TotalFilterButton from './TotalFilterButton';
 import FilterButton from './FilterButton';
 
-import { SearchModalType } from './modal/Enum';
+import { SearchModalType } from './modal/enum/Enum';
 
 type FilterListProps = {
     onClickFilter: (modalType: SearchModalType) => void;

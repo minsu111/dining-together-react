@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import FilterButtonInModal from './FilterButtonInModal';
 
-import { FilterType } from './Enum';
+import { FilterType } from './enum/Enum';
 
 const TotalFilter: React.FC<{ data: string }> = ({ data }) => {
     return (

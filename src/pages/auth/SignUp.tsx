@@ -15,7 +15,10 @@ const SignUpTest = () => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
     const [showExtraInfo, setShowExtraInfo] = useState<boolean>(false);
     const [isNextBtnEnabled, setIsNextBtnEnabled] = useState(false);
-    const [isStartBtnEnabled, setIsStartBtnEnabled] = useState(false);
+    const [checkState, setCheckState] = useState({
+        signUpForm: false,
+        agreement: false,
+    });
     // const [checkValid, setCheckValid] = useState({})
     // 회원가입 폼 관리
     const [signUpData, setSignUpData] = useState({
@@ -26,9 +29,9 @@ const SignUpTest = () => {
         password: '',
     });
 
-    // const handleStartBtn = () => {
-    //     setIsStartBtnEnabled(true);
-    // };
+    const handleStartBtn = (key: string, value: boolean) => {
+        setCheckState((prev) => ({ ...prev, [key]: value }));
+    };
 
     const setSignUpForm = (key: string, value: string) => {
         setSignUpData((prev) => ({ ...prev, [key]: value }));
@@ -102,17 +105,19 @@ const SignUpTest = () => {
             {showSignUpForm && (
                 <Section>
                     <SignUpForm
-                        signUpData={signUpData}
+                        // signUpData={signUpData}
                         setSignUpForm={setSignUpForm}
-                        // handleStartBtn={handleStartBtn}
+                        handleStartBtn={handleStartBtn}
                     />
-                    <AgreementCheckBox />
+                    <AgreementCheckBox handleStartBtn={handleStartBtn} />
                     <Wrapper>
                         <Button
                             text="시작하기"
                             // type="submit"
                             onClick={handleStartClick}
-                            disabled={false}
+                            disabled={
+                                !checkState.signUpForm || !checkState.agreement
+                            }
                         />
                     </Wrapper>
                 </Section>

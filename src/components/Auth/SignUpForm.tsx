@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Input from '../common/Input';
 import TopNaviBarBack from '../common/TopNaviBarBack';
@@ -7,11 +7,13 @@ import axiosRequest from '../../api/api';
 
 type SignUpFormProps = {
     setSignUpForm: (key: string, value: string) => void;
-    signUpData: { email: string; password: string };
-    // handleStartBtn: () => void;
+    handleStartBtn: (key: string, value: boolean) => void;
+    // signUpData: { email: string; password: string };
+    // setIsStartBtnEnabled: () => void;
+    // isStartBtnEnabled: boolean;
 };
 
-const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
+const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
     const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
@@ -23,6 +25,8 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
     const [pwMatch, setPwMatch] = useState(true);
     // const [isDuplicated, setIsDuplicated] = useState(true);
     const [stateDuplicate, setStateDuplicate] = useState(0);
+
+    useEffect(() => {}, [emailValid, pwValid, pwMatch, name, phoneNum]);
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -46,6 +50,42 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
         setPwConfirm(newPasswordConfirm);
         setPwMatch(newPasswordConfirm === pw);
     };
+
+    const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const curValue = e.target.value;
+        switch (e.target.name) {
+            case 'email':
+                setEmail(curValue);
+                setEmailValid(emailRegEx.test(curValue));
+                break;
+            case 'userNmae':
+                setName(curValue);
+                break;
+            case 'phoneNum':
+                setPhoneNum(curValue);
+                break;
+            case 'passwordInput':
+                setPw(curValue);
+                setPwValid(passwordRegEx.test(curValue));
+                break;
+            case 'passwordConfirm':
+                setPwConfirm(curValue);
+                setPwMatch(curValue === pw);
+                break;
+            default:
+                break;
+        }
+        console.log(pwMatch);
+
+        const validState =
+            emailValid &&
+            pwValid &&
+            pwMatch &&
+            name.length > 0 &&
+            phoneNum.length > 0;
+        handleStartBtn('signUpForm', validState);
+    };
+
     // 이메일 중복 체크
     const checkDuplication = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setStateDuplicate(0);
@@ -96,7 +136,9 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
                         label="이메일(아이디)*"
                         placeholder="이메일을 입력해주세요."
                         width="350px"
-                        onChange={handleEmail}
+                        name="email"
+                        // onChange={handleEmail}
+                        onChange={handleChangeEvent}
                         onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
                             checkDuplication(e);
                             handleBlur(e);
@@ -124,37 +166,45 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
                 <InputWrapper>
                     <Input
                         inputType="text"
+                        name="userName"
                         label="이름*"
                         placeholder="이름 입력해주세요."
                         width="350px"
-                        onChange={handleName}
+                        // onChange={handleName}
+                        onChange={handleChangeEvent}
                         onBlur={handleBlur}
                     />
                 </InputWrapper>
                 <InputWrapper>
                     <Input
                         inputType="number"
+                        name="phoneNum"
                         label="휴대폰 번호*"
                         placeholder="숫자만 입력해주세요."
                         width="350px"
-                        onChange={handlePhoneNum}
+                        // onChange={handlePhoneNum}
+                        onChange={handleChangeEvent}
                         onBlur={handleBlur}
                     />
                 </InputWrapper>
                 <InputWrapper>
                     <Input
                         inputType="password"
+                        name="passwordInput"
                         label="비밀번호*"
                         placeholder="비밀번호를 입력해주세요."
                         width="350px"
-                        onChange={handlePassword}
+                        // onChange={handlePassword}
+                        onChange={handleChangeEvent}
                         onBlur={handleBlur}
                     />
                     <Input
                         inputType="password"
+                        name="passwordConfirm"
                         placeholder="비밀번호를 다시 한 번 입력해주세요."
                         width="350px"
-                        onChange={handlePwConfirm}
+                        onChange={handleChangeEvent}
+                        // onChange={handlePwConfirm}
                     />
                     {!pwValid && pw.length > 0 && (
                         <AlertMessageRed>

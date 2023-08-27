@@ -8,9 +8,6 @@ import axiosRequest from '../../api/api';
 type SignUpFormProps = {
     setSignUpForm: (key: string, value: string) => void;
     handleStartBtn: (key: string, value: boolean) => void;
-    // signUpData: { email: string; password: string };
-    // setIsStartBtnEnabled: () => void;
-    // isStartBtnEnabled: boolean;
 };
 
 const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
@@ -23,26 +20,25 @@ const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
     const [pwValid, setPwValid] = useState(false);
     const [pwConfirm, setPwConfirm] = useState('');
     const [pwMatch, setPwMatch] = useState(true);
-    // const [isDuplicated, setIsDuplicated] = useState(true);
     const [stateDuplicate, setStateDuplicate] = useState(0);
 
     const handleStartBtn111 = useCallback(
         (validState: boolean) => {
-            // handleStartBtn의 내용은 여기에 있습니다.
             handleStartBtn('signUpForm', validState);
         },
         [handleStartBtn],
-    ); // 빈 의존성 배열로 메모이제이션
+    );
+
+    const validState =
+        emailValid &&
+        pwValid &&
+        pwMatch &&
+        name.length > 0 &&
+        phoneNum.length > 0;
 
     useEffect(() => {
-        const validState =
-            emailValid &&
-            pwValid &&
-            pwMatch &&
-            name.length > 0 &&
-            phoneNum.length > 0;
         handleStartBtn111(validState);
-    }, [emailValid, pwValid, pwMatch, name, phoneNum, handleStartBtn111]);
+    }, [validState, handleStartBtn111]);
 
     const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
         const curValue = e.target.value;

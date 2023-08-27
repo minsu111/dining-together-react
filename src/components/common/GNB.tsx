@@ -1,9 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faMagnifyingGlass, faCalendar, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+    faHouse,
+    faMagnifyingGlass,
+    faCalendar,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation } from 'react-router-dom';
-
 
 const GNBArea: React.FC = () => {
     const location = useLocation();
@@ -20,7 +24,7 @@ const GNBArea: React.FC = () => {
                         <FontAwesomeIcon icon={faHouse} />
                     </Link>
                 </li>
-                <li className={`${searchActive ? 'select_on' : ''}`}> 
+                <li className={`${searchActive ? 'select_on' : ''}`}>
                     <Link to="/search">
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </Link>
@@ -43,17 +47,20 @@ const GNBArea: React.FC = () => {
 export default GNBArea;
 
 const GNBAreaSC = styled.div`
-    width: 100%;
+    width: 390px;
     height: 65px;
     position: fixed;
-    left: 0;
     bottom: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #fff;
 
     ul {
         width: 100%;
         height: 100%;
         display: flex;
-        border-top: 2px solid #D9D9D9;
+        border-top: 2px solid #d9d9d9;
     }
 
     li {
@@ -68,6 +75,6 @@ const GNBAreaSC = styled.div`
     }
 
     li.select_on {
-        color: #FFB100;
+        color: #ffb100;
     }
 `;

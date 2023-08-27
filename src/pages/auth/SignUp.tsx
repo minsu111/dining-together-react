@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -28,11 +28,10 @@ const SignUpTest = () => {
         phoneNum: '',
         password: '',
     });
-
-    const handleStartBtn = (key: string, value: boolean) => {
+    const handleStartBtn = useCallback((key: string, value: boolean) => {
         setCheckState((prev) => ({ ...prev, [key]: value }));
-        console.log('setCheckState', checkState);
-    };
+        // console.log('setCheckState', checkState);
+    }, []);
 
     const setSignUpForm = (key: string, value: string) => {
         setSignUpData((prev) => ({ ...prev, [key]: value }));
@@ -59,6 +58,11 @@ const SignUpTest = () => {
                 email,
                 password,
             });
+            console.log(
+                '🚀 ~ file: SignUp.tsx:62 ~ loginConfirm ~ result:',
+                result,
+            );
+
             // 로컬스토리지에 토큰 저장
             const loginToken = result.token;
             localStorage.setItem('jwt_token', loginToken);
@@ -90,6 +94,7 @@ const SignUpTest = () => {
                 );
             } catch (error: any) {
                 alert('회원가입 실패');
+                localStorage.removeItem('userType');
             }
         } else {
             setShowSignUpForm(false);

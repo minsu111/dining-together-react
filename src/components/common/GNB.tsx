@@ -7,6 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const GNBArea: React.FC = () => {
     const location = useLocation();
+    
     const homeActive = location.pathname.includes('/home');
     const searchActive = location.pathname.includes('/search');
     const myListActive = location.pathname.includes('/reservationList');
@@ -48,6 +49,7 @@ const GNBAreaSC = styled.div`
     position: fixed;
     left: 0;
     bottom: 0;
+    background-color: #fff;
 
     ul {
         width: 100%;

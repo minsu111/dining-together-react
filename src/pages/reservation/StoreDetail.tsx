@@ -1,76 +1,122 @@
 import React from 'react';
-import Button from '../../components/common/Button';
 import styled from 'styled-components';
+import Button from '../../components/common/Button';
 import DevideLine from '../../components/common/DevideLine';
+import TopNaviBarBack from '../../components/common/TopNaviBarBack';
+import BigImageSample from '../../assets/ImageSampleB.svg'
 
 function StoreDetail() {
     return (
         <Section>
-            음식 유형
-            <Heading>가게명</Heading>
-
+            <TopNaviBarBack pageName='' prevPath='' />
+            <StoreImg />
+            <Heading>
+                <SubCategory>음식 유형</SubCategory>
+                가게명
+            </Heading>
             <Content>
-            가게 소개 #분위기 #태그
+                가게 소개
+                #분위기 #태그
             </Content>
 
             <DevideLine />
             
             <Heading>상세정보</Heading>
             <Content>
-            <table>
-                <tr>
-                    <td>전화번호</td>
-                    <td>000</td>
-                </tr>
-                <tr>
-                    <td>운영시간</td>
-                    <td>00 : 00 ~ 00 : 00</td>
-                </tr>
-                <tr>
-                    <td>휴무일</td>
-                    <td>매주 일요일</td>
-                </tr>
-                <tr>
-                    <td>수용 인원</td>
-                    <td>50명</td>
-                </tr>
-                <tr>
-                    <td>룸 유무</td>
-                    <td>있음</td>
-                </tr>
-                <tr>
-                    <td>인당 금액</td>
-                    <td>10,000</td>
-                </tr>
-                <tr>
-                    <td>주차장</td>
-                    <td>가능</td>
-                </tr>
-            </table>
+                <table>
+                    <tr>
+                        <td>전화번호</td>
+                        <td>000</td>
+                    </tr>
+                    <tr>
+                        <td>운영시간</td>
+                        <td>00 : 00 ~ 00 : 00</td>
+                    </tr>
+                    <tr>
+                        <td>휴무일</td>
+                        <td>매주 일요일</td>
+                    </tr>
+                    <tr>
+                        <td>수용 인원</td>
+                        <td>50명</td>
+                    </tr>
+                    <tr>
+                        <td>룸 유무</td>
+                        <td>있음</td>
+                    </tr>
+                    <tr>
+                        <td>인당 금액</td>
+                        <td>10,000</td>
+                    </tr>
+                    <tr>
+                        <td>주차장</td>
+                        <td>가능</td>
+                    </tr>
+                </table>
             </Content>
 
             <DevideLine />
 
             <Heading>매장 위치</Heading>
+            <Content>
+                매장 주소
+            </Content>
 
-            <DevideLine />
-            <Button text="예약하기" onClick={()=>{}}/>
+            <BottomFixed>
+                <DevideLine />
+                <Button text="예약하기" onClick={()=>{window.location.href=('http://localhost:3000/store/reservation')}} />
+            </BottomFixed>
         </Section>
     );
 }
 
 export default StoreDetail;
 
+function StoreImg(){
+// 슬라이드 기능 추가
+    return(
+        <img alt="" src={BigImageSample} />
+    )
+}
+
 const Section = styled.section`
-    width: 390px;
-`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    max-width: 390px;
+
+    left: 50%;
+    transform: translate(-50%, 0);
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e8e8e8;
+`;
 const Heading = styled.h3`
-    margin: 10px;
+    font-size: 18px;
+    font-weight: bolder;
+    margin: 22px 0 0 20px;
 `
 const Content = styled.div`
-    font-size: 16px;
-        margin-left: 12px;
+    font-size: 14px;
+        margin: 10px 0 10px 26px;
     td{
-        padding: 5px 12px 5px 0;
+        padding: 10px 30px 10px 0;
     }
 `
+const BottomFixed = styled.div`
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    max-width: 390px;
+    text-align: center;
+    margin-bottom: 10px;
+`
+const SubCategory = styled.p`
+    font-size: 14px;
+    color: #D9D9D9;
+    margin-bottom: 3px;
+`
+

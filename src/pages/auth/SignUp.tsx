@@ -8,8 +8,17 @@ import CheckBox from '../../components/Auth/CheckBox';
 import SignUpForm from '../../components/Auth/SignUpForm';
 import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
 
-const SignUp = () => {
+const SignUpTest = () => {
+    // 회원 유형 선택 상태 관리
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
+    const [selectedOption, setSelectedOption] = useState('');
+    const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+
+    const handleOptionChange = (option: any) => {
+        setSelectedOption(option);
+        setIsNextButtonEnabled(true);
+    };
+    console.log(selectedOption);
 
     const handleNextClick = () => {
         setShowSignUpForm(true);
@@ -34,9 +43,15 @@ const SignUp = () => {
                             alt="가입목적을 알려주세요"
                             style={{ width: '54%' }}
                         />
-                        <CheckBox />
-                        <Button text="다음" onClick={handleNextClick} />
-                        {/* <ExtraInfo /> */}
+                        <CheckBox
+                            selectedOption={selectedOption}
+                            onOptionChange={handleOptionChange}
+                        />
+                        <Button
+                            text="다음"
+                            onClick={handleNextClick}
+                            disabled={!isNextButtonEnabled}
+                        />
                     </Wrapper>
                 </Section>
             )}
@@ -58,7 +73,7 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default SignUpTest;
 
 const Section = styled.section`
     position: absolute;

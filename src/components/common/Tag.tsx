@@ -17,7 +17,7 @@ const TagButtonSC = styled.button`
     font-size: 12px;
     padding: 10px;
     border-radius: 7px;
-    margin-right: 20px;
+    margin: 0 15px 15px 0;
     cursor: pointer;
 
     &.select_on {

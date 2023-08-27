@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
-
-// dummy data
-const UserInfo = {
-    email: 'test111@gmail.com',
-    password: 'test111!',
-};
+import axiosRequest from '../../api/api';
 
 function Login() {
     const [email, setEmail] = useState<string>('');
@@ -19,16 +14,37 @@ function Login() {
     // 로그인 버튼 활성화 조건
     const activeButton = email.includes('@') && password.length >= 4;
 
-    const navigate = useNavigate();
-    const goToHome = () => {
-        navigate('/');
-    };
-
-    const loginConfirm = () => {
-        if (email === UserInfo.email && password === UserInfo.password) {
-            goToHome();
-        } else {
-            setIsFailLogin(true);
+    const loginConfirm = async () => {
+        // 로그인 api 호출
+        try {
+            const result = await axiosRequest('POST', '/user/login', {
+                email,
+                password,
+            });
+            // 로컬스토리지에 토큰 저장
+            if (result.data.token) {
+                localStorage.setItem('jwt_token', result.data.token);
+            }
+            console.log(
+                '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
+                result,
+            );
+        } catch (error: any) {
+            const errorStatus = error.status;
+            switch (errorStatus) {
+                case 401:
+                    setIsFailLogin(true);
+                    break;
+                case 500:
+                    alert('오류가 발생했습니다. 다시 한 번 시도해주세요.');
+                    break;
+                default:
+                    break;
+            }
+            console.log(
+                '🚀 ~ file: Login.tsx:40 ~ loginConfirm ~ error:',
+                error,
+            );
         }
     };
 
@@ -47,7 +63,6 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                 />
             </InputWrapper>
-            {/* <div style={{ textAlign: 'left', marginTop: '10px' }}></div> */}
             <InputWrapper>
                 <PasswordInput
                     placeholder="비밀번호"
@@ -62,14 +77,15 @@ function Login() {
                     onClick={loginConfirm}
                     disabled={!activeButton}
                 />
-                {isFailLogin && (
-                    <ConfirmPopup
-                        title="로그인 실패"
-                        contents="존재하지 않는 아이디거나
-비밀번호가 일치하지 않습니다."
-                    />
-                )}
             </div>
+            {isFailLogin && (
+                <ConfirmPopup
+                    title="로그인 실패"
+                    contents="존재하지 않는 아이디거나
+비밀번호가 일치하지 않습니다."
+                />
+            )}
+
             <SignInButton to="/join">이메일 회원가입</SignInButton>
         </Section>
     );

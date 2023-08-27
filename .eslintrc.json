@@ -30,6 +30,10 @@
         "@typescript-eslint/no-unused-vars": "warn",
         "react/self-closing-comp": "warn",
         "import/order": "warn",
-        "jsx-a11y/alt-text": "warn"
+        "jsx-a11y/alt-text": "warn",
+        "import/no-duplicates": "warn",
+        "@typescript-eslint/no-redeclare": "warn",
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "spaced-comment": "warn"
     }
 }

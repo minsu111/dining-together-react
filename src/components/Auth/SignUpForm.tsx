@@ -21,7 +21,8 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
     const [pwValid, setPwValid] = useState(false);
     const [pwConfirm, setPwConfirm] = useState('');
     const [pwMatch, setPwMatch] = useState(true);
-    const [isDuplicated, setIsDuplicated] = useState(true);
+    // const [isDuplicated, setIsDuplicated] = useState(true);
+    const [stateDuplicate, setStateDuplicate] = useState(0);
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -46,14 +47,24 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
         setPwMatch(newPasswordConfirm === pw);
     };
     // 이메일 중복 체크
-    const checkDuplication = async () => {
+    const checkDuplication = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setStateDuplicate(0);
+
+        if (!emailRegEx.test(e.target.value)) {
+            return;
+        }
+
         try {
             const result = await axiosRequest(
                 'GET',
                 `/user/check?email=${email}`,
                 {},
             );
-            setIsDuplicated(result.isDuplicated);
+            if (result.isDuplicated) {
+                setStateDuplicate(1);
+            } else {
+                setStateDuplicate(2);
+            }
             console.log(
                 '🚀 ~ file: SignUpForm.tsx:55 ~ checkDuplication ~ result:',
                 result,
@@ -87,8 +98,8 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
                         width="350px"
                         onChange={handleEmail}
                         onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            checkDuplication(e);
                             handleBlur(e);
-                            checkDuplication();
                         }}
                     />
 
@@ -98,12 +109,13 @@ const SignUpForm = ({ setSignUpForm, signUpData }: SignUpFormProps) => {
                         </AlertMessageRed>
                     )}
 
-                    {!isDuplicated && emailValid && (
+                    {emailValid && stateDuplicate === 2 && (
                         <AlertMessageGreen>
                             사용 가능한 이메일입니다.
                         </AlertMessageGreen>
                     )}
-                    {isDuplicated && emailValid && (
+
+                    {emailValid && stateDuplicate === 1 && (
                         <AlertMessageRed>
                             사용 불가한 이메일입니다.
                         </AlertMessageRed>

@@ -4,14 +4,20 @@ import styled from 'styled-components';
 type TagButtonProps = {
     name: string;
     onClick: () => void;
-    selected: boolean | string[];
+    selectedCnt: number;
 };
 
-const TagButton: React.FC<TagButtonProps> = ({ name, onClick, selected }) => {
+const TagButton: React.FC<TagButtonProps> = ({
+    name,
+    onClick,
+    selectedCnt,
+}) => {
     const [checkedButton, setCheckedButton] = useState(false);
 
     const toggle = () => {
-        setCheckedButton(!checkedButton);
+        if (checkedButton || (!checkedButton && selectedCnt < 3)) {
+            setCheckedButton(!checkedButton);
+        }
     };
 
     return (

@@ -54,6 +54,10 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
     };
 
     const handleTagButtonClick = (tagName: string) => {
+        const typeCnt = selectedMeetingTypes.length;
+        if (typeCnt >= 3) {
+            return;
+        }
         if (selectedMeetingTypes.includes(tagName)) {
             setSelectedMeetingTypes(
                 selectedMeetingTypes.filter((item) => item !== tagName),
@@ -131,7 +135,7 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
                         key={name}
                         name={name}
                         onClick={() => handleTagButtonClick(name)}
-                        selected={selectedMeetingTypes.includes(name)}
+                        selectedCnt={selectedMeetingTypes.length}
                     />
                 ))}
             </TagButtonWrapper>

@@ -1,12 +1,24 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
-type CheckBoxProps = {
+type SeleckUserTypeProps = {
     userType: string;
     onOptionChange: (value: string) => void;
 };
 
-const CheckBox: React.FC<CheckBoxProps> = ({ userType, onOptionChange }) => {
+const SeleckUserType: React.FC<SeleckUserTypeProps> = ({
+    userType,
+    onOptionChange,
+}) => {
+    const setUserType1 = () => {
+        localStorage.setItem('userType', '1');
+        localStorage.removeItem('2');
+    };
+    const setUserType2 = () => {
+        localStorage.setItem('userType', '2');
+        localStorage.removeItem('1');
+    };
+
     return (
         <CheckBoxContainer>
             <CheckBoxLabel
@@ -14,6 +26,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ userType, onOptionChange }) => {
                 checked={userType === '1'}
                 onClick={() => {
                     onOptionChange('1');
+                    setUserType1();
                 }}
             >
                 <CheckBoxInput
@@ -23,6 +36,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ userType, onOptionChange }) => {
                     checked={userType === '1'}
                     onChange={() => {
                         onOptionChange('1');
+                        setUserType1();
                     }}
                 />
                 <CheckBoxSpan checked={userType === '1'}>
@@ -34,6 +48,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ userType, onOptionChange }) => {
                 checked={userType === '2'}
                 onClick={() => {
                     onOptionChange('2');
+                    setUserType2();
                 }}
             >
                 <CheckBoxInput
@@ -43,6 +58,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ userType, onOptionChange }) => {
                     checked={userType === '2'}
                     onChange={() => {
                         onOptionChange('2');
+                        setUserType2();
                     }}
                 />
                 <CheckBoxSpan checked={userType === '2'}>
@@ -53,7 +69,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ userType, onOptionChange }) => {
     );
 };
 
-export default CheckBox;
+export default SeleckUserType;
 
 const CheckBoxContainer = styled.div`
     width: 350px;

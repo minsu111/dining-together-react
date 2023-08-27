@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 // import jwt from 'jsonwebtoken';
-// import { JwtPayload } from 'jsonwebtoken';
 import axiosRequest from '../../api/api';
 import { emailRegEx } from '../../utils/utils';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -45,9 +44,8 @@ function Login() {
             const loginToken = result.token;
             localStorage.setItem('jwt_token', loginToken);
 
-            // const decodedToken = jwt.decode(loginToken);
+            // const decodedToken = jwt.verify(loginToken, '');
             // console.log(decodedToken);
-            // console.log(jwt.decode(loginToken));
 
             goToHome();
         } catch (error: any) {

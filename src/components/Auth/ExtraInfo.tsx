@@ -47,6 +47,7 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
     const [selectedMeetingTypes, setSelectedMeetingTypes] = useState<string[]>(
         [],
     );
+    // const [checkState, setCheckState] = useState(false);
 
     const handleSelectedRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
@@ -80,16 +81,37 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
         navigate('/join/welcome');
     };
 
-    const handleFinishButton = async () => {
+    const loginConfirm = async (email: string, password: string) => {
+        // 로그인 api 호출
         try {
-            const result = await axiosRequest('POST', '/user/signup', {
-                updatedsignUpData,
+            const result = await axiosRequest('POST', '/user/login', {
+                email,
+                password,
             });
             // 로컬스토리지에 토큰 저장
-            if (result.data.token) {
-                localStorage.setItem('jwt_token', result.data.token);
-                goToWelcome();
-            }
+            const loginToken = result.token;
+            localStorage.setItem('jwt_token', loginToken);
+
+            // const decodedToken = jwt.verify(loginToken, '');
+            // console.log(decodedToken);
+
+            goToWelcome();
+        } catch (error: any) {
+            alert(
+                `오류가 발생했습니다. 다시 한 번 시도해주세요. 
+                    ${error.data.status}`,
+            );
+        }
+    };
+
+    const handleFinishButton = async () => {
+        try {
+            const result = await axiosRequest(
+                'POST',
+                '/user/signup',
+                updatedsignUpData,
+            );
+            loginConfirm(updatedsignUpData.email, updatedsignUpData.password);
             console.log(
                 '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
                 result,
@@ -136,7 +158,14 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
                 ))}
             </TagButtonWrapper>
             <Wrapper>
-                <CommonButton text="선택 완료" onClick={handleFinishButton} />
+                <CommonButton
+                    text="선택 완료"
+                    onClick={handleFinishButton}
+                    disabled={
+                        selectedRegion === '' ||
+                        selectedMeetingTypes.length === 0
+                    }
+                />
             </Wrapper>
         </section>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import Input from '../common/Input';
 import TopNaviBarBack from '../common/TopNaviBarBack';
@@ -26,30 +26,23 @@ const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
     // const [isDuplicated, setIsDuplicated] = useState(true);
     const [stateDuplicate, setStateDuplicate] = useState(0);
 
-    useEffect(() => {}, [emailValid, pwValid, pwMatch, name, phoneNum]);
+    const handleStartBtn111 = useCallback(
+        (validState: boolean) => {
+            // handleStartBtn의 내용은 여기에 있습니다.
+            handleStartBtn('signUpForm', validState);
+        },
+        [handleStartBtn],
+    ); // 빈 의존성 배열로 메모이제이션
 
-    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        setEmailValid(emailRegEx.test(e.target.value));
-    };
-
-    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    };
-    const handlePhoneNum = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNum(e.target.value);
-    };
-
-    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPw(e.target.value);
-        setPwValid(passwordRegEx.test(e.target.value));
-    };
-
-    const handlePwConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newPasswordConfirm = e.target.value;
-        setPwConfirm(newPasswordConfirm);
-        setPwMatch(newPasswordConfirm === pw);
-    };
+    useEffect(() => {
+        const validState =
+            emailValid &&
+            pwValid &&
+            pwMatch &&
+            name.length > 0 &&
+            phoneNum.length > 0;
+        handleStartBtn111(validState);
+    }, [emailValid, pwValid, pwMatch, name, phoneNum, handleStartBtn111]);
 
     const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
         const curValue = e.target.value;
@@ -58,7 +51,7 @@ const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
                 setEmail(curValue);
                 setEmailValid(emailRegEx.test(curValue));
                 break;
-            case 'userNmae':
+            case 'userName':
                 setName(curValue);
                 break;
             case 'phoneNum':
@@ -71,19 +64,11 @@ const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
             case 'passwordConfirm':
                 setPwConfirm(curValue);
                 setPwMatch(curValue === pw);
+
                 break;
             default:
                 break;
         }
-        console.log(pwMatch);
-
-        const validState =
-            emailValid &&
-            pwValid &&
-            pwMatch &&
-            name.length > 0 &&
-            phoneNum.length > 0;
-        handleStartBtn('signUpForm', validState);
     };
 
     // 이메일 중복 체크
@@ -159,7 +144,7 @@ const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
 
                     {emailValid && stateDuplicate === 1 && (
                         <AlertMessageRed>
-                            사용 불가한 이메일입니다.
+                            이미 사용 중인 이메일입니다.
                         </AlertMessageRed>
                     )}
                 </InputWrapper>

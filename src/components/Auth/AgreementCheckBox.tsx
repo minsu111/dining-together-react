@@ -6,28 +6,30 @@ type CheckBoxProps = {
     handleStartBtn: (key: string, value: boolean) => void;
 };
 
-const AgreementCheckBox: React.FC<CheckBoxProps> = ({ handleStartBtn }) => {
+const AgreementCheckBox = ({ handleStartBtn }: CheckBoxProps) => {
     const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
     const [isTermsChecked, setIsTermsChecked] = useState<boolean>(false);
     const [isPrivacyChecked, setIsPrivacyChecked] = useState<boolean>(false);
 
     useEffect(() => {
         setIsAllChecked(isTermsChecked && isPrivacyChecked);
-        handleStartBtn('agreement', isTermsChecked && isPrivacyChecked);
-    }, [isTermsChecked, isPrivacyChecked, handleStartBtn]);
+    }, [isTermsChecked, isPrivacyChecked]);
 
     const handleAllChange = () => {
         const newValue = !isAllChecked;
         setIsAllChecked(newValue);
         setIsTermsChecked(newValue);
         setIsPrivacyChecked(newValue);
+        handleStartBtn('agreement', newValue);
     };
 
     const handleTermsChange = () => {
+        handleStartBtn('agreement', !isTermsChecked && isPrivacyChecked);
         setIsTermsChecked(!isTermsChecked);
     };
 
     const handlePrivacyChange = () => {
+        handleStartBtn('agreement', isTermsChecked && !isPrivacyChecked);
         setIsPrivacyChecked(!isPrivacyChecked);
     };
 

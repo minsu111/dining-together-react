@@ -54,15 +54,11 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
     };
 
     const handleTagButtonClick = (tagName: string) => {
-        const typeCnt = selectedMeetingTypes.length;
-        if (typeCnt >= 3) {
-            return;
-        }
         if (selectedMeetingTypes.includes(tagName)) {
             setSelectedMeetingTypes(
                 selectedMeetingTypes.filter((item) => item !== tagName),
             );
-        } else {
+        } else if (selectedMeetingTypes.length < 3) {
             setSelectedMeetingTypes([...selectedMeetingTypes, tagName]);
         }
     };

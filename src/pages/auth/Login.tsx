@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+// import jwt from 'jsonwebtoken';
+// import { JwtPayload } from 'jsonwebtoken';
 import axiosRequest from '../../api/api';
 import { emailRegEx } from '../../utils/utils';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -27,6 +29,11 @@ function Login() {
         setIsFailLogin(false);
     };
 
+    const navigate = useNavigate();
+    const goToHome = () => {
+        navigate('/home');
+    };
+
     const loginConfirm = async () => {
         // 로그인 api 호출
         try {
@@ -35,13 +42,14 @@ function Login() {
                 password,
             });
             // 로컬스토리지에 토큰 저장
-            if (result.data.token) {
-                localStorage.setItem('jwt_token', result.data.token);
-            }
-            console.log(
-                '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                result,
-            );
+            const loginToken = result.token;
+            localStorage.setItem('jwt_token', loginToken);
+
+            // const decodedToken = jwt.decode(loginToken);
+            // console.log(decodedToken);
+            // console.log(jwt.decode(loginToken));
+
+            goToHome();
         } catch (error: any) {
             const errorStatus = error.status;
             switch (errorStatus) {

@@ -31,6 +31,7 @@ const SignUpTest = () => {
 
     const handleStartBtn = (key: string, value: boolean) => {
         setCheckState((prev) => ({ ...prev, [key]: value }));
+        console.log('setCheckState', checkState);
     };
 
     const setSignUpForm = (key: string, value: string) => {

@@ -30,7 +30,6 @@ const DayoffSelect = () => {
 
     return (
         <section>
-            <Title>&lt; 마감 &gt;</Title>
             <OpenTimeSelector>
                 <Select
                     ml="20px"
@@ -66,11 +65,6 @@ const DayoffSelect = () => {
     );
 };
 export default DayoffSelect;
-
-const Title = styled.h4`
-    font-weight: 500;
-    margin-top: 10px;
-`;
 
 const OpenTimeSelector = styled.div`
     width: 100%;

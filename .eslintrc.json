@@ -15,7 +15,7 @@
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project": "./front-end/tsconfig.json"
+        "project": "./tsconfig.json"
     },
     "plugins": ["@typescript-eslint", "react"],
     "rules": {
@@ -32,6 +32,8 @@
         "import/order": "warn",
         "jsx-a11y/alt-text": "warn",
         "import/no-duplicates": "warn",
-        "@typescript-eslint/no-redeclare": "warn"
+        "@typescript-eslint/no-redeclare": "warn",
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "spaced-comment": "warn"
     }
 }

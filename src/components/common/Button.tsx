@@ -9,6 +9,7 @@ type ButtonProps = {
     textColor?: string; 
     onClick: ()=> void;
     type?: 'button' | 'submit' | 'reset';
+    form?: string;
 }
 
 type ButtonSCProps = {
@@ -25,6 +26,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     textColor={props.textColor} 
     onClick={()=>{props.onClick();}}
     type={props.type}
+    form={props.form}
     >{props.text}
     </ButtonSC>
 }

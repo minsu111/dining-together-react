@@ -21,6 +21,7 @@ import SearchKeyword from '../pages/search/SearchKeyword';
 import ExtraInfo from '../pages/auth/ExtraInfo';
 import Layout from '../components/common/Layout';
 import DeleteAccount from '../pages/mypage/DeleteAccount';
+import Terms from '../pages/auth/Terms';
 
 const router = createBrowserRouter([
     {
@@ -28,11 +29,12 @@ const router = createBrowserRouter([
         element: <Layout />,
         errorElement: <NotFound />,
         children: [
-            { index: true, path: '/', element: <Home /> },
+            { index: true, path: '/home', element: <Home /> },
             { path: '/login', element: <Login /> },
             { path: '/join', element: <SignUp /> },
             { path: '/join/extra', element: <ExtraInfo /> },
             { path: '/join/welcome', element: <Welcome /> },
+            { path: '/join/terms', element: <Terms /> },
 
             { path: '/admin', element: <AdminStore /> },
 
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
             { path: '/search/list', element: <SearchResult /> },
             { path: '/search/keyword', element: <SearchKeyword /> },
 
-            { path: '/my/list', element: <ReservationList /> },
+            { path: '/reservationList', element: <ReservationList /> },
             { path: '/my', element: <Mypage /> },
             { path: '/my/info', element: <MyInfo /> },
             { path: '/my/infoEdit/name', element: <EditName /> },

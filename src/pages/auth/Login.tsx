@@ -41,8 +41,8 @@ function Login() {
                 password,
             });
             // 로컬스토리지에 토큰 저장
-            const loginToken = result.token;
-            localStorage.setItem('jwt_token', loginToken);
+            localStorage.setItem('jwt_token', result.token);
+            localStorage.setItem('userType', result.userType);
 
             // const decodedToken = jwt.verify(loginToken, '');
             // console.log(decodedToken);

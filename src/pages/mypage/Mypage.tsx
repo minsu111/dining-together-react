@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -6,35 +6,72 @@ import { useNavigate } from 'react-router-dom';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
+import axiosRequest from '../../api/api';
 
 function Mypage() {
+    const userType: string | null = localStorage.getItem('userType');
+    const userId = localStorage.getItem('userId');
+
     const navigate = useNavigate();
     const goToMy = (path: string) => {
         navigate(`/my/${path}`);
     };
+    const goLogin = () => {
+        navigate(`/login`);
+    };
+
+    useEffect(() => {
+        const token = localStorage.getItem('jwt_token');
+        if (!token) {
+            goLogin();
+        }
+        const getUserInfo = async () => {
+            try {
+                const result = await axiosRequest(
+                    'GET',
+                    `/api/user/${userId}`,
+                    {},
+                );
+            } catch (error: any) {
+                alert('조회 실패');
+            }
+        };
+    }, []);
 
     return (
         <div>
             <Container>
                 <TopNaviBar pageName="마이페이지" />
-                <TitleSection>
-                    <TitleWrapper>
-                        <Title>
-                            안녕하세요 <span>엘리스</span> 님
-                        </Title>
-                        <OwnerBadge>사장님</OwnerBadge>
-                    </TitleWrapper>
-                    <Account>elice111@gmail.com</Account>
-                    <hr />
-                    <OwnerPageText>
-                        가게 등록하고 <span>간편하게</span>
-                        <br /> <span>단체 예약</span> 받으세요
-                    </OwnerPageText>
-                    <Button
-                        text="가게 등록하기"
-                        onClick={() => goToMy('store')}
-                    />
-                </TitleSection>
+                {userType === '1' && (
+                    <TitleSection>
+                        <TitleWrapper>
+                            <Title>
+                                안녕하세요 <span>엘리스</span> 님
+                            </Title>
+                        </TitleWrapper>
+                        <Account>elice111@gmail.com</Account>
+                    </TitleSection>
+                )}
+                {userType === '2' && userType !== null && (
+                    <TitleSection>
+                        <TitleWrapper>
+                            <Title>
+                                안녕하세요 <span>엘리스</span> 님
+                            </Title>
+                            <OwnerBadge>사장님</OwnerBadge>
+                        </TitleWrapper>
+                        <Account>elice111@gmail.com</Account>
+                        <hr />
+                        <OwnerPageText>
+                            가게 등록하고 <span>간편하게</span>
+                            <br /> <span>단체 예약</span> 받으세요
+                        </OwnerPageText>
+                        <Button
+                            text="가게 등록하기"
+                            onClick={() => goToMy('store')}
+                        />
+                    </TitleSection>
+                )}
             </Container>
             <DevideLine />
             <Container>

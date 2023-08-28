@@ -18,9 +18,6 @@ function SelectPricePerPerson(props: { selectMin: number; selectMax: number }) {
     const handleChangeSlider = (range: number[]) => {
         if (range[0] >= range[1]) {
             setNotice(true);
-
-            setMin(range[1] - 1);
-            setMax(range[1]);
         } else {
             setNotice(false);
 

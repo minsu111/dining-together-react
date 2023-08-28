@@ -6,10 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import Calendar from '../../../components/common/Calendar';
 import SolidLine from '../SolidLine';
-// import Input from '../../../components/common/Input';
 import Button from '../../../components/common/Button';
 
-import { SearchModalType } from './Enum';
+import { SearchModalType } from './enum/Enum';
 
 type ModalProps = {
     visitDate: Date;
@@ -19,7 +18,10 @@ type ModalProps = {
     onClose: (modalType: SearchModalType) => void;
 };
 
-const DatetimeSelectorModal: React.FC<ModalProps> = (props) => {
+/**
+ * 검색할 날짜를 선택하는 Modal
+ */
+function DatetimeSelectorModal(props: ModalProps) {
     const handleClose = () => {
         props.onClose(props.modalType);
     };
@@ -62,23 +64,18 @@ const DatetimeSelectorModal: React.FC<ModalProps> = (props) => {
             </HeaderDiv>
             <Calendar />
             <SolidLine />
-            <div style={{ width: '100%', marginTop: 30 }}>
-                <Text>{formattedDate}</Text>
-                {/* </div>
-        <div style={{marginTop:30}}>
-            <Input label="인원" inputType="number" placeholder={`${visitorCount}`}/> */}
-            </div>
+            <Text>{formattedDate}</Text>
             <FooterDiv>
                 <Button text="확인" onClick={props.onConfirm} />
             </FooterDiv>
         </Modal>
     );
-};
+}
 
 export default DatetimeSelectorModal;
 
 const HeaderDiv = styled.div`
-    width: 390px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
 `;
@@ -90,5 +87,5 @@ const FooterDiv = styled.div`
 
 const Text = styled.span`
     color: #ffb100;
-    margin-bottom: 20px;
+    margin: 30px auto 0px auto;
 `;

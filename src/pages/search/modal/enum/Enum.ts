@@ -16,3 +16,21 @@ export enum SearchModalType {
     Atmosphere,
     Seat,
 }
+
+export enum FoodType {
+    Korean = '한식',
+    Chinese = '중식',
+    Japanese = '일식',
+    Western = '양식',
+    Asian = '아시아 음식',
+    Fusion = '퓨전 음식',
+    Etc = '기타 세계 음식',
+}
+
+export enum SeatType {
+    Hall = '홀',
+    Room = '룸',
+    Terrace = '테라스',
+}
+
+export type EnumType = FoodType | SeatType;

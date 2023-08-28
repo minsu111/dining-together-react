@@ -1,24 +1,32 @@
-import React from "react";
+import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot, faUtensils, faWonSign, faChair, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import {
+    faLocationDot,
+    faUtensils,
+    faWonSign,
+    faChair,
+    faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { FilterType } from "./Enum";
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FilterType } from './enum/Enum';
 
-const FilterButtonInModal: React.FC<{filterType: FilterType, selectData: string}> = ({filterType, selectData}) => {
-
+const FilterButtonInModal: React.FC<{
+    filterType: FilterType;
+    selectData: string;
+}> = ({ filterType, selectData }) => {
     const data = selectData === '' ? '미선택' : selectData;
 
     let icon: IconProp;
-    switch(filterType){
+    switch (filterType) {
         case FilterType.Region:
             icon = faLocationDot;
             break;
         case FilterType.FoodType:
             icon = faUtensils;
-            break;  
+            break;
         case FilterType.PricePerPerson:
             icon = faWonSign;
             break;
@@ -30,7 +38,6 @@ const FilterButtonInModal: React.FC<{filterType: FilterType, selectData: string}
             break;
     }
 
-
     return (
         <Div>
             <LeftDiv>
@@ -38,10 +45,12 @@ const FilterButtonInModal: React.FC<{filterType: FilterType, selectData: string}
             </LeftDiv>
             <CenterDiv>
                 <span>{`${filterType}`}</span>
-                <p style={{color: data === "미선택" ? "gray" : "#FFB100"}}>{data}</p>
+                <p style={{ color: data === '미선택' ? 'gray' : '#FFB100' }}>
+                    {data}
+                </p>
             </CenterDiv>
             <RightDiv>
-                <FontAwesomeIcon icon={faChevronRight}/>
+                <FontAwesomeIcon icon={faChevronRight} />
             </RightDiv>
         </Div>
     );

@@ -7,7 +7,7 @@ import FilterList from './FilterList';
 import DevideLine from '../../components/common/DevideLine';
 import StoreItem from './StoreItem';
 
-import { SearchModalType } from './modal/Enum';
+import { SearchModalType } from './modal/enum/Enum';
 
 function SearchResult() {
     const [modalStateArray, setModalStateArray] = useState([

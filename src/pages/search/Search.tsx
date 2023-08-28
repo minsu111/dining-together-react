@@ -83,7 +83,7 @@ function Search() {
                 onConfirm={() => {}}
                 onClose={handleModalToggle}
             >
-                <SelectPricePerPerson data="123" />
+                <SelectPricePerPerson selectMin={10} selectMax={30} />
             </FilterModal>
             <FilterModal
                 title="분위기"

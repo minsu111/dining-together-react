@@ -27,6 +27,17 @@ export enum FoodType {
     Etc = '기타 세계 음식',
 }
 
+export enum AtmosphereType {
+    Type1 = '#조용한',
+    Type2 = '#뷰맛집',
+    Type3 = '#모던한',
+    Type4 = '#비즈니스 미팅',
+    Type5 = '#트렌디한',
+    Type6 = '#심플한',
+    Type7 = '#전통적인',
+    Type8 = '#이색적인',
+}
+
 export enum SeatType {
     Hall = '홀',
     Room = '룸',

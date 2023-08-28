@@ -1,22 +1,41 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import DevideLine from '../../components/common/DevideLine';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import BigImageSample from '../../assets/ImageSampleB.svg'
+import axiosRequest from '../../api/api';
+import { store } from '../../app/store';
 
 function StoreDetail() {
+    const storeId = window.location.href.split('/').pop();
+    const [storeDetail, setStoreDetail] = useState<Record<string, any>>({});
+    useEffect(()=>{
+        const GetStoreDetail = async () => {
+            try {
+                setStoreDetail(await axiosRequest('GET', `/stores/${storeId}`));
+            } catch (error) {
+                // 여기에 에러 처리
+                console.log('에러');
+            }
+        }
+    GetStoreDetail();
+    }, [storeId]);
+
     return (
         <Section>
             <TopNaviBarBack pageName='' prevPath='' />
             <StoreImg />
             <Heading>
-                <SubCategory>음식 유형</SubCategory>
-                가게명
+                <SubCategory>{storeDetail.foodCategory}</SubCategory>
+                {storeDetail.storeName}
             </Heading>
             <Content>
-                가게 소개
-                #분위기 #태그
+                {storeDetail.description}
+                <br />#분위기 #태그
             </Content>
 
             <DevideLine />
@@ -26,31 +45,31 @@ function StoreDetail() {
                 <table>
                     <tr>
                         <td>전화번호</td>
-                        <td>000</td>
+                        <td>{storeDetail.storeContact}</td>
                     </tr>
                     <tr>
                         <td>운영시간</td>
-                        <td>00 : 00 ~ 00 : 00</td>
+                        <td>{storeDetail.operatingHours}</td>
                     </tr>
                     <tr>
                         <td>휴무일</td>
-                        <td>매주 일요일</td>
+                        <td>{storeDetail.closedDays}</td>
                     </tr>
                     <tr>
                         <td>수용 인원</td>
-                        <td>50명</td>
+                        <td>{storeDetail.maxNum}</td>
                     </tr>
                     <tr>
                         <td>룸 유무</td>
-                        <td>있음</td>
+                        <td>{}</td>
                     </tr>
                     <tr>
                         <td>인당 금액</td>
-                        <td>10,000</td>
+                        <td>{storeDetail.cost}</td>
                     </tr>
                     <tr>
                         <td>주차장</td>
-                        <td>가능</td>
+                        <td>{storeDetail.isParking? '있음' : '없음'}</td>
                     </tr>
                 </table>
             </Content>
@@ -59,11 +78,12 @@ function StoreDetail() {
 
             <Heading>매장 위치</Heading>
             <Content>
-                매장 주소
+                {storeDetail.location}
+                {storeDetail.address?.roadAddress}{' '}
+                {storeDetail.address?.detailAddress} 
             </Content>
-
+            <DevideLine />
             <BottomFixed>
-                <DevideLine />
                 <Button text="예약하기" onClick={()=>{window.location.href=('http://localhost:3000/store/reservation')}} />
             </BottomFixed>
         </Section>
@@ -73,9 +93,12 @@ function StoreDetail() {
 export default StoreDetail;
 
 function StoreImg(){
-// 슬라이드 기능 추가
     return(
+        <Slider autoplay speed={1000} infinite pauseOnHover>
         <img alt="" src={BigImageSample} />
+        <img alt="" src={BigImageSample} />
+        <img alt="" src={BigImageSample} />
+        </Slider>
     )
 }
 
@@ -112,11 +135,11 @@ const BottomFixed = styled.div`
     width: 100vw;
     max-width: 390px;
     text-align: center;
-    margin-bottom: 10px;
+    padding: 10px 0;
+    background-color: #FFFFFF;
 `
 const SubCategory = styled.p`
     font-size: 14px;
     color: #D9D9D9;
     margin-bottom: 3px;
 `
-

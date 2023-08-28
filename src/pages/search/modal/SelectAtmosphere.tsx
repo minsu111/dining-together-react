@@ -5,12 +5,14 @@ import CheckButton from './CheckButton';
 const SelectAtmosphere: React.FC<{ data: string }> = ({ data }) => {
     return (
         <Div>
-            <CheckButton name="#비즈니스미팅" />
-            <CheckButton name="#직장모임" />
-            <CheckButton name="#대학생모임" />
-            <CheckButton name="#밝은" />
-            <CheckButton name="#전통적인" />
+            <CheckButton name="#조용한" />
+            <CheckButton name="#뷰맛집" />
+            <CheckButton name="#모던한" />
+            <CheckButton name="#비즈니스 미팅" />
             <CheckButton name="#트렌디한" />
+            <CheckButton name="#심플한" />
+            <CheckButton name="#전통적인" />
+            <CheckButton name="#이색적인" />
         </Div>
     );
 };
@@ -21,10 +23,10 @@ const Div = styled.div`
     width: 100%;
     height: 100%;
     padding-top: 20px;
+    padding-left: 10px;
     box-sizing: border-box;
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
     align-content: flex-start;
-    justify-content: center;
 `;

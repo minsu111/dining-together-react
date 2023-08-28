@@ -1,61 +1,47 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { SeatType } from './enum/Enum';
 
-const SelectSeat: React.FC<{ data: string }> = ({ data }) => {
-    enum SeatType {
-        전체,
-        홀,
-        룸,
-        테라스,
-        대관,
-    }
+/**
+ * 좌석 필터 Modal
+ */
+function SelectSeat() {
+    const checkedListData: Array<SeatType> = new Array<SeatType>(); // 원래 이 컴포넌트의 props로 받아와야하는 데이터
+    checkedListData.push(SeatType.Hall); // 테스트용
 
-    const [checkedArray, setCheckArray] = useState([
-        false,
-        false,
-        false,
-        false,
-        false,
-    ]);
+    const seatTypes = Object.values(SeatType);
+
+    const [checkedList, setCheckedList] =
+        useState<Array<SeatType>>(checkedListData);
+
+    // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
+    const handleCheck = (checkSeat: SeatType) => {
+        if (checkedList.includes(checkSeat)) {
+            setCheckedList(checkedList.filter((item) => item !== checkSeat));
+        } else {
+            setCheckedList([...checkedList, checkSeat]);
+        }
+    };
+
+    // checkedList가 업데이트될 때마다 실행
+    // React.useEffect(() => {
+    //     checkedList.forEach((item) => {
+    //         console.log(`현재선택된타입 / ${item}`);
+    //     });
+    // }, [checkedList]);
 
     return (
         <Div>
-            <CheckBoxLabel
-                htmlFor="Korean"
-                isChecked={checkedArray[SeatType.전체]}
-            >
-                <input type="checkbox" id="Korean" />
-                전체
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="Chinese"
-                isChecked={checkedArray[SeatType.홀]}
-            >
-                <input type="checkbox" id="Chinese" />홀
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="Japanese"
-                isChecked={checkedArray[SeatType.룸]}
-            >
-                <input type="checkbox" id="Japanese" />룸
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="Fusion"
-                isChecked={checkedArray[SeatType.테라스]}
-            >
-                <input type="checkbox" id="Fusion" />
-                테라스
-            </CheckBoxLabel>
-            <CheckBoxLabel
-                htmlFor="etc"
-                isChecked={checkedArray[SeatType.대관]}
-            >
-                <input type="checkbox" id="etc" />
-                대관
-            </CheckBoxLabel>
+            {seatTypes.map((type) => (
+                <CheckBoxLabel
+                    checkState={checkedList.includes(type)}
+                    seatType={type}
+                    onChange={handleCheck}
+                />
+            ))}
         </Div>
     );
-};
+}
 
 export default SelectSeat;
 
@@ -69,18 +55,42 @@ const Div = styled.div`
     gap: 40px;
 `;
 
-type InputProps = {
-    isChecked: boolean;
+type CheckBoxProps = {
+    checkState: boolean;
+    seatType: SeatType;
+    onChange: (seatType: SeatType) => void;
 };
-const CheckBoxLabel = styled.label<InputProps>`
+function CheckBoxLabel({ checkState, seatType, onChange }: CheckBoxProps) {
+    return (
+        <CheckBoxLabelSC htmlFor={seatType}>
+            <input
+                type="checkbox"
+                id={seatType}
+                checked={checkState}
+                onChange={() => {
+                    onChange(seatType);
+                }}
+                // onClick={(e) => {
+                //     console.log(
+                //         `${checkState} ${foodType} ${e.currentTarget.checked}`,
+                //     );
+                // }}
+            />
+            {seatType}
+        </CheckBoxLabelSC>
+    );
+}
+
+const CheckBoxLabelSC = styled.label`
     font-size: 18px;
     display: inline-flex;
+    align-items: center;
     gap: 10px;
 
     input[type='checkbox'] {
         width: 18px;
         height: 18px;
-        accent-color: ${(props) => (props.isChecked ? 'yellow' : '#ffb100')};
+        accent-color: #ffb100;
         cursor: pointer;
     }
 `;

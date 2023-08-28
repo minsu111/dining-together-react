@@ -1,54 +1,58 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import TagBtn from './TagBtn';
 
-type TagButtonProps = {
-    name: string;
-    onClick: () => void;
-    selectedCnt: number;
-};
 
-const TagButton: React.FC<TagButtonProps> = ({
-    name,
-    onClick,
-    selectedCnt,
-}) => {
-    const [checkedButton, setCheckedButton] = useState(false);
+const FoodTypeTag: React.FC = () => {
+    const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
-    const toggle = () => {
-        if (checkedButton || (!checkedButton && selectedCnt < 3)) {
-            setCheckedButton(!checkedButton);
+    const handleTagClick = (name: string) => {
+        if (selectedButton === name) {
+            setSelectedButton(null); // 이미 선택된 버튼을 다시 클릭하면 선택 해제
+        } else {
+            setSelectedButton(name);
         }
     };
 
     return (
-        <TagButtonSC
-            checkedButton={checkedButton}
-            onClick={() => {
-                toggle();
-                onClick();
-            }}
-        >
-            {name}
-        </TagButtonSC>
+        <div>
+            <TagBtn
+                name="한식"
+                onClick={() => handleTagClick("Tag 1")}
+                checked={selectedButton === "Tag 1"}
+            />
+            <TagBtn
+                name="양식"
+                onClick={() => handleTagClick("Tag 2")}
+                checked={selectedButton === "Tag 2"}
+            />
+            <TagBtn
+                name="중식"
+                onClick={() => handleTagClick("Tag 3")}
+                checked={selectedButton === "Tag 3"}
+            />
+            <TagBtn
+                name="일식"
+                onClick={() => handleTagClick("Tag 4")}
+                checked={selectedButton === "Tag 4"}
+            />
+            <TagBtn
+                name="아시아 음식"
+                onClick={() => handleTagClick("Tag 5")}
+                checked={selectedButton === "Tag 5"}
+            />
+            <TagBtn
+                name="퓨전 음식"
+                onClick={() => handleTagClick("Tag 6")}
+                checked={selectedButton === "Tag 6"}
+            />
+            <TagBtn
+                name="기타 세계 음식"
+                onClick={() => handleTagClick("Tag 7")}
+                checked={selectedButton === "Tag 7"}
+            />
+            
+        </div>
     );
 };
 
-export default TagButton;
-
-type ButtonProps = {
-    checkedButton: boolean;
-};
-
-const TagButtonSC = styled.button<ButtonProps>`
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 10px;
-    border-radius: 7px;
-    margin: 0 15px 15px 0;
-    cursor: pointer;
-    background-color: ${(props) =>
-        props.checkedButton ? '#ffb100' : '#f1f1f1'};
-    color: ${(props) => (props.checkedButton ? '#fff' : '#000')};
-    }
-`;
+export default FoodTypeTag;

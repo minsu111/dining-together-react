@@ -76,8 +76,8 @@ function AddStore() {
                 )}
 
                 {step === 0 && <StoreForm1st storeName={storeName} storeContact={storeContact} handleChangeInfo={handleChangeInfo} /> }
-                {/* {step === 1 && <StoreForm2nd foodCategory={foodCategory} storeMood={storeMood} isParking={isParking} handleChangeInfo={handleChangeInfo}/>} */}
-                {step === 1 && <StoreForm3rd />} 
+                {step === 1 && <StoreForm2nd />}
+                {/* {step === 1 && <StoreForm3rd />}  */}
                 {step === 2 && <StoreForm3rd />}
                 {step === 3 && <StoreForm4th description={description} keyword={keyword}  handleChangeInfo={handleChangeInfo} />}
                 {step === 4 && <StoreForm5th />}

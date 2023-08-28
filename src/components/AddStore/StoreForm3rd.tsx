@@ -3,6 +3,9 @@ import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Input from '../common/Input';
+import OpenTimeSelect from './OpenTime';
+import CloseTimeSelect from './CloseTime';
+import DayoffSelect from './Dayoff';
 
 function StoreForm3rd() {
     return (
@@ -11,17 +14,27 @@ function StoreForm3rd() {
                 <FormSC>
                     <div className="content">
                         <h4>영업시간</h4>
-                        <Input inputType='text' />
+                        <div>
+                            <OpenTimeSelect />
+                            <CloseTimeSelect />
+                        </div>
                     </div>
                     
-                    <Input label='휴무일' inputType='text' placeholder='휴무일을 입력해주세요.'/>
+                    <div className="content">
+                        <h4>휴무일</h4>
+                        <div>
+                            <DayoffSelect />
+                        </div>
+                    </div>
+                    
+                    
                     <div className="inputarea">
-                        <Input label='최대 수용 인원' inputType='text' width='80px' />
+                        <Input label='최대 수용 인원' inputType='number' width='80px' />
                         <p>명</p>
                     </div>
 
                     <div className="inputarea">
-                        <Input label='인당 가격' inputType='text' width='150px' />
+                        <Input label='인당 가격' inputType='number' width='150px' />
                         <p>원</p>
                     </div>
                     

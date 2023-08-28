@@ -20,7 +20,7 @@ function StoreForm1st({storeName, storeContact, handleChangeInfo}:StoreForm1stPr
             <Inner>
                 <FormSC>
                     <Input label='가게 상호명' name='storeName' value={storeName}  inputType='text' placeholder='가게명을 입력해주세요.' onChange={(e) => {handleChangeInfo('storeName', e.target.value)}} />
-                    <Input label='전화번호' name='storeContact' value={storeContact} inputType='text' placeholder='전화번호를 입력해주세요.' onChange={(e) => handleChangeInfo('storeContact', e.target.value)}/>
+                    <Input label='전화번호' name='storeContact' value={storeContact} inputType='number' placeholder='전화번호를 입력해주세요.' onChange={(e) => handleChangeInfo('storeContact', e.target.value)}/>
                     
 
                     <div>

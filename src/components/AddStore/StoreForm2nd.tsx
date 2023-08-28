@@ -1,26 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import TagButton from '../common/Tag';
-import CheckStoreMood from './CheckTag';
-import { CheckFoodType, CheckParking } from './RadioTag';
+import FoodTypeTag from './FoodTag';
+import ParkingTag from './ParkingTag';
+import MoodTag from './MoodTag';
 
-type StoreForm2ndProps = {
-    foodCategory: string;       
-    isParking: boolean;
-    handleChangeName: (k:string, v:string) => void;
-}
+// type StoreForm2ndProps = {
+//     foodCategory: string;       
+//     isParking: number;
+//     handleChangeName: (k:string, v:string) => void;
+// }
 
-function StoreForm2nd({foodCategory, isParking, handleChangeName}:StoreForm2ndProps) {
+// function StoreForm2nd({foodCategory, isParking, handleChangeName}:StoreForm2ndProps) {
+function StoreForm2nd() {
+
     return (
         <section>
             <Inner>
                 <FormSC>
                     <div className='content'>
                         <h4>음식 유형</h4>
-                        <CheckFoodType />
-
+                        <FoodTypeTag />
                     </div>
 
                     <div className='content'>
@@ -29,12 +30,12 @@ function StoreForm2nd({foodCategory, isParking, handleChangeName}:StoreForm2ndPr
                             <FontAwesomeIcon icon={faCircleExclamation} />
                             <span>최대 3개까지 선택 가능합니다.</span>
                         </div>
-                        <CheckStoreMood />
+                        <MoodTag />
                     </div>
 
                     <div className='content'>
                         <h4>주차 가능 여부</h4>
-                        <CheckParking />
+                        <ParkingTag />
                     </div>
                     
                 </FormSC>

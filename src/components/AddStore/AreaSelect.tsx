@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Select } from '@chakra-ui/react';
+import styled from 'styled-components';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const regionButtonNames = [
@@ -29,28 +30,37 @@ const AreaSelect = () => {
         location: selectedRegion,
     };
     console.log(
-        '🚀 ~ file: ExtraInfo.tsx:72 ~ ExtraInfo ~ updatedsignUpData:',
         updatedsignUpData,
     );
 
     return (
         <section>
-            <Select
-                ml="20px"
-                mr="20px"
-                w="350px"
-                placeholder="지역을 선택해 주세요"
-                value={selectedRegion}
-                onChange={handleSelectedRegion}
-            >
-                {regionButtonNames.map((region) => (
-                    <option key={region} value={region}>
-                        {region}
-                    </option>
-                ))}
-            </Select>
-
+            <SelectArea>
+                <Select
+                    ml="20px"
+                    mr="20px"
+                    w="350px"
+                    placeholder="지역을 선택해 주세요"
+                    value={selectedRegion}
+                    onChange={handleSelectedRegion}
+                >
+                    {regionButtonNames.map((region) => (
+                        <option key={region} value={region}>
+                            {region}
+                        </option>
+                    ))}
+                </Select>
+            </SelectArea>
         </section>
     );
 };
 export default AreaSelect;
+
+const SelectArea = styled.div`
+    Select {
+        font-size: 14px;
+        font-weight: 500;
+        border-color: #ffb100;
+    }
+`
+

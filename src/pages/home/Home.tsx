@@ -81,6 +81,7 @@ const StoreCard = (props: StoreCardProps) => {
 
 type RecommendListProps = {
     title: string;
+    storeList: Record<string, any>;
 };
 
 const RecommendList = (props: RecommendListProps) => {

@@ -11,7 +11,7 @@ import axiosRequest from '../../api/api';
 function Mypage() {
     // const [isToken, setIsToken] = useState<boolean>(false);
     // const userId = localStorage.getItem('userId');
-    const [data, setData] = useState({ name: '', email: '' });
+    const [data, setData] = useState({ name: '', email: '', phoneNum: '' });
     const userType: string | null = localStorage.getItem('userType');
 
     const navigate = useNavigate();
@@ -26,6 +26,7 @@ function Mypage() {
         const token = localStorage.getItem('jwt_token');
         if (!token) {
             goLogin();
+            return;
         }
         const getUserInfo = async () => {
             try {
@@ -34,8 +35,8 @@ function Mypage() {
                     '🚀 ~ file: Mypage.tsx:37 ~ getUserInfo ~ result:',
                     result,
                 );
-                const { name, email } = result;
-                setData({ name, email });
+                const { name, email, phoneNum } = result;
+                setData({ name, email, phoneNum });
             } catch (error: any) {
                 alert('조회 실패');
             }

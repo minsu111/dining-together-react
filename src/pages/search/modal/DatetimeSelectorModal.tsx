@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Modal from 'react-modal'; // 공식문서: https://reactcommunity.org/react-modal/
@@ -10,8 +11,10 @@ import Button from '../../../components/common/Button';
 
 import { SearchModalType } from './enum/Enum';
 
+import { RootState } from '../../../app/store';
+import { setVisitDate } from '../store/FilterSlice';
+
 type ModalProps = {
-    visitDate: Date;
     isOpen: boolean;
     modalType: SearchModalType;
     onConfirm: () => void;
@@ -22,13 +25,33 @@ type ModalProps = {
  * 검색할 날짜를 선택하는 Modal
  */
 function DatetimeSelectorModal(props: ModalProps) {
-    const handleClose = () => {
-        props.onClose(props.modalType);
+    const dispatch = useDispatch();
+    const visitDate = useSelector((state: RootState) => {
+        return state.filter.visitDate;
+    });
+
+    const [selectedDate, setDate] = React.useState(visitDate);
+    const handleDayClick = (date: Date) => {
+        setDate(date);
     };
 
     const formattedDate = Intl.DateTimeFormat('ko', {
         dateStyle: 'full',
-    }).format(props.visitDate);
+    }).format(visitDate);
+
+    const handleClose = () => {
+        props.onClose(props.modalType);
+    };
+
+    const handleConfirm = () => {
+        const testDate = new Date();
+        testDate.setDate(visitDate.getDate() + 1);
+        dispatch(setVisitDate(testDate));
+        // dispatch(setVisitDate(selectedDate));
+
+        props.onConfirm();
+        handleClose();
+    };
 
     return (
         <Modal
@@ -63,11 +86,12 @@ function DatetimeSelectorModal(props: ModalProps) {
                     onClick={handleClose}
                 />
             </HeaderDiv>
+            {/* <Calendar seletedDate={visitDate} onDayClick={handleDayClick} /> */}
             <Calendar />
             <SolidLine />
             <Text>{formattedDate}</Text>
             <FooterDiv>
-                <Button text="확인" onClick={props.onConfirm} />
+                <Button text="확인" onClick={handleConfirm} />
             </FooterDiv>
         </Modal>
     );

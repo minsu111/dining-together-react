@@ -42,7 +42,6 @@ function Search() {
     return (
         <section>
             <DatetimeSelectorModal
-                visitDate={new Date()}
                 isOpen={modalStateArray[SearchModalType.DatetimeSelector]}
                 modalType={SearchModalType.DatetimeSelector}
                 onConfirm={() => {}}

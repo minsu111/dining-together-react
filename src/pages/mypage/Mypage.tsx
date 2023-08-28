@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -7,66 +8,48 @@ import TopNaviBar from '../../components/common/TopNaviBar';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
+import { RootState } from '../../app/store';
 
 function Mypage() {
-    // const [isToken, setIsToken] = useState<boolean>(false);
-    // const userId = localStorage.getItem('userId');
-    const [data, setData] = useState({ name: '', email: '', phoneNum: '' });
-    const userType: string | null = localStorage.getItem('userType');
-
     const navigate = useNavigate();
     const goToMy = (path: string) => {
-        navigate(`/my/${path}`, { state: { data } });
+        navigate(`/my/${path}`);
     };
     const goLogin = () => {
         navigate(`/login`);
     };
+    const user = useSelector((state: RootState) => state.user);
+    const token = localStorage.getItem('jwt_token');
 
     useEffect(() => {
-        const token = localStorage.getItem('jwt_token');
         if (!token) {
             goLogin();
-            return;
         }
-        const getUserInfo = async () => {
-            try {
-                const result = await axiosRequest('GET', '/user/28', {});
-                console.log(
-                    '🚀 ~ file: Mypage.tsx:37 ~ getUserInfo ~ result:',
-                    result,
-                );
-                const { name, email, phoneNum } = result;
-                setData({ name, email, phoneNum });
-            } catch (error: any) {
-                alert('조회 실패');
-            }
-        };
-        getUserInfo();
     }, []);
 
     return (
         <div>
             <Container>
                 <TopNaviBar pageName="마이페이지" />
-                {userType === '1' && (
+                {user.userType === '1' && (
                     <TitleSection>
                         <TitleWrapper>
                             <Title>
-                                안녕하세요 <span>{data.name}</span> 님
+                                안녕하세요 <span>{user.userName}</span> 님
                             </Title>
                         </TitleWrapper>
-                        <Account>{data.email}</Account>
+                        <Account>{user.userEmail}</Account>
                     </TitleSection>
                 )}
-                {userType === '2' && userType !== null && (
+                {user.userType === '2' && user.userType !== null && (
                     <TitleSection>
                         <TitleWrapper>
                             <Title>
-                                안녕하세요 <span>{data.name}</span> 님
+                                안녕하세요 <span>{user.userName}</span> 님
                             </Title>
                             <OwnerBadge>사장님</OwnerBadge>
                         </TitleWrapper>
-                        <Account>{data.email}</Account>
+                        <Account>{user.userEmail}</Account>
                         <hr />
                         <OwnerPageText>
                             가게 등록하고 <span>간편하게</span>

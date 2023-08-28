@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import DevideLine from '../../components/common/DevideLine';
 import axiosRequest from '../../api/api';
+import { RootState } from '../../app/store';
+import { logout } from '../../app/UserSlice';
 
 function MyInfo() {
     const navigate = useNavigate();
@@ -15,17 +18,17 @@ function MyInfo() {
     const goToHome = () => {
         navigate('/home');
     };
-    const location = useLocation();
-    const userData = location.state.data;
-    // const { name, email } = userData;
+
+    const user = useSelector((state: RootState) => state.user);
 
     //로그아웃
+    const dispatch = useDispatch();
     const logOut = async () => {
         try {
             const result = await axiosRequest('GET', '/user/logout', {});
             if (result.message === 'Logout Success') {
                 localStorage.removeItem('jwt_token');
-                localStorage.removeItem('userType');
+                dispatch(logout());
                 goToHome();
             } else {
                 alert('로그아웃 실패');
@@ -41,19 +44,19 @@ function MyInfo() {
             <Container>
                 <MenuWrapper>
                     <MenuName>가입 계정 (이매일)</MenuName>
-                    <div style={{ marginTop: '2px' }}>{userData.email}</div>
+                    <div style={{ marginTop: '2px' }}>{user.userEmail}</div>
                 </MenuWrapper>
                 <MenuWrapper>
                     <MenuName>이름</MenuName>
                     <InfoMenu onClick={() => goToEditPage('name')}>
-                        <div>{userData.name}</div>
+                        <div>{user.userName}</div>
                         <FontAwesomeIcon icon={faChevronRight} />
                     </InfoMenu>
                 </MenuWrapper>
                 <MenuWrapper>
                     <MenuName>휴대폰 번호</MenuName>
                     <InfoMenu onClick={() => goToEditPage('phoneNumber')}>
-                        <div>{userData.phoneNum}</div>
+                        <div>{user.userPhoneNum}</div>
                         <FontAwesomeIcon icon={faChevronRight} />
                     </InfoMenu>
                 </MenuWrapper>

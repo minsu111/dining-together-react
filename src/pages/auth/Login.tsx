@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 // import jwt from 'jsonwebtoken';
 import axiosRequest from '../../api/api';
 import { emailRegEx } from '../../utils/utils';
-import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
+import { login } from '../../app/UserSlice';
 
 function Login() {
     const [email, setEmail] = useState<string>('');
@@ -32,6 +33,24 @@ function Login() {
     const goToHome = () => {
         navigate('/home');
     };
+    const dispatch = useDispatch();
+
+    const getUserInfo = async (userId: string) => {
+        try {
+            const result = await axiosRequest('GET', `/user/${userId}`, {});
+            dispatch(
+                login({
+                    userId: `${result.userId}`,
+                    userType: `${result.userType}`,
+                    userEmail: `${result.email}`,
+                    userName: `${result.name}`,
+                    userPhoneNum: `${result.phoneNum}`,
+                }),
+            );
+        } catch (error: any) {
+            alert('조회 실패');
+        }
+    };
 
     const loginConfirm = async () => {
         // 로그인 api 호출
@@ -42,11 +61,9 @@ function Login() {
             });
             // 로컬스토리지에 토큰 저장
             localStorage.setItem('jwt_token', result.token);
-            localStorage.setItem('userType', result.userType);
+            // localStorage.setItem('userType', result.userType);
 
-            // const decodedToken = jwt.verify(loginToken, '');
-            // console.log(decodedToken);
-
+            await getUserInfo(result.userId);
             goToHome();
         } catch (error: any) {
             const errorStatus = error.status;
@@ -69,7 +86,6 @@ function Login() {
 
     return (
         <Section>
-            <TopNaviBarBack pageName=" " prevPath="/" />
             <Title>
                 반가워요🍻 <br />
                 회식을 시작해볼까요?
@@ -114,23 +130,14 @@ function Login() {
 export default Login;
 
 const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
+    padding: 50px 0;
     display: flex;
     flex-direction: column;
-    border: 1px solid #e8e8e8;
 `;
 
 const Title = styled.h1`
     font-size: 34px;
+    font-weight: 500;
     line-height: 45px;
     padding: 30px 20px;
     margin-bottom: 40px;

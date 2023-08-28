@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REACT_APP_BASE_URL = 'http://18.190.7.141/api';
+const REACT_APP_BASE_URL = 'http://13.209.102.55/api';
 
 const authInstance = axios.create({
     baseURL: REACT_APP_BASE_URL,

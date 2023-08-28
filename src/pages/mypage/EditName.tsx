@@ -1,18 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../app/UserSlice';
+import { RootState } from '../../app/store';
 
 function EditName() {
-    const getUserInfo = async () => {
+    const [name, setName] = useState<string>('');
+
+    const navigate = useNavigate();
+    const goToMyInfo = () => {
+        navigate('/my/info');
+    };
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    };
+    const user = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
+
+    const editName = async () => {
         try {
-            const result = await axiosRequest('POST', '/user/28', {});
-            console.log(
-                '🚀 ~ file: Mypage.tsx:37 ~ getUserInfo ~ result:',
-                result,
-            );
+            const result = await axiosRequest('PUT', '/user/28', { name });
+            if (result) {
+                // dispatch(
+                //     login({
+                //         ...user,
+                //         userName: `${name}`,
+                //     }),
+                // );
+                goToMyInfo();
+            }
         } catch (error: any) {
             alert('조회 실패');
         }
@@ -30,9 +51,15 @@ function EditName() {
                     <Input
                         inputType="text"
                         placeholder="이름을 입력해주세요."
+                        onChange={handleName}
                     />
                 </div>
-                <Button text="변경" onClick={() => {}} />
+                <Button
+                    text="변경"
+                    onClick={() => {
+                        editName();
+                    }}
+                />
             </Container>
         </>
     );

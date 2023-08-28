@@ -101,7 +101,7 @@ function Search() {
                 onConfirm={() => {}}
                 onClose={handleModalToggle}
             >
-                <SelectSeat data="123" />
+                <SelectSeat />
             </FilterModal>
 
             <Div>

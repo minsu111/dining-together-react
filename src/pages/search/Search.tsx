@@ -92,7 +92,7 @@ function Search() {
                 onConfirm={() => {}}
                 onClose={handleModalToggle}
             >
-                <SelectAtmosphere data="123" />
+                <SelectAtmosphere />
             </FilterModal>
             <FilterModal
                 title="좌석"

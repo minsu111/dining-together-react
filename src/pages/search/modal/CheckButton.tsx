@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { AtmosphereType } from './enum/Enum';
 
-const CheckButton: React.FC<{ name: string }> = ({ name }) => {
-    const [isSelected, setSelected] = useState(false);
-
-    const toggle = () => {
-        setSelected(!isSelected);
-    };
-
+function CheckButton(props: {
+    checkState: boolean;
+    type: AtmosphereType;
+    onClick: (atmoType: AtmosphereType) => void;
+}) {
     return (
-        <Button isSelected={isSelected} onClick={toggle}>
-            {name}
+        <Button
+            isSelected={props.checkState}
+            onClick={() => {
+                props.onClick(props.type);
+            }}
+        >
+            {props.type}
         </Button>
     );
-};
+}
 
 export default CheckButton;
 
@@ -26,10 +30,10 @@ const Button = styled.button<ButtonProps>`
     padding: 0;
     border-radius: 8px;
     border: 2px solid;
-    border-color: ${(props) => (props.isSelected ? 'lightgray' : '#ffb100')};
+    border-color: ${(props) => (props.isSelected ? '#ffb100' : 'lightgray')};
     background-color: ${(props) =>
-        props.isSelected ? 'white' : 'rgba(255, 177, 0, 0.03)'};
-    color: ${(props) => (props.isSelected ? 'black' : '#ffb100')};
+        props.isSelected ? 'rgba(255, 177, 0, 0.03)' : 'white'};
+    color: ${(props) => (props.isSelected ? '#ffb100' : 'black')};
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;

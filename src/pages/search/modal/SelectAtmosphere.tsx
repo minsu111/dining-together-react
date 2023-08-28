@@ -1,21 +1,38 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CheckButton from './CheckButton';
+import { AtmosphereType } from './enum/Enum';
 
-const SelectAtmosphere: React.FC<{ data: string }> = ({ data }) => {
+function SelectAtmosphere() {
+    const checkedListData: Array<AtmosphereType> = new Array<AtmosphereType>(); // 원래 이 컴포넌트의 props로 받아와야하는 데이터
+    checkedListData.push(AtmosphereType.Type1); // 테스트용
+
+    const atmoTypes = Object.values(AtmosphereType);
+
+    const [checkedList, setCheckedList] =
+        useState<Array<AtmosphereType>>(checkedListData);
+
+    // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
+    const handleCheck = (checkItem: AtmosphereType) => {
+        if (checkedList.includes(checkItem)) {
+            setCheckedList(checkedList.filter((item) => item !== checkItem));
+        } else {
+            setCheckedList([...checkedList, checkItem]);
+        }
+    };
+
     return (
         <Div>
-            <CheckButton name="#조용한" />
-            <CheckButton name="#뷰맛집" />
-            <CheckButton name="#모던한" />
-            <CheckButton name="#비즈니스 미팅" />
-            <CheckButton name="#트렌디한" />
-            <CheckButton name="#심플한" />
-            <CheckButton name="#전통적인" />
-            <CheckButton name="#이색적인" />
+            {atmoTypes.map((type) => (
+                <CheckButton
+                    checkState={checkedList.includes(type)}
+                    type={type}
+                    onClick={handleCheck}
+                />
+            ))}
         </Div>
     );
-};
+}
 
 export default SelectAtmosphere;
 

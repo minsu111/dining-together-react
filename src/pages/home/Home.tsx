@@ -121,11 +121,11 @@ const Section = styled.section`
     transform: translate(-50%, 0);
     overflow: hidden;
 
-    display: flex;
-    flex-direction: column;
     border: 1px solid #e8e8e8;
 `;
+
 const TopBar = styled.div`
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;

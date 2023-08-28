@@ -8,6 +8,7 @@ import DimmedLayer from '../../components/common/DimmedLayer';
 import CalendarIcon from '../../assets/calendar.svg';
 import PeopleIcon from '../../assets/people.svg'
 import WatchIcon from '../../assets/watch.svg';
+import axiosRequset from '../../api/api';
 
 import BigImageSample from '../../assets/ImageSampleB.svg'
 

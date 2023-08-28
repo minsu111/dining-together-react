@@ -12,6 +12,8 @@ import EditName from '../pages/mypage/EditName';
 import EditPhoneNumber from '../pages/mypage/EditPhoneNumber';
 import EditPassword from '../pages/mypage/EditPassword';
 import AddStore from '../pages/mypage/AddStore';
+import AddStoreFin from '../pages/mypage/AddStoreFin';
+import AddStoreDetail from '../pages/mypage/AddStoreDetail';
 import SignUp from '../pages/auth/SignUp';
 import SearchResult from '../pages/search/SearchResult';
 import AdminStore from '../pages/Admin/AdminStore';
@@ -53,6 +55,8 @@ const router = createBrowserRouter([
             { path: '/my/infoEdit/password', element: <EditPassword /> },
             { path: '/my/infoEdit/withdraw', element: <DeleteAccount /> },
             { path: '/my/store', element: <AddStore /> },
+            { path: '/my/store/fin', element: <AddStoreFin /> },
+            { path: '/my/store/detail', element: <AddStoreDetail /> },
         ],
     },
 ]);

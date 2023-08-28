@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import {ScrollMenu} from 'react-horizontal-scrolling-menu';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -13,7 +13,7 @@ import axiosRequest from '../../api/api';
 
 function Home() {
     const [storeList, setStoreList] = useState<Record<string, any>>({});
-    useEffect(()=>{
+    useEffect(() => {
         const fetch = async () => {
             try {
                 setStoreList(await axiosRequest('GET', '/home'));
@@ -21,26 +21,26 @@ function Home() {
                 // 여기에 에러 처리
                 console.log('에러');
             }
-        }
+        };
         fetch();
     }, []);
 
-    return(
-    <> // Selection 제거
-        <TopBar>
-            <img alt="" src={Logo}/>
-        </TopBar>
-        <Slider autoplay speed={1000} infinite pauseOnHover>
-            <img alt="" src={BigImageSample}/>
-            <img alt="" src={BigImageSample}/>
-            <img alt="" src={BigImageSample}/>
-        </Slider>
-        {Object.keys(storeList).map((value, index) => {
-        return(
-        <RecommendList title={value} storeList={storeList}/>
-        )})}        
-    </>
-    )
+    // Selection 제거
+    return (
+        <>
+            <TopBar>
+                <img alt="" src={Logo} />
+            </TopBar>
+            <Slider autoplay speed={1000} infinite pauseOnHover>
+                <img alt="" src={BigImageSample} />
+                <img alt="" src={BigImageSample} />
+                <img alt="" src={BigImageSample} />
+            </Slider>
+            {Object.keys(storeList).map((value, index) => {
+                return <RecommendList title={value} storeList={storeList} />;
+            })}
+        </>
+    );
 }
 
 type StoreCardProps = {
@@ -64,15 +64,17 @@ const StoreCard = (props: StoreCardProps) => {
         h5 {
             font-size: 14px;
         }
-        p{
+        p {
             font-size: 12px;
         }
     `;
     return (
         <Card>
-            <Image alt="" src={props.imgUrl}/>
+            <Image alt="" src={props.imgUrl} />
             <h5>{props.storeName}</h5>
-            <p>{props.minCount} ~ {props.maxCount}명 · {props.foodType}</p>
+            <p>
+                {props.minCount} ~ {props.maxCount}명 · {props.foodType}
+            </p>
         </Card>
     );
 };
@@ -81,8 +83,7 @@ type RecommendListProps = {
     title: string;
 };
 
-
-const RecommendList = (props: RecommendListProps) =>{
+const RecommendList = (props: RecommendListProps) => {
     const Title = styled.h3`
         font-size: 20px;
         font-weight: bold;
@@ -96,12 +97,20 @@ const RecommendList = (props: RecommendListProps) =>{
             <Title>{props.title}</Title>
 
             <ScrollMenu>
-                {props.storeList[props.title].map((value: Record<string, any>)=>{
-                        return(
-                            <StoreCard imgUrl={SmallImageSmaple} storeName={value.storeId} minCount={10} maxCount={40} foodType={value.foodType}/>
-                        )
-                    })}
-            </ScrollMenu>   
+                {props.storeList[props.title].map(
+                    (value: Record<string, any>) => {
+                        return (
+                            <StoreCard
+                                imgUrl={SmallImageSmaple}
+                                storeName={value.storeId}
+                                minCount={10}
+                                maxCount={40}
+                                foodType={value.foodType}
+                            />
+                        );
+                    },
+                )}
+            </ScrollMenu>
         </Container>
     );
 };

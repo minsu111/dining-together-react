@@ -7,7 +7,7 @@ import { faRotate } from '@fortawesome/free-solid-svg-icons';
 import SolidLine from '../../SolidLine';
 import Button from '../../../../components/common/Button';
 
-import { SearchModalType } from '../Enum';
+import { SearchModalType } from '../enum/Enum';
 
 type ModalProps = {
     title: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { SearchModalType } from './modal/Enum';
+import { SearchModalType } from './modal/enum/Enum';
 
 type Props = {
     category: string;

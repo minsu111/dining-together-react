@@ -3,21 +3,16 @@ import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 type CheckBoxProps = {
-    disabled?: boolean;
-    checked?: boolean;
+    handleStartBtn: (key: string, value: boolean) => void;
 };
 
-const AgreementCheckBox: React.FC<CheckBoxProps> = () => {
+const AgreementCheckBox = ({ handleStartBtn }: CheckBoxProps) => {
     const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
     const [isTermsChecked, setIsTermsChecked] = useState<boolean>(false);
     const [isPrivacyChecked, setIsPrivacyChecked] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isTermsChecked && isPrivacyChecked) {
-            setIsAllChecked(true);
-        } else {
-            setIsAllChecked(false);
-        }
+        setIsAllChecked(isTermsChecked && isPrivacyChecked);
     }, [isTermsChecked, isPrivacyChecked]);
 
     const handleAllChange = () => {
@@ -25,13 +20,16 @@ const AgreementCheckBox: React.FC<CheckBoxProps> = () => {
         setIsAllChecked(newValue);
         setIsTermsChecked(newValue);
         setIsPrivacyChecked(newValue);
+        handleStartBtn('agreement', newValue);
     };
 
     const handleTermsChange = () => {
+        handleStartBtn('agreement', !isTermsChecked && isPrivacyChecked);
         setIsTermsChecked(!isTermsChecked);
     };
 
     const handlePrivacyChange = () => {
+        handleStartBtn('agreement', isTermsChecked && !isPrivacyChecked);
         setIsPrivacyChecked(!isPrivacyChecked);
     };
 

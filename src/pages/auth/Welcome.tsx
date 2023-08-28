@@ -6,14 +6,7 @@ import WelcomCustomerImg from '../../assets/party.svg';
 import WelcomOwnerImg from '../../assets/store.svg';
 
 const Welcome = () => {
-    const [switchContent, setSwitchContent] = useState<boolean>(false);
-
-    const handleImsi1Click = () => {
-        setSwitchContent(true);
-    };
-    const handleImsi2Click = () => {
-        setSwitchContent(false);
-    };
+    const userType = localStorage.getItem('userType');
 
     const navigate = useNavigate();
     const goToHome = () => {
@@ -25,7 +18,7 @@ const Welcome = () => {
 
     return (
         <div>
-            {!switchContent && (
+            {userType === '1' && (
                 <Section>
                     <Title>
                         회원가입 완료!
@@ -47,13 +40,10 @@ const Welcome = () => {
                             text="회식장소 보러 가기"
                             onClick={goToHome}
                         />
-                        <ImsiButton onClick={handleImsi1Click}>
-                            사장님 가입완료 뷰
-                        </ImsiButton>
                     </Wrapper>
                 </Section>
             )}
-            {switchContent && (
+            {userType === '2' && (
                 <Section>
                     <Title>
                         <br />
@@ -74,9 +64,6 @@ const Welcome = () => {
                             text="회식장소 등록하러 가기"
                             onClick={goToAddStore}
                         />
-                        <ImsiButton onClick={handleImsi2Click}>
-                            일반회원 가입완료 뷰
-                        </ImsiButton>
                     </Wrapper>
                 </Section>
             )}

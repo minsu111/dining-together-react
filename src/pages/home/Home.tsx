@@ -7,10 +7,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import GNBArea from '../../components/common/GNB';
 import Logo from '../../assets/logo.svg';
-import BigImageSample from '../../assets/ImageSampleB.svg'
-import SmallImageSmaple from '../../assets/ImageSampleS.svg'
+import BigImageSample from '../../assets/ImageSampleB.svg';
+import SmallImageSmaple from '../../assets/ImageSampleS.svg';
 import axiosRequest from '../../api/api';
-
 
 function Home() {
     const [storeList, setStoreList] = useState<Record<string, any>>({});
@@ -27,7 +26,7 @@ function Home() {
     }, []);
 
     return(
-    <Section>
+    <> // Selection 제거
         <TopBar>
             <img alt="" src={Logo}/>
         </TopBar>
@@ -39,64 +38,63 @@ function Home() {
         {Object.keys(storeList).map((value, index) => {
         return(
         <RecommendList title={value} storeList={storeList}/>
-        )})}
-        <GNBArea />
-        
-    </Section>
+        )})}        
+    </>
     )
 }
 
-type StoreCardProps={
+type StoreCardProps = {
     imgUrl: string;
     storeName: string;
-    minCount: number; 
+    minCount: number;
     maxCount: number;
     foodType: string;
-}
+};
 
 const StoreCard = (props: StoreCardProps) => {
     const Image = styled.img`
         width: 124px;
         height: 124px;
         border-radius: 10px;
-    `
+    `;
     const Card = styled.div`
         width: 124px;
         height: 172px;
         margin-left: 10px;
-        h5{
+        h5 {
             font-size: 14px;
         }
         p{
             font-size: 12px;
         }
-    `
-    return(
+    `;
+    return (
         <Card>
             <Image alt="" src={props.imgUrl}/>
             <h5>{props.storeName}</h5>
             <p>{props.minCount} ~ {props.maxCount}명 · {props.foodType}</p>
         </Card>
-    )
-}
+    );
+};
 
-type RecommendListProps={
+type RecommendListProps = {
     title: string;
-    storeList: Record<string, any>;
-}
+};
+
 
 const RecommendList = (props: RecommendListProps) =>{
     const Title = styled.h3`
         font-size: 20px;
         font-weight: bold;
-    `
+    `;
     const Container = styled.div`
         margin: 30px 0 0 20px;
-    `
+    `;
 
     return (
         <Container>
             <Title>{props.title}</Title>
+
             <ScrollMenu>
                 {props.storeList[props.title].map((value: Record<string, any>)=>{
                         return(
@@ -105,27 +103,20 @@ const RecommendList = (props: RecommendListProps) =>{
                     })}
             </ScrollMenu>   
         </Container>
-    )
-}
+    );
+};
 
 export default Home;
 
-const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
-    border: 1px solid #e8e8e8;
-`;
-
+// TopBar 포지션 및 위치 조정
 const TopBar = styled.div`
-    height: 48px;
+    position: fixed;
+    top: 0;
+    width: 390px;
+    height: 50px;
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid grey;
     display: flex;
     align-items: center;
     justify-content: center;

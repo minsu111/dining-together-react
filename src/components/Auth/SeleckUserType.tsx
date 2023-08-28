@@ -1,54 +1,67 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
-type CheckBoxProps = {
-    selectedOption: string;
+type SeleckUserTypeProps = {
+    userType: string;
     onOptionChange: (value: string) => void;
 };
 
-const CheckBox: React.FC<CheckBoxProps> = ({
-    selectedOption,
+const SeleckUserType: React.FC<SeleckUserTypeProps> = ({
+    userType,
     onOptionChange,
 }) => {
+    const setUserType1 = () => {
+        localStorage.setItem('userType', '1');
+        localStorage.removeItem('2');
+    };
+    const setUserType2 = () => {
+        localStorage.setItem('userType', '2');
+        localStorage.removeItem('1');
+    };
+
     return (
         <CheckBoxContainer>
             <CheckBoxLabel
                 htmlFor="option1"
-                checked={selectedOption === 'option1'}
+                checked={userType === '1'}
                 onClick={() => {
-                    onOptionChange('option1');
+                    onOptionChange('1');
+                    setUserType1();
                 }}
             >
                 <CheckBoxInput
                     type="radio"
                     id="option1"
                     value="option1"
-                    checked={selectedOption === 'option1'}
+                    checked={userType === '1'}
                     onChange={() => {
-                        onOptionChange('option1');
+                        onOptionChange('1');
+                        setUserType1();
                     }}
                 />
-                <CheckBoxSpan checked={selectedOption === 'option1'}>
+                <CheckBoxSpan checked={userType === '1'}>
                     (일반회원) 회식장소 예약
                 </CheckBoxSpan>
             </CheckBoxLabel>
             <CheckBoxLabel
                 htmlFor="option2"
-                checked={selectedOption === 'option2'}
+                checked={userType === '2'}
                 onClick={() => {
-                    onOptionChange('option2');
+                    onOptionChange('2');
+                    setUserType2();
                 }}
             >
                 <CheckBoxInput
                     type="radio"
                     id="option2"
                     value="option2"
-                    checked={selectedOption === 'option2'}
+                    checked={userType === '2'}
                     onChange={() => {
-                        onOptionChange('option2');
+                        onOptionChange('2');
+                        setUserType2();
                     }}
                 />
-                <CheckBoxSpan checked={selectedOption === 'option2'}>
+                <CheckBoxSpan checked={userType === '2'}>
                     (사장님) 회식장소 등록
                 </CheckBoxSpan>
             </CheckBoxLabel>
@@ -56,7 +69,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
     );
 };
 
-export default CheckBox;
+export default SeleckUserType;
 
 const CheckBoxContainer = styled.div`
     width: 350px;

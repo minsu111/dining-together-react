@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+// import jwt from 'jsonwebtoken';
+import axiosRequest from '../../api/api';
+import { emailRegEx } from '../../utils/utils';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
-import axiosRequest from '../../api/api';
 
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [emailValid, setEmailValid] = useState(false);
     const [isFailLogin, setIsFailLogin] = useState<boolean>(false);
 
-    // 로그인 버튼 활성화 조건
-    const activeButton = email.includes('@') && password.length >= 4;
+    // email 밸리데이션
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+        setEmailValid(emailRegEx.test(e.target.value));
+    };
+
+    // 비밀번호 length 확인
+    const activeButton = password.length >= 4;
+
+    // '확인' 버튼 클릭 시 팝업 닫기
+    const closeFailLoginPopup = () => {
+        setIsFailLogin(false);
+    };
+
+    const navigate = useNavigate();
+    const goToHome = () => {
+        navigate('/home');
+    };
 
     const loginConfirm = async () => {
         // 로그인 api 호출
@@ -22,13 +41,13 @@ function Login() {
                 password,
             });
             // 로컬스토리지에 토큰 저장
-            if (result.data.token) {
-                localStorage.setItem('jwt_token', result.data.token);
-            }
-            console.log(
-                '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                result,
-            );
+            const loginToken = result.token;
+            localStorage.setItem('jwt_token', loginToken);
+
+            // const decodedToken = jwt.verify(loginToken, '');
+            // console.log(decodedToken);
+
+            goToHome();
         } catch (error: any) {
             const errorStatus = error.status;
             switch (errorStatus) {
@@ -60,7 +79,7 @@ function Login() {
                     placeholder="이메일 (아이디)"
                     type="text"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleEmail}
                 />
             </InputWrapper>
             <InputWrapper>
@@ -75,7 +94,7 @@ function Login() {
                 <Button
                     text="로그인"
                     onClick={loginConfirm}
-                    disabled={!activeButton}
+                    disabled={!emailValid || !activeButton}
                 />
             </div>
             {isFailLogin && (
@@ -83,6 +102,7 @@ function Login() {
                     title="로그인 실패"
                     contents="존재하지 않는 아이디거나
 비밀번호가 일치하지 않습니다."
+                    onClose={closeFailLoginPopup}
                 />
             )}
 

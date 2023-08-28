@@ -18,7 +18,10 @@ type ModalProps = {
     onClose: (modalType: SearchModalType) => void;
 };
 
-const FilterModal: React.FC<ModalProps> = (props) => {
+/**
+ * 상세필터들의 공통 부분을 모아놓은 컴포넌트
+ */
+function FilterModal(props: ModalProps) {
     const handleClose = () => {
         props.onClose(props.modalType);
     };
@@ -26,7 +29,7 @@ const FilterModal: React.FC<ModalProps> = (props) => {
     return (
         <Modal
             isOpen={props.isOpen}
-            onRequestClose={handleClose}
+            // onRequestClose={handleClose}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -38,8 +41,8 @@ const FilterModal: React.FC<ModalProps> = (props) => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    // gap: '20px',
                     inset: 0,
+                    margin: '0 auto',
                 },
             }}
         >
@@ -69,7 +72,7 @@ const FilterModal: React.FC<ModalProps> = (props) => {
             </FooterDiv>
         </Modal>
     );
-};
+}
 
 export default FilterModal;
 

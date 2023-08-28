@@ -33,7 +33,7 @@ function DatetimeSelectorModal(props: ModalProps) {
     return (
         <Modal
             isOpen={props.isOpen}
-            onRequestClose={handleClose}
+            // onRequestClose={handleClose}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -46,6 +46,7 @@ function DatetimeSelectorModal(props: ModalProps) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     inset: 0,
+                    margin: '0 auto',
                 },
             }}
         >

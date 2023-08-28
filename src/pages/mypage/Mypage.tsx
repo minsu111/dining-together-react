@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -9,12 +9,14 @@ import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
 
 function Mypage() {
+    // const [isToken, setIsToken] = useState<boolean>(false);
+    // const userId = localStorage.getItem('userId');
+    const [data, setData] = useState({ name: '', email: '' });
     const userType: string | null = localStorage.getItem('userType');
-    const userId = localStorage.getItem('userId');
 
     const navigate = useNavigate();
     const goToMy = (path: string) => {
-        navigate(`/my/${path}`);
+        navigate(`/my/${path}`, { state: { data } });
     };
     const goLogin = () => {
         navigate(`/login`);
@@ -27,15 +29,18 @@ function Mypage() {
         }
         const getUserInfo = async () => {
             try {
-                const result = await axiosRequest(
-                    'GET',
-                    `/api/user/${userId}`,
-                    {},
+                const result = await axiosRequest('GET', '/user/28', {});
+                console.log(
+                    '🚀 ~ file: Mypage.tsx:37 ~ getUserInfo ~ result:',
+                    result,
                 );
+                const { name, email } = result;
+                setData({ name, email });
             } catch (error: any) {
                 alert('조회 실패');
             }
         };
+        getUserInfo();
     }, []);
 
     return (
@@ -46,21 +51,21 @@ function Mypage() {
                     <TitleSection>
                         <TitleWrapper>
                             <Title>
-                                안녕하세요 <span>엘리스</span> 님
+                                안녕하세요 <span>{data.name}</span> 님
                             </Title>
                         </TitleWrapper>
-                        <Account>elice111@gmail.com</Account>
+                        <Account>{data.email}</Account>
                     </TitleSection>
                 )}
                 {userType === '2' && userType !== null && (
                     <TitleSection>
                         <TitleWrapper>
                             <Title>
-                                안녕하세요 <span>엘리스</span> 님
+                                안녕하세요 <span>{data.name}</span> 님
                             </Title>
                             <OwnerBadge>사장님</OwnerBadge>
                         </TitleWrapper>
-                        <Account>elice111@gmail.com</Account>
+                        <Account>{data.email}</Account>
                         <hr />
                         <OwnerPageText>
                             가게 등록하고 <span>간편하게</span>

@@ -105,7 +105,7 @@ const SignUpTest = () => {
     return (
         <div>
             {!showSignUpForm && !showExtraInfo && (
-                <Section>
+                <>
                     <TopNaviBarBack pageName=" " prevPath="/login" />
                     <Title>
                         가입 목적을 <br />
@@ -127,10 +127,10 @@ const SignUpTest = () => {
                             disabled={!isNextBtnEnabled}
                         />
                     </Wrapper>
-                </Section>
+                </>
             )}
             {showSignUpForm && (
-                <Section>
+                <>
                     <SignUpForm
                         // signUpData={signUpData}
                         setSignUpForm={setSignUpForm}
@@ -147,7 +147,7 @@ const SignUpTest = () => {
                             }
                         />
                     </Wrapper>
-                </Section>
+                </>
             )}
             {showExtraInfo && <ExtraInfo signUpData={signUpData} />}
         </div>
@@ -156,24 +156,9 @@ const SignUpTest = () => {
 
 export default SignUpTest;
 
-const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #e8e8e8;
-`;
-
 const Title = styled.h1`
     font-size: 34px;
+    font-weight: 500;
     line-height: 45px;
     padding: 30px 20px;
     margin-bottom: 40px;

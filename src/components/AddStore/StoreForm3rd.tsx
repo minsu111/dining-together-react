@@ -1,13 +1,15 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Input from '../common/Input';
 import OpenTimeSelect from './OpenTime';
 import CloseTimeSelect from './CloseTime';
 import DayoffSelect from './Dayoff';
 
-function StoreForm3rd() {
+type StoreForm3rdProps = {
+    handleChangeInfo: (k: string, v: string) => void;
+};
+
+function StoreForm3rd({ handleChangeInfo }: StoreForm3rdProps) {
     return (
         <section>
             <Inner>
@@ -19,27 +21,40 @@ function StoreForm3rd() {
                             <CloseTimeSelect />
                         </div>
                     </div>
-                    
+
                     <div className="content">
                         <h4>휴무일</h4>
                         <div>
                             <DayoffSelect />
                         </div>
                     </div>
-                    
-                    
+
                     <div className="inputarea">
-                        <Input label='최대 수용 인원' inputType='number' width='80px' />
+                        <Input
+                            name='maxNum'
+                            label="최대 수용 인원"
+                            inputType="number"
+                            width="80px"
+                            onChange={(e) =>
+                                handleChangeInfo('storeContact', e.target.value)
+                            }
+                        />
                         <p>명</p>
                     </div>
 
                     <div className="inputarea">
-                        <Input label='인당 가격' inputType='number' width='150px' />
+                        <Input
+                            name='cost'
+                            label="인당 가격"
+                            inputType="number"
+                            width="150px"
+                            onChange={(e) =>
+                                handleChangeInfo('storeContact', e.target.value)
+                            }
+                        />
                         <p>원</p>
                     </div>
-                    
                 </FormSC>
-
             </Inner>
         </section>
     );
@@ -65,11 +80,11 @@ const FormSC = styled.div`
         font-size: 14px;
         color: #333;
     }
-    
+
     textarea {
         width: 100%;
         height: 200px;
-        background-color: #F1F1F1;
+        background-color: #f1f1f1;
         border-radius: 7px;
         outline: none;
         padding: 15px 20px;
@@ -87,7 +102,7 @@ const FormSC = styled.div`
         display: flex;
         align-items: flex-end;
     }
-    
+
     p {
         margin-left: 10px;
         padding-bottom: 35px;
@@ -99,4 +114,3 @@ const FormSC = styled.div`
         font-size: 12px;
     }
 `;
-

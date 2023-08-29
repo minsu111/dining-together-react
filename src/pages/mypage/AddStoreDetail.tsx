@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import TableInfo from '../../components/AddStore/TableInfo';
 import TopNaviBar from '../../components/common/TopNaviBar';
+import Button from '../../components/common/Button';
 
 function AddStoreDetail() {
     return (
@@ -10,7 +11,7 @@ function AddStoreDetail() {
                 <TopNaviBar pageName='자리 등록' />
             </Header>
             <Inner>
-                <TableInfo placeName='' minPeople='' maxPeople=''  handleChangeInfo={() => {}} />
+                <TableInfo  handleChangeInfo={() => {}} /> 
             </Inner>
         </section>
     );
@@ -29,33 +30,4 @@ const Inner = styled.div`
     width: 350px;
     height: 100%;
     position: relative;
-`;
-
-const ConSC = styled.div`
-    width: 100%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    img {
-        width: 200px;
-        height: 200px;
-        margin-bottom: 50px;
-    }
-
-    span {
-        font-size: 24px;
-        font-weight: 600;
-    }
-`;
-
-const ButtonSC = styled.div`
-    width: 100%;
-    position: absolute;
-    bottom: 20px;
 `;

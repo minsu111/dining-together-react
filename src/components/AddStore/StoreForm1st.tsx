@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Input from '../common/Input';
 import Postcode from './PostCode';
 import AreaSelect from './AreaSelect';
 
 type StoreForm1stProps = {
-    storeName: string;
-    storeContact: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
 function StoreForm1st({
-    storeName,
-    storeContact,
     handleChangeInfo,
 }: StoreForm1stProps) {
     return (
@@ -22,7 +18,6 @@ function StoreForm1st({
                     <Input
                         label="가게 상호명"
                         name="storeName"
-                        value={storeName}
                         inputType="text"
                         placeholder="가게명을 입력해주세요."
                         onChange={(e) => {
@@ -32,7 +27,6 @@ function StoreForm1st({
                     <Input
                         label="전화번호"
                         name="storeContact"
-                        value={storeContact}
                         inputType="number"
                         placeholder="전화번호를 입력해주세요."
                         onChange={(e) =>

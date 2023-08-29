@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -6,13 +6,7 @@ import FoodTypeTag from './FoodTag';
 import ParkingTag from './ParkingTag';
 import MoodTag from './MoodTag';
 
-// type StoreForm2ndProps = {
-//     foodCategory: string;       
-//     isParking: number;
-//     handleChangeName: (k:string, v:string) => void;
-// }
 
-// function StoreForm2nd({foodCategory, isParking, handleChangeName}:StoreForm2ndProps) {
 function StoreForm2nd() {
 
     return (

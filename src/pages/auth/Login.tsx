@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
-// import jwt from 'jsonwebtoken';
 import axiosRequest from '../../api/api';
 import { emailRegEx } from '../../utils/utils';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
 import { login } from '../../app/UserSlice';
+import HandleError from '../../utils/Error';
 
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [emailValid, setEmailValid] = useState(false);
-    const [isFailLogin, setIsFailLogin] = useState<boolean>(false);
+    const [popupState, setPopupState] = useState<boolean>(false);
 
     // email 밸리데이션
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +26,7 @@ function Login() {
 
     // '확인' 버튼 클릭 시 팝업 닫기
     const closeFailLoginPopup = () => {
-        setIsFailLogin(false);
+        setPopupState(false);
     };
 
     const navigate = useNavigate();
@@ -54,34 +54,23 @@ function Login() {
 
     const loginConfirm = async () => {
         // 로그인 api 호출
-        try {
-            const result = await axiosRequest('POST', '/user/login', {
+        // try {
+        const result = await axiosRequest(
+            'POST',
+            '/user/login',
+            {
                 email,
                 password,
-            });
-            // 로컬스토리지에 토큰 저장
-            localStorage.setItem('jwt_token', result.token);
-            // localStorage.setItem('userType', result.userType);
+            },
+            setPopupState,
+            HandleError,
+        );
+        // 로컬스토리지에 토큰 저장
+        localStorage.setItem('jwt_token', result.token);
+        // localStorage.setItem('userType', result.userType);
 
-            await getUserInfo(result.userId);
-            goToHome();
-        } catch (error: any) {
-            const errorStatus = error.status;
-            switch (errorStatus) {
-                case 401:
-                    setIsFailLogin(true);
-                    break;
-                case 500:
-                    alert('오류가 발생했습니다. 다시 한 번 시도해주세요.');
-                    break;
-                default:
-                    break;
-            }
-            console.log(
-                '🚀 ~ file: Login.tsx:40 ~ loginConfirm ~ error:',
-                error,
-            );
-        }
+        await getUserInfo(result.userId);
+        goToHome();
     };
 
     return (
@@ -113,7 +102,7 @@ function Login() {
                     disabled={!emailValid || !activeButton}
                 />
             </div>
-            {isFailLogin && (
+            {popupState && (
                 <ConfirmPopup
                     title="로그인 실패"
                     contents="존재하지 않는 아이디거나

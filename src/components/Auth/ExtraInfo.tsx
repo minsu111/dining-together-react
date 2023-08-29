@@ -110,13 +110,15 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
                 '/user/signup',
                 updatedsignUpData,
             );
-            loginConfirm(updatedsignUpData.email, updatedsignUpData.password);
-            console.log(
-                '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                result,
-            );
+            if (result) {
+                loginConfirm(
+                    updatedsignUpData.email,
+                    updatedsignUpData.password,
+                );
+            }
         } catch (error: any) {
             alert('회원가입 실패');
+            localStorage.removeItem('userType');
         }
     };
 

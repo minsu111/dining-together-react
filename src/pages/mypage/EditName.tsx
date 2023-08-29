@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
-import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../app/UserSlice';
 import { RootState } from '../../app/store';
 
@@ -20,11 +20,12 @@ function EditName() {
         setName(e.target.value);
     };
     const user = useSelector((state: RootState) => state.user);
+    console.log('🚀 ~ file: EditName.tsx:23 ~ EditName ~ user:', user);
     const dispatch = useDispatch();
 
     const editName = async () => {
         try {
-            const result = await axiosRequest('PUT', `/${user.userId}`, {
+            const result = await axiosRequest('PUT', `/user/${user.userId}`, {
                 name,
             });
             if (result) {

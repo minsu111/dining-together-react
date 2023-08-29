@@ -11,9 +11,11 @@ const Welcome = () => {
     const navigate = useNavigate();
     const goToHome = () => {
         navigate('/home');
+        localStorage.removeItem('userType');
     };
     const goToAddStore = () => {
         navigate('/my/store');
+        localStorage.removeItem('userType');
     };
 
     return (

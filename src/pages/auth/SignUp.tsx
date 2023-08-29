@@ -97,11 +97,9 @@ const SignUpTest = () => {
                     '/user/signup',
                     signUpData,
                 );
-                loginConfirm(signUpData.email, signUpData.password);
-                console.log(
-                    '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                    result,
-                );
+                if (result) {
+                    loginConfirm(signUpData.email, signUpData.password);
+                }
             } catch (error: any) {
                 alert('회원가입 실패');
                 localStorage.removeItem('userType');

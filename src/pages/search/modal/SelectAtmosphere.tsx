@@ -1,16 +1,31 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Modal from 'react-modal';
+import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
 import CheckButton from './CheckButton';
-import { AtmosphereType } from './enum/Enum';
 
-function SelectAtmosphere() {
-    const checkedListData: Array<AtmosphereType> = new Array<AtmosphereType>(); // 원래 이 컴포넌트의 props로 받아와야하는 데이터
-    checkedListData.push(AtmosphereType.Type1); // 테스트용
+import { RootState } from '../../../app/store';
+import { setAtmosphere } from '../store/FilterSlice';
+import { AtmosphereType, SearchModalType } from './enum/Enum';
 
-    const atmoTypes = Object.values(AtmosphereType);
+/**
+ * 분위기 필터 Modal
+ */
+function SelectAtmosphere(props: {
+    isOpen: boolean;
+    onClose: (modalType: SearchModalType) => void;
+}) {
+    const enumTypes = Object.values(AtmosphereType);
 
-    const [checkedList, setCheckedList] =
-        useState<Array<AtmosphereType>>(checkedListData);
+    const dispatch = useDispatch();
+    const atmosphere = useSelector((state: RootState) => {
+        return state.filter.atmosphere;
+    });
+
+    const deepCopyArray: string[] = JSON.parse(JSON.stringify(atmosphere));
+    const [checkedList, setCheckedList] = useState<string[]>(deepCopyArray);
 
     // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
     const handleCheck = (checkItem: AtmosphereType) => {
@@ -21,16 +36,59 @@ function SelectAtmosphere() {
         }
     };
 
+    const handleReset = () => {
+        // TODO:
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.Atmosphere);
+    };
+
+    const handleConfirm = () => {
+        dispatch(setAtmosphere(checkedList));
+
+        handleClose();
+    };
+
     return (
-        <Div>
-            {atmoTypes.map((type) => (
-                <CheckButton
-                    checkState={checkedList.includes(type)}
-                    type={type}
-                    onClick={handleCheck}
-                />
-            ))}
-        </Div>
+        <Modal
+            isOpen={props.isOpen}
+            onAfterClose={() => {
+                // 유저가 수정은 했으나 적용하지 않은 내용을 버리고 화면을 리셋시킨다
+                setCheckedList([...atmosphere]);
+            }}
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                content: {
+                    width: '390px',
+                    height: '100%',
+                    padding: '0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    inset: 0,
+                    margin: '0 auto',
+                },
+            }}
+        >
+            <FilterHeader onClickReset={handleReset} title="분위기" />
+            <ContentDiv>
+                <Div>
+                    {enumTypes.map((type) => (
+                        <CheckButton
+                            checkState={checkedList.includes(type)}
+                            type={type}
+                            onClick={handleCheck}
+                        />
+                    ))}
+                </Div>
+            </ContentDiv>
+
+            <FilterFooter onClose={handleClose} onConfirm={handleConfirm} />
+        </Modal>
     );
 }
 

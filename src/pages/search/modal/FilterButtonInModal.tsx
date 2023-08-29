@@ -62,7 +62,7 @@ const Div = styled.div`
     width: 100%;
     height: 60px;
     display: flex;
-    //border: 1px solid black;
+    cursor: pointer;
 `;
 
 const LeftDiv = styled.div`
@@ -70,7 +70,7 @@ const LeftDiv = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding-top: 13px;
+    padding-top: 16px;
 `;
 
 const CenterDiv = styled.div`

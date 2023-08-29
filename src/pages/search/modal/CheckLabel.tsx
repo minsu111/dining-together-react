@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { RegionType } from './enum/Enum';
 
-const CheckLabel: React.FC<{ name: string }> = ({ name }) => {
-    const [opacity, setOpacity] = useState(0);
+type CheckBoxProps = {
+    checkState: boolean;
+    type: RegionType;
+    onChange: (type: RegionType) => void;
+};
+function CheckLabel({ checkState, type, onChange }: CheckBoxProps) {
+    const [opacity, setOpacity] = useState(checkState ? 1 : 0);
 
     const toggleOpacity = () => {
         setOpacity(opacity === 1 ? 0 : 1);
+        onChange(type);
     };
 
     return (
@@ -16,10 +23,10 @@ const CheckLabel: React.FC<{ name: string }> = ({ name }) => {
                 icon={faCheck}
                 style={{ opacity, color: '#ffb100' }}
             />
-            {name}
+            {type}
         </Div>
     );
-};
+}
 
 export default CheckLabel;
 

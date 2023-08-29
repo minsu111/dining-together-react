@@ -1,8 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
+import filterSlice from '../pages/search/store/FilterSlice';
 import { userSlice } from './UserSlice';
 
 // export const store = configureStore({
@@ -13,6 +15,7 @@ import { userSlice } from './UserSlice';
 
 const reducers = combineReducers({
     user: userSlice.reducer,
+    filter: filterSlice.reducer,
 });
 
 const persistConfig = {

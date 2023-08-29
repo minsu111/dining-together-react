@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REACT_APP_BASE_URL = 'http://18.190.7.141/api';
+const REACT_APP_BASE_URL = 'http://13.209.102.55/api';
 
 const authInstance = axios.create({
     baseURL: REACT_APP_BASE_URL,
@@ -10,6 +10,7 @@ const authInstance = axios.create({
     timeout: 3000,
 });
 
+// 요청 인터셉터
 authInstance.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('jwt_token');
@@ -29,6 +30,7 @@ authInstance.interceptors.request.use(
     },
 );
 
+// 응답 인터셉터
 authInstance.interceptors.response.use(
     (response) => {
         return response;
@@ -40,7 +42,13 @@ authInstance.interceptors.response.use(
 
 const allowMethod: string[] = ['GET', 'POST', 'PUT'];
 
-const axiosRequest = async (method: string, url: string, data = {}) => {
+const axiosRequest = async (
+    method: string,
+    url: string,
+    data = {},
+    setPopupState?: any,
+    HandleError?: any,
+) => {
     if (!allowMethod.includes(method))
         throw new Error('허용되지 않은 호출 method입니다.');
     try {
@@ -52,8 +60,12 @@ const axiosRequest = async (method: string, url: string, data = {}) => {
 
         return response.data;
     } catch (error) {
+        if (!HandleError) {
+            throw error;
+        }
         console.log(error);
-        throw error;
+        HandleError(error, setPopupState);
+        return '';
     }
 };
 

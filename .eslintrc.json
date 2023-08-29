@@ -34,6 +34,8 @@
         "import/no-duplicates": "warn",
         "@typescript-eslint/no-redeclare": "warn",
         "@typescript-eslint/ban-ts-comment": "warn",
-        "spaced-comment": "warn"
+        "spaced-comment": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "react-hooks/exhaustive-deps": "off"
     }
 }

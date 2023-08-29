@@ -1,56 +1,80 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
-import TopNaviBarBack from '../../components/common/TopNaviBarBack';
+import axiosRequest from '../../api/api';
+import { emailRegEx } from '../../utils/utils';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
-import axiosRequest from '../../api/api';
+import { login } from '../../app/UserSlice';
+import HandleError from '../../utils/Error';
 
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [isFailLogin, setIsFailLogin] = useState<boolean>(false);
+    const [emailValid, setEmailValid] = useState(false);
+    const [popupState, setPopupState] = useState<boolean>(false);
 
-    // 로그인 버튼 활성화 조건
-    const activeButton = email.includes('@') && password.length >= 4;
+    // email 밸리데이션
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+        setEmailValid(emailRegEx.test(e.target.value));
+    };
+
+    // 비밀번호 length 확인
+    const activeButton = password.length >= 4;
+
+    // '확인' 버튼 클릭 시 팝업 닫기
+    const closeFailLoginPopup = () => {
+        setPopupState(false);
+    };
+
+    const navigate = useNavigate();
+    const goToHome = () => {
+        navigate('/home');
+    };
+    const dispatch = useDispatch();
+
+    const getUserInfo = async (userId: string) => {
+        try {
+            const result = await axiosRequest('GET', `/user/${userId}`, {});
+            dispatch(
+                login({
+                    userId: `${result.userId}`,
+                    userType: `${result.userType}`,
+                    userEmail: `${result.email}`,
+                    userName: `${result.name}`,
+                    userPhoneNum: `${result.phoneNum}`,
+                }),
+            );
+        } catch (error: any) {
+            alert('조회 실패');
+        }
+    };
 
     const loginConfirm = async () => {
         // 로그인 api 호출
-        try {
-            const result = await axiosRequest('POST', '/user/login', {
+        // try {
+        const result = await axiosRequest(
+            'POST',
+            '/user/login',
+            {
                 email,
                 password,
-            });
-            // 로컬스토리지에 토큰 저장
-            if (result.data.token) {
-                localStorage.setItem('jwt_token', result.data.token);
-            }
-            console.log(
-                '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                result,
-            );
-        } catch (error: any) {
-            const errorStatus = error.status;
-            switch (errorStatus) {
-                case 401:
-                    setIsFailLogin(true);
-                    break;
-                case 500:
-                    alert('오류가 발생했습니다. 다시 한 번 시도해주세요.');
-                    break;
-                default:
-                    break;
-            }
-            console.log(
-                '🚀 ~ file: Login.tsx:40 ~ loginConfirm ~ error:',
-                error,
-            );
-        }
+            },
+            setPopupState,
+            HandleError,
+        );
+        // 로컬스토리지에 토큰 저장
+        localStorage.setItem('jwt_token', result.token);
+        // localStorage.setItem('userType', result.userType);
+
+        await getUserInfo(result.userId);
+        goToHome();
     };
 
     return (
         <Section>
-            <TopNaviBarBack pageName=" " prevPath="/" />
             <Title>
                 반가워요🍻 <br />
                 회식을 시작해볼까요?
@@ -60,7 +84,7 @@ function Login() {
                     placeholder="이메일 (아이디)"
                     type="text"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleEmail}
                 />
             </InputWrapper>
             <InputWrapper>
@@ -75,14 +99,15 @@ function Login() {
                 <Button
                     text="로그인"
                     onClick={loginConfirm}
-                    disabled={!activeButton}
+                    disabled={!emailValid || !activeButton}
                 />
             </div>
-            {isFailLogin && (
+            {popupState && (
                 <ConfirmPopup
                     title="로그인 실패"
                     contents="존재하지 않는 아이디거나
 비밀번호가 일치하지 않습니다."
+                    onClose={closeFailLoginPopup}
                 />
             )}
 
@@ -94,23 +119,14 @@ function Login() {
 export default Login;
 
 const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
+    padding: 50px 0;
     display: flex;
     flex-direction: column;
-    border: 1px solid #e8e8e8;
 `;
 
 const Title = styled.h1`
     font-size: 34px;
+    font-weight: 500;
     line-height: 45px;
     padding: 30px 20px;
     margin-bottom: 40px;

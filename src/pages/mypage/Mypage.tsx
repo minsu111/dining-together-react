@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -6,35 +7,54 @@ import { useNavigate } from 'react-router-dom';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
+import axiosRequest from '../../api/api';
+import { RootState } from '../../app/store';
+import AddStoreBtn from '../../components/common/AddStoreBtn';
 
 function Mypage() {
     const navigate = useNavigate();
     const goToMy = (path: string) => {
         navigate(`/my/${path}`);
     };
+    const goLogin = () => {
+        navigate(`/login`);
+    };
+    const user = useSelector((state: RootState) => state.user);
+    const token = localStorage.getItem('jwt_token');
+
+    useEffect(() => {
+        if (!token) {
+            goLogin();
+        }
+    }, []);
 
     return (
         <div>
             <Container>
                 <TopNaviBar pageName="마이페이지" />
-                <TitleSection>
-                    <TitleWrapper>
-                        <Title>
-                            안녕하세요 <span>엘리스</span> 님
-                        </Title>
-                        <OwnerBadge>사장님</OwnerBadge>
-                    </TitleWrapper>
-                    <Account>elice111@gmail.com</Account>
-                    <hr />
-                    <OwnerPageText>
-                        가게 등록하고 <span>간편하게</span>
-                        <br /> <span>단체 예약</span> 받으세요
-                    </OwnerPageText>
-                    <Button
-                        text="가게 등록하기"
-                        onClick={() => goToMy('store')}
-                    />
-                </TitleSection>
+                {user.userType === '1' && (
+                    <TitleSection>
+                        <TitleWrapper>
+                            <Title>
+                                안녕하세요 <span>{user.userName}</span> 님
+                            </Title>
+                        </TitleWrapper>
+                        <Account>{user.userEmail}</Account>
+                    </TitleSection>
+                )}
+                {user.userType === '2' && user.userType !== null && (
+                    <TitleSection>
+                        <TitleWrapper>
+                            <Title>
+                                안녕하세요 <span>{user.userName}</span> 님
+                            </Title>
+                            <OwnerBadge>사장님</OwnerBadge>
+                        </TitleWrapper>
+                        <Account>{user.userEmail}</Account>
+                        <hr />
+                        <AddStoreBtn />
+                    </TitleSection>
+                )}
             </Container>
             <DevideLine />
             <Container>
@@ -94,16 +114,6 @@ const OwnerBadge = styled.div`
 
 const Account = styled.h3`
     margin-bottom: 50px;
-`;
-
-const OwnerPageText = styled.h2`
-    font-size: 24px;
-    line-height: 30px;
-    margin: 30px 0;
-
-    & > span {
-        font-weight: 600;
-    }
 `;
 
 const InfoMenu = styled.button`

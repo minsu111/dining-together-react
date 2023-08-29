@@ -3,21 +3,23 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 type InputProps = {
+    name?: string;
     label?: string;
     inputType: string;
     placeholder?: string;
     width?: string;
-    onBlur?: () => void;
+    onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const Input: React.FC<InputProps> = ({
+    name,
     label,
     inputType,
     placeholder,
     width,
-    onBlur, 
-    onChange, 
+    onBlur,
+    onChange,
 }) => {
     const [input, setInput] = useState('');
 
@@ -30,14 +32,15 @@ const Input: React.FC<InputProps> = ({
             <label htmlFor="input">{label}</label>
             <InputArea
                 id="input"
+                name={name}
                 type={inputType}
                 placeholder={placeholder}
                 value={input}
-                onBlur={onBlur} 
+                onBlur={onBlur}
                 onChange={(e) => {
                     onChangeInput(e);
                     onChange?.(e);
-                }} 
+                }}
                 widthProp={width}
             />
         </InputForm>
@@ -70,4 +73,4 @@ const InputArea = styled.input<{ widthProp?: string }>`
     &::placeholder {
         color: #666;
     }
-`; 
+`;

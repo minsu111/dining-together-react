@@ -1,23 +1,29 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-
 type ConfirmPopupProps = {
     title?: string;
     contents: string;
+    onClose: () => void;
 };
 
-
-const ConfirmPopup: React.FC<ConfirmPopupProps> = ({ title, contents }) => {
+const ConfirmPopup: React.FC<ConfirmPopupProps> = ({
+    title,
+    contents,
+    onClose,
+}) => {
     const confirmClickBtn = () => {
-        console.log("확인");
-    }
+        // console.log('확인');
+        onClose();
+    };
     return (
         <ConfirmPopupSC>
             <div className="confirm_popup">
                 {title && <h3>{title}</h3>}
                 <span>{contents}</span>
-                <button type='button' onClick={confirmClickBtn}>확인</button>
+                <button type="button" onClick={confirmClickBtn}>
+                    확인
+                </button>
             </div>
         </ConfirmPopupSC>
     );
@@ -41,7 +47,7 @@ const ConfirmPopupSC = styled.div`
         width: 345px;
         height: 225px;
         border-radius: 20px;
-        padding: 50px 0;
+        padding: 32px 0; // 50px -> 32px
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -58,6 +64,7 @@ const ConfirmPopupSC = styled.div`
 
     span {
         font-size: 18px;
+        margin: 10px 20px; // margin 추가
     }
 
     button {
@@ -65,7 +72,7 @@ const ConfirmPopupSC = styled.div`
         height: 40px;
         border: none;
         border-radius: 6px;
-        background-color: #FFB100;
+        background-color: #ffb100;
         color: #fff;
         cursor: pointer;
         font-size: 14px;

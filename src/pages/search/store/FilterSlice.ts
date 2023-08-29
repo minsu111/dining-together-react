@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { RegionType } from '../modal/enum/Enum';
 
 type FilterState = {
     visitDate: Date;
-    region: string;
+    region: Array<RegionType>;
     foodType: string;
     priceMin: number;
     priceMax: number;
@@ -13,7 +14,7 @@ type FilterState = {
 
 const initialState: FilterState = {
     visitDate: new Date(),
-    region: '',
+    region: [],
     foodType: '',
     priceMin: 0,
     priceMax: 0,

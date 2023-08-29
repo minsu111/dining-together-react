@@ -25,6 +25,7 @@ import { FoodType, SearchModalType } from './modal/enum/Enum';
 function Search() {
     const navigate = useNavigate();
 
+    // 임시 코드. 이후 수정 예정.
     const [modalStateArray, setModalStateArray] = useState([
         false,
         false,
@@ -64,7 +65,7 @@ function Search() {
                 onConfirm={() => {}}
                 onClose={handleModalToggle}
             >
-                <SelectRegion data="123" />
+                <SelectRegion />
             </FilterModal>
             <FilterModal
                 title="음식 유형"

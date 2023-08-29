@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CheckLabel from './CheckLabel';
 
-const SelectRegion: React.FC<{ data: string }> = ({ data }) => {
+import { RootState } from '../../../app/store';
+import { setRegion } from '../store/FilterSlice';
+import { RegionType } from './enum/Enum';
+
+/**
+ * 지역 필터 Modal
+ */
+function SelectRegion() {
+    // props: { onConfirm: () => void }
     enum City {
         서울,
         경기,
         인천,
     }
     const [nowCity, setNowCity] = useState(City.서울);
+
+    const dispatch = useDispatch();
+    const region = useSelector((state: RootState) => {
+        return state.filter.region;
+    });
+
+    const checkedListData: Array<RegionType> = new Array<RegionType>();
+
+    const enumTypes = Object.values(RegionType);
+
+    const [checkedList, setCheckedList] =
+        useState<Array<RegionType>>(checkedListData);
+
+    // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
+    const handleCheck = (checkItem: RegionType) => {
+        if (checkedList.includes(checkItem)) {
+            setCheckedList(checkedList.filter((item) => item !== checkItem));
+        } else {
+            setCheckedList([...checkedList, checkItem]);
+        }
+    };
 
     return (
         <Div>
@@ -22,38 +52,34 @@ const SelectRegion: React.FC<{ data: string }> = ({ data }) => {
                     <CityName>서울</CityName>
                 </CityTab>
                 {/* <CityTab
-                    onClick={() => {
-                        setNowCity(City.경기);
-                    }}
-                    className={nowCity === City.경기 ? 'selected' : ''}
-                >
-                    <CityName>경기</CityName>
-                </CityTab>
-                <CityTab
-                    onClick={() => {
-                        setNowCity(City.인천);
-                    }}
-                    className={nowCity === City.인천 ? 'selected' : ''}
-                >
-                    <CityName>인천</CityName>
-                </CityTab> */}
+                onClick={() => {
+                    setNowCity(City.경기);
+                }}
+                className={nowCity === City.경기 ? 'selected' : ''}
+            >
+                <CityName>경기</CityName>
+            </CityTab>
+            <CityTab
+                onClick={() => {
+                    setNowCity(City.인천);
+                }}
+                className={nowCity === City.인천 ? 'selected' : ''}
+            >
+                <CityName>인천</CityName>
+            </CityTab> */}
             </CityDiv>
             <AreaDiv>
-                <CheckLabel name="서울 전체" />
-                <CheckLabel name="강남" />
-                <CheckLabel name="서초" />
-                <CheckLabel name="잠실/송파/강동" />
-                <CheckLabel name="영등포/여의도/강서" />
-                <CheckLabel name="건대/성수/왕십리" />
-                <CheckLabel name="종로/중구" />
-                <CheckLabel name="홍대/합정/마포" />
-                <CheckLabel name="용산/이태원/한남" />
-                <CheckLabel name="성북/노원/중랑" />
-                <CheckLabel name="구로/관악/동작" />
+                {enumTypes.map((type) => (
+                    <CheckLabel
+                        checkState={checkedList.includes(type)}
+                        type={type}
+                        onChange={handleCheck}
+                    />
+                ))}
             </AreaDiv>
         </Div>
     );
-};
+}
 
 export default SelectRegion;
 
@@ -84,6 +110,7 @@ const CityTab = styled.div`
 const CityName = styled.p`
     margin: 20px;
     font-size: 17px;
+    font-weight: bold;
 `;
 
 const AreaDiv = styled.div`

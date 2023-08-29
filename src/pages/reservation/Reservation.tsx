@@ -1,8 +1,9 @@
+// 사용하지 않는 파일
+
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Select } from "@chakra-ui/select";
 import Calendar from '../../components/common/Calendar';
-import StoreDetail from './StoreDetail';
 import Button from '../../components/common/Button';
 import DimmedLayer from '../../components/common/DimmedLayer';
 import CalendarIcon from '../../assets/calendar.svg';
@@ -12,12 +13,24 @@ import axiosRequset from '../../api/api';
 
 import BigImageSample from '../../assets/ImageSampleB.svg'
 
-function Reservation() {
+// type ReservationProps = {
+//     setShowModal: () => void;
+// }
+
+function Reservation(props: ReservationProps) {
     const [pageNum, setPageNum] = useState(1);
+    const [reservePostValue, setReservePostValue] = useState(
+        {
+            userId: 0,
+            placeId: 0,
+            people: 0,
+            reservedDate: "YYYY-MM-DD",
+            visitTime: "HH:MM"
+          }
+    );
 
     return(
     <Section>
-        <StoreDetail />
         <DimmedLayer />
         <DrawerBox>
             {pageNum === 1 && <SetVisitDate />}
@@ -27,7 +40,7 @@ function Reservation() {
             <BottomButton>
                 {(pageNum !== 1 && pageNum !==4) && <Button text="이전" width="155px" backgroundColor='#E2E2E3' textColor='#FFFFFF' onClick={()=>{setPageNum(pageNum-1)}}/>}
                 {pageNum !== 4 && <Button text="다음" width="155px" onClick={()=>{setPageNum(pageNum+1)}}/>}
-                {pageNum === 4 && <Button text="완료" width="350px" onClick={()=>{window.location.href=('http://localhost:3000/store/:storeId');}}/>}
+                {pageNum === 4 && <Button text="완료" width="350px" onClick={()=>{props.setShowModal()}}/>}
             </BottomButton>
         </DrawerBox>
     </Section>
@@ -50,6 +63,7 @@ function SetVisitDate(){
         <VisitTime>
             <h4>방문 시간을 입력해 주세요</h4>
             <Select>
+                {}
                 <option>
                     00:00
                 </option>
@@ -191,7 +205,7 @@ const BottomButton = styled.div`
     width: 390px;
     display: flex;
     justify-content: space-evenly;
-    margin: 30px 0 15px 0;
+    margin: 30px 0 100px 0;
 `
 const DrawerBoxTitle = styled.h3`
     font-size: 22px;

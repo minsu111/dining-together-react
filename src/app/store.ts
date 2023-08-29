@@ -15,6 +15,7 @@ import { userSlice } from './UserSlice';
 
 const reducers = combineReducers({
     user: userSlice.reducer,
+    filter: filterSlice.reducer,
 });
 
 const persistConfig = {
@@ -25,7 +26,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
-    reducer: { persistedReducer, filter: filterSlice.reducer },
+    reducer: persistedReducer,
     devTools: process.env.NODE_ENV !== 'production',
     middleware: [thunk],
 });

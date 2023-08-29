@@ -26,27 +26,35 @@ type ModalProps = {
  */
 function DatetimeSelectorModal(props: ModalProps) {
     const dispatch = useDispatch();
-    const visitDate = useSelector((state: RootState) => {
-        return state.filter.visitDate;
+    const expectedDate = useSelector((state: RootState) => {
+        return state.filter.expectedDate;
     });
 
-    const [selectedDate, setDate] = React.useState(visitDate);
+    let temp;
+    // expectedDate가 비어있다면
+    if (!expectedDate) {
+        const isoDateString = new Date().toISOString();
+        const yearMonthDay = isoDateString.split('T')[0];
+        temp = new Date(yearMonthDay);
+    } else temp = new Date();
+
+    const [selectedDate, setDate] = React.useState(temp);
     const handleDayClick = (date: Date) => {
         setDate(date);
     };
 
     const formattedDate = Intl.DateTimeFormat('ko', {
         dateStyle: 'full',
-    }).format(visitDate);
+    }).format(temp);
 
     const handleClose = () => {
         props.onClose(props.modalType);
     };
 
     const handleConfirm = () => {
-        const testDate = new Date();
-        testDate.setDate(visitDate.getDate() + 1);
-        dispatch(setVisitDate(testDate));
+        // const testDate = new Date();
+        // testDate.setDate(expectedDate.getDate() + 1);
+        // dispatch(setVisitDate(testDate));
         // dispatch(setVisitDate(selectedDate));
 
         props.onConfirm();

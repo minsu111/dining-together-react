@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 type FilterState = {
-    visitDate: Date;
+    expectedDate: string;
     region: string[];
     foodType: string[];
     priceMin: number;
@@ -12,7 +12,7 @@ type FilterState = {
 };
 
 const initialState: FilterState = {
-    visitDate: new Date(),
+    expectedDate: '',
     region: [],
     foodType: [],
     priceMin: 0,
@@ -26,7 +26,7 @@ const filterSlice = createSlice({
     initialState,
     reducers: {
         setVisitDate(state, action) {
-            state.visitDate = action.payload;
+            state.expectedDate = action.payload;
         },
         setRegion(state, action) {
             state.region = action.payload;

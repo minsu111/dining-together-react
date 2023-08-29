@@ -81,8 +81,6 @@ const Container = styled.div`
     padding: 10px 20px;
 `;
 
-const CheckAll = styled.label``;
-
 const CheckInput = styled.input<{ checked: boolean }>`
     appearance: none;
     margin: 0 10px 2px 0px;

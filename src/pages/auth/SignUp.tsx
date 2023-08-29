@@ -4,11 +4,13 @@ import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import LandscapeImg from '../../assets/landscape_photographer.svg';
 import Button from '../../components/common/Button';
-import SeleckUserType from '../../components/Auth/SeleckUserType';
-import SignUpForm from '../../components/Auth/SignUpForm';
-import AgreementCheckBox from '../../components/Auth/AgreementCheckBox';
-import ExtraInfo from '../../components/Auth/ExtraInfo';
+import SeleckUserType from '../../components/auth/SeleckUserType';
+import SignUpForm from '../../components/auth/SignUpForm';
+import AgreementCheckBox from '../../components/auth/AgreementCheckBox';
+import ExtraInfo from '../../components/auth/ExtraInfo';
 import axiosRequest from '../../api/api';
+import { useDispatch } from 'react-redux';
+import { login } from '../../app/UserSlice';
 
 const SignUpTest = () => {
     // 회원 유형 선택 상태 관리
@@ -50,26 +52,34 @@ const SignUpTest = () => {
     const goToWelcome = () => {
         navigate('/join/welcome');
     };
+    const dispatch = useDispatch();
+
+    const getUserInfo = async (userId: string) => {
+        try {
+            const result = await axiosRequest('GET', `/user/${userId}`, {});
+            dispatch(
+                login({
+                    userId: `${result.userId}`,
+                    userType: `${result.userType}`,
+                    userEmail: `${result.email}`,
+                    userName: `${result.name}`,
+                    userPhoneNum: `${result.phoneNum}`,
+                }),
+            );
+        } catch (error: any) {
+            alert('조회 실패');
+        }
+    };
 
     const loginConfirm = async (email: string, password: string) => {
-        // 로그인 api 호출
         try {
             const result = await axiosRequest('POST', '/user/login', {
                 email,
                 password,
             });
-            console.log(
-                '🚀 ~ file: SignUp.tsx:62 ~ loginConfirm ~ result:',
-                result,
-            );
-
-            // 로컬스토리지에 토큰 저장
             const loginToken = result.token;
             localStorage.setItem('jwt_token', loginToken);
-
-            // const decodedToken = jwt.verify(loginToken, '');
-            // console.log(decodedToken);
-
+            await getUserInfo(result.userId);
             goToWelcome();
         } catch (error: any) {
             alert(
@@ -105,7 +115,7 @@ const SignUpTest = () => {
     return (
         <div>
             {!showSignUpForm && !showExtraInfo && (
-                <Section>
+                <>
                     <TopNaviBarBack pageName=" " prevPath="/login" />
                     <Title>
                         가입 목적을 <br />
@@ -127,10 +137,10 @@ const SignUpTest = () => {
                             disabled={!isNextBtnEnabled}
                         />
                     </Wrapper>
-                </Section>
+                </>
             )}
             {showSignUpForm && (
-                <Section>
+                <>
                     <SignUpForm
                         // signUpData={signUpData}
                         setSignUpForm={setSignUpForm}
@@ -147,7 +157,7 @@ const SignUpTest = () => {
                             }
                         />
                     </Wrapper>
-                </Section>
+                </>
             )}
             {showExtraInfo && <ExtraInfo signUpData={signUpData} />}
         </div>
@@ -156,24 +166,9 @@ const SignUpTest = () => {
 
 export default SignUpTest;
 
-const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #e8e8e8;
-`;
-
 const Title = styled.h1`
     font-size: 34px;
+    font-weight: 500;
     line-height: 45px;
     padding: 30px 20px;
     margin-bottom: 40px;

@@ -1,4 +1,4 @@
-import React, { useState , useRef} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -18,6 +18,8 @@ function AddStore() {
 
     // paging
     const [step, setStep] = useState(0);
+
+    
 
     // page_1
     const [storeName, setStoreName] = useState('');
@@ -39,8 +41,15 @@ function AddStore() {
         if (key === 'isParking') setIsParking(value);
         if (key === 'description') setDescription(value);
         if (key === 'keyword') setKeyword(value);
-        
     }
+
+    const handlePrevious = () => {
+        setStep((prev) => prev - 1);
+    };
+
+    const handleNext = () => {
+        setStep((prev) => prev + 1);
+    };
 
     const combineKeywords = (keywords: string[]): string => {
         return keywords.join(', ');
@@ -50,14 +59,25 @@ function AddStore() {
         const combinedKeyword = combineKeywords(keyword.split(' '));
 
         const storeData = {
-            userId,
+            userId: localStorage.getItem('userId'),
             storeName,
             storeContact,
+            address: {
+                postalCode: "12345",
+                roadAddress: "도로명주소를작성하세",
+                detailAddress: "1층"
+            },
+            location:"ddd",
+            keyword: combinedKeyword,
+            operatingHours: "11:30-21:00",
+            closedDays: "매주 월/목",
             foodCategory,
             storeMood,
             isParking,
             description,
-            keyword: combinedKeyword,
+            maxNum: 50,
+            cost: 5000,
+            storeImage: "사진.jpg"
         };
         console.log(storeData);
         // navigate('/my/store/fin'); 
@@ -77,7 +97,6 @@ function AddStore() {
 
                 {step === 0 && <StoreForm1st storeName={storeName} storeContact={storeContact} handleChangeInfo={handleChangeInfo} /> }
                 {step === 1 && <StoreForm2nd />}
-                {/* {step === 1 && <StoreForm3rd />}  */}
                 {step === 2 && <StoreForm3rd />}
                 {step === 3 && <StoreForm4th description={description} keyword={keyword}  handleChangeInfo={handleChangeInfo} />}
                 {step === 4 && <StoreForm5th />}
@@ -91,7 +110,7 @@ function AddStore() {
                 </Step>
 
                 <ButtonSC>
-                    {step > 0 && <Button text='이전' width='150px' backgroundColor='#E2E2E3' textColor='#000' onClick={() => {setStep((prev) => prev - 1)}}/>}
+                    {step > 0 && <Button text='이전' width='150px' backgroundColor='#E2E2E3' textColor='#000' onClick={handlePrevious}/>}
                     {step > 0 && step < 4 && <Button text='다음' width='150px' onClick={() => {setStep((prev) => prev + 1)}} />}
                     {step === 0 && <Button text='다음' onClick={() => {setStep((prev) => prev + 1)}} />}
                     {step === 4 && <Button type='submit' text='등록' width='150px' onClick={submitStoreInfo} />}

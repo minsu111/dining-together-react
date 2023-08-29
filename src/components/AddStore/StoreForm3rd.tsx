@@ -100,11 +100,3 @@ const FormSC = styled.div`
     }
 `;
 
-const ButtonSC = styled.div`
-    width: 100%;
-    position: absolute;
-    bottom: 20px;
-
-    display: flex;
-    justify-content: space-between;
-`;

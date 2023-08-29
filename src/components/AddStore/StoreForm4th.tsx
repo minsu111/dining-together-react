@@ -15,7 +15,6 @@ function StoreForm4th({
     keyword,
     handleChangeInfo,
 }: StoreForm4thProps) {
-
     return (
         <section>
             <Inner>
@@ -33,7 +32,7 @@ function StoreForm4th({
                             onChange={(e) => {
                                 handleChangeInfo('description', e.target.value);
                             }}
-                        ></textarea>
+                        />
                     </div>
                     <div className="content">
                         <h4>검색용 키워드</h4>
@@ -43,7 +42,7 @@ function StoreForm4th({
                         </div>
 
                         <Input
-                            width='150px'
+                            width="150px"
                             name="keyword1"
                             value={keyword}
                             inputType="text"
@@ -51,7 +50,24 @@ function StoreForm4th({
                                 handleChangeInfo('keyword', e.target.value)
                             }
                         />
-
+                        <Input
+                            width="150px"
+                            name="keyword2"
+                            value={keyword}
+                            inputType="text"
+                            onChange={(e) =>
+                                handleChangeInfo('keyword', e.target.value)
+                            }
+                        />
+                        <Input
+                            width="150px"
+                            name="keyword3"
+                            value={keyword}
+                            inputType="text"
+                            onChange={(e) =>
+                                handleChangeInfo('keyword', e.target.value)
+                            }
+                        />
                     </div>
                 </FormSC>
             </Inner>

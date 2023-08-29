@@ -5,16 +5,20 @@ import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Input from '../common/Input';
 
 type StoreForm4thProps = {
-    description: string;
-    keyword: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
 function StoreForm4th({
-    description,
-    keyword,
     handleChangeInfo,
 }: StoreForm4thProps) {
+    const [input, setInput] = useState('');
+
+    const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const inputValue = e.target.value; // 입력된 값 저장
+        setInput(inputValue); // input 상태 업데이트
+        handleChangeInfo('description', inputValue); // handleChangeInfo 호출 시 저장한 값 전달
+        console.log(inputValue);
+    };
     return (
         <section>
             <Inner>
@@ -25,11 +29,13 @@ function StoreForm4th({
                             <FontAwesomeIcon icon={faCircleExclamation} />
                             <span>최대 150자까지 입력 가능합니다.</span>
                         </div>
+
                         <textarea
                             name="description"
-                            value={description}
                             maxLength={150}
+                            value={input}
                             onChange={(e) => {
+                                onChangeInput(e);
                                 handleChangeInfo('description', e.target.value);
                             }}
                         />
@@ -44,7 +50,6 @@ function StoreForm4th({
                         <Input
                             width="150px"
                             name="keyword1"
-                            value={keyword}
                             inputType="text"
                             onChange={(e) =>
                                 handleChangeInfo('keyword', e.target.value)
@@ -53,7 +58,6 @@ function StoreForm4th({
                         <Input
                             width="150px"
                             name="keyword2"
-                            value={keyword}
                             inputType="text"
                             onChange={(e) =>
                                 handleChangeInfo('keyword', e.target.value)
@@ -62,7 +66,6 @@ function StoreForm4th({
                         <Input
                             width="150px"
                             name="keyword3"
-                            value={keyword}
                             inputType="text"
                             onChange={(e) =>
                                 handleChangeInfo('keyword', e.target.value)

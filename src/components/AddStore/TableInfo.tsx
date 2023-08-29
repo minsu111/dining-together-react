@@ -7,16 +7,10 @@ import Button from '../common/Button';
 import TableTypeSelect from './TableTypeSelect';
 
 type TableInfoProps = {
-    placeName: string;
-    minPeople: string;
-    maxPeople: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
 function TableInfo({
-    placeName,
-    minPeople,
-    maxPeople,
     handleChangeInfo,
 }: TableInfoProps) {
     const [mainImagePreview, setMainImagePreview] = useState<string | null>(
@@ -52,16 +46,15 @@ function TableInfo({
                     <Input
                         label="테이블 명"
                         name="placeName"
-                        value={placeName}
                         inputType="text"
-                        placeholder="자리 이름을 입력해주세요."
+                        placeholder="테이블 이름을 입력해주세요."
                         onChange={(e) => {
                             handleChangeInfo('placeName', e.target.value);
                         }}
                     />
 
                     <div className="content">
-                        <h4>가게 이미지 - 대표 이미지(필수)</h4>
+                        <h4>자리 이미지</h4>
                         <StyledLabel htmlFor="mainPic">
                             <FontAwesomeIcon icon={faCamera} />
                             <input
@@ -86,7 +79,6 @@ function TableInfo({
                         <Input
                             label="예약 가능 최소 인원"
                             name="minPeople"
-                            value={minPeople}
                             inputType="number"
                             width="80px"
                             onChange={(e) => {
@@ -99,7 +91,6 @@ function TableInfo({
                         <Input
                             label="예약 가능 최대 인원"
                             name="maxPeople"
-                            value={maxPeople}
                             inputType="number"
                             width="80px"
                             onChange={(e) => {

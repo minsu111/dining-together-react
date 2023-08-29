@@ -13,13 +13,11 @@ import StoreForm5th from '../../components/AddStore/StoreForm5th';
 
 function AddStore() {
     const userType: string | null = localStorage.getItem('userType');
-    const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
 
     // paging
     const [step, setStep] = useState(0);
 
-    
 
     // page_1
     const [storeName, setStoreName] = useState('');
@@ -29,6 +27,11 @@ function AddStore() {
     const [foodCategory, setFoodCategory] = useState('');
     const [storeMood, setStoreMood] = useState('');
     const [isParking, setIsParking] = useState('');
+
+    // page_3
+    const [cost, setCost] = useState('');
+    const [maxNum, setMaxNum] = useState('');
+
     // page_4
     const [description, setDescription] = useState('');
     const [keyword, setKeyword] = useState('');
@@ -39,17 +42,11 @@ function AddStore() {
         if (key === 'foodCategory') setFoodCategory(value);
         if (key === 'storeMood') setStoreMood(value);
         if (key === 'isParking') setIsParking(value);
+        if (key === 'maxNum') setMaxNum(value);
+        if (key === 'cost') setCost(value);
         if (key === 'description') setDescription(value);
         if (key === 'keyword') setKeyword(value);
     }
-
-    const handlePrevious = () => {
-        setStep((prev) => prev - 1);
-    };
-
-    const handleNext = () => {
-        setStep((prev) => prev + 1);
-    };
 
     const combineKeywords = (keywords: string[]): string => {
         return keywords.join(', ');
@@ -59,7 +56,7 @@ function AddStore() {
         const combinedKeyword = combineKeywords(keyword.split(' '));
 
         const storeData = {
-            userId: localStorage.getItem('userId'),
+            userId: "user1234",
             storeName,
             storeContact,
             address: {
@@ -75,8 +72,8 @@ function AddStore() {
             storeMood,
             isParking,
             description,
-            maxNum: 50,
-            cost: 5000,
+            maxNum,
+            cost,
             storeImage: "사진.jpg"
         };
         console.log(storeData);
@@ -95,10 +92,10 @@ function AddStore() {
                     <h2>비정상적인 접근입니다🙅‍♀️</h2>
                 )}
 
-                {step === 0 && <StoreForm1st storeName={storeName} storeContact={storeContact} handleChangeInfo={handleChangeInfo} /> }
+                {step === 0 && <StoreForm1st handleChangeInfo={handleChangeInfo} /> }
                 {step === 1 && <StoreForm2nd />}
-                {step === 2 && <StoreForm3rd />}
-                {step === 3 && <StoreForm4th description={description} keyword={keyword}  handleChangeInfo={handleChangeInfo} />}
+                {step === 2 && <StoreForm3rd handleChangeInfo={handleChangeInfo} />}
+                {step === 3 && <StoreForm4th handleChangeInfo={handleChangeInfo} />}
                 {step === 4 && <StoreForm5th />}
 
                 <div className="bottom-area">
@@ -110,7 +107,7 @@ function AddStore() {
                 </Step>
 
                 <ButtonSC>
-                    {step > 0 && <Button text='이전' width='150px' backgroundColor='#E2E2E3' textColor='#000' onClick={handlePrevious}/>}
+                    {step > 0 && <Button text='이전' width='150px' backgroundColor='#E2E2E3' textColor='#000' onClick={() => {setStep((prev) => prev - 1)}}/>}
                     {step > 0 && step < 4 && <Button text='다음' width='150px' onClick={() => {setStep((prev) => prev + 1)}} />}
                     {step === 0 && <Button text='다음' onClick={() => {setStep((prev) => prev + 1)}} />}
                     {step === 4 && <Button type='submit' text='등록' width='150px' onClick={submitStoreInfo} />}

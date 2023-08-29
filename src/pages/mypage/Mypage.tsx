@@ -14,7 +14,7 @@ import AddStoreBtn from '../../components/common/AddStoreBtn';
 function Mypage() {
     const navigate = useNavigate();
     const goToMy = (path: string) => {
-        navigate(`/my/${path}`);
+        navigate(`/${path}`);
     };
     const goLogin = () => {
         navigate(`/login`);
@@ -58,11 +58,11 @@ function Mypage() {
             </Container>
             <DevideLine />
             <Container>
-                <InfoMenu onClick={() => goToMy('info')}>
+                <InfoMenu onClick={() => goToMy('my/info')}>
                     <span>내 정보</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>
-                <InfoMenu onClick={() => goToMy('list')}>
+                <InfoMenu onClick={() => goToMy('reservationlist')}>
                     <span>내 예약 내역</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>

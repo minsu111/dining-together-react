@@ -19,7 +19,6 @@ import AdminStore from '../pages/Admin/AdminStore';
 import Welcome from '../pages/auth/Welcome';
 import Login from '../pages/auth/Login';
 import SearchKeyword from '../pages/search/SearchKeyword';
-// import ExtraInfo from '../components/Auth/ExtraInfo';
 import Layout from '../components/common/Layout';
 import DeleteAccount from '../pages/mypage/DeleteAccount';
 import Terms from '../pages/auth/Terms';
@@ -31,10 +30,9 @@ const router = createBrowserRouter([
         element: <Layout />,
         errorElement: <NotFound />,
         children: [
-            { index: true, path: '/home', element: <Home /> },
+            { index: true, path: '/', element: <Home /> },
             { path: '/login', element: <Login /> },
             { path: '/join', element: <SignUp /> },
-            // { path: '/join/extra', element: <ExtraInfo /> },
             { path: '/join/welcome', element: <Welcome /> },
             { path: '/join/terms', element: <Terms /> },
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,12 +16,12 @@ function MyInfo() {
         navigate(`/my/infoEdit/${path}`);
     };
     const goToHome = () => {
-        navigate('/home');
+        navigate('/');
     };
 
     const user = useSelector((state: RootState) => state.user);
 
-    //로그아웃
+    // 로그아웃
     const dispatch = useDispatch();
     const logOut = async () => {
         try {

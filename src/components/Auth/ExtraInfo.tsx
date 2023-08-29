@@ -5,6 +5,9 @@ import { Select } from '@chakra-ui/react';
 import CommonButton from '../common/Button';
 import TagButton from '../common/TagButton';
 import axiosRequest from '../../api/api';
+import HandleError from '../../utils/Error';
+import { login } from '../../app/UserSlice';
+import { useDispatch } from 'react-redux';
 
 type ExtraInfoProps = {
     signUpData: {
@@ -80,27 +83,43 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
         navigate('/join/welcome');
     };
 
+    const dispatch = useDispatch();
+
+    const getUserInfo = async (userId: string) => {
+        try {
+            const result = await axiosRequest('GET', `/user/${userId}`, {});
+            dispatch(
+                login({
+                    userId: `${result.userId}`,
+                    userType: `${result.userType}`,
+                    userEmail: `${result.email}`,
+                    userName: `${result.name}`,
+                    userPhoneNum: `${result.phoneNum}`,
+                }),
+            );
+        } catch (error: any) {
+            alert('조회 실패');
+        }
+    };
+
     const loginConfirm = async (email: string, password: string) => {
         // 로그인 api 호출
-        try {
-            const result = await axiosRequest('POST', '/user/login', {
+        const result = await axiosRequest(
+            'POST',
+            '/user/login',
+            {
                 email,
                 password,
-            });
-            // 로컬스토리지에 토큰 저장
-            const loginToken = result.token;
-            localStorage.setItem('jwt_token', loginToken);
+            },
+            HandleError,
+        );
 
-            // const decodedToken = jwt.verify(loginToken, '');
-            // console.log(decodedToken);
-
-            goToWelcome();
-        } catch (error: any) {
-            alert(
-                `오류가 발생했습니다. 다시 한 번 시도해주세요. 
-                    ${error.data.status}`,
-            );
-        }
+        // 로그인 성공 시 로컬스토리지에 토큰 저장 & 홈으로 이동
+        const loginToken = result.token;
+        localStorage.setItem('jwt_token', loginToken);
+        // localStorage.removeItem('userType');
+        await getUserInfo(result.userId);
+        goToWelcome();
     };
 
     const handleFinishButton = async () => {
@@ -110,13 +129,15 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
                 '/user/signup',
                 updatedsignUpData,
             );
-            loginConfirm(updatedsignUpData.email, updatedsignUpData.password);
-            console.log(
-                '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                result,
-            );
+            if (result) {
+                loginConfirm(
+                    updatedsignUpData.email,
+                    updatedsignUpData.password,
+                );
+            }
         } catch (error: any) {
             alert('회원가입 실패');
+            localStorage.removeItem('userType');
         }
     };
 

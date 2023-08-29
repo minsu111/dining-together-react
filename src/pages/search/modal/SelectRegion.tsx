@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Modal from 'react-modal';
+import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
 import CheckLabel from './CheckLabel';
 
 import { RootState } from '../../../app/store';
 import { setRegion } from '../store/FilterSlice';
-import { RegionType } from './enum/Enum';
+import { RegionType, SearchModalType } from './enum/Enum';
 
 /**
  * 지역 필터 Modal
  */
-function SelectRegion() {
-    // props: { onConfirm: () => void }
+function SelectRegion(props: {
+    isOpen: boolean;
+    onClose: (modalType: SearchModalType) => void;
+}) {
+    const handleReset = () => {
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.Region);
+    };
+
+    const handleConfirm = () => {
+        alert('적용 버튼 클릭시 로직 구현 필요');
+    };
+
     enum City {
         서울,
         경기,
@@ -41,17 +58,38 @@ function SelectRegion() {
     };
 
     return (
-        <Div>
-            <CityDiv>
-                <CityTab
-                    onClick={() => {
-                        setNowCity(City.서울);
-                    }}
-                    className={nowCity === City.서울 ? 'selected' : ''}
-                >
-                    <CityName>서울</CityName>
-                </CityTab>
-                {/* <CityTab
+        <Modal
+            isOpen={props.isOpen}
+            // onRequestClose={handleClose}
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                content: {
+                    width: '390px',
+                    height: '100%',
+                    padding: '0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    inset: 0,
+                    margin: '0 auto',
+                },
+            }}
+        >
+            <FilterHeader onClickReset={handleReset} title="지역" />
+            <ContentDiv>
+                <Div>
+                    <CityDiv>
+                        <CityTab
+                            onClick={() => {
+                                setNowCity(City.서울);
+                            }}
+                            className={nowCity === City.서울 ? 'selected' : ''}
+                        >
+                            <CityName>서울</CityName>
+                        </CityTab>
+                        {/* <CityTab
                 onClick={() => {
                     setNowCity(City.경기);
                 }}
@@ -67,17 +105,21 @@ function SelectRegion() {
             >
                 <CityName>인천</CityName>
             </CityTab> */}
-            </CityDiv>
-            <AreaDiv>
-                {enumTypes.map((type) => (
-                    <CheckLabel
-                        checkState={checkedList.includes(type)}
-                        type={type}
-                        onChange={handleCheck}
-                    />
-                ))}
-            </AreaDiv>
-        </Div>
+                    </CityDiv>
+                    <AreaDiv>
+                        {enumTypes.map((type) => (
+                            <CheckLabel
+                                checkState={checkedList.includes(type)}
+                                type={type}
+                                onChange={handleCheck}
+                            />
+                        ))}
+                    </AreaDiv>
+                </Div>
+            </ContentDiv>
+
+            <FilterFooter onClose={handleClose} onConfirm={handleConfirm} />
+        </Modal>
     );
 }
 

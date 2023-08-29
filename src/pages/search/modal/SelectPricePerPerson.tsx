@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Modal from 'react-modal';
+import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
 import {
     RangeSlider,
     RangeSliderFilledTrack,
@@ -7,12 +10,32 @@ import {
     RangeSliderTrack,
 } from '@chakra-ui/react';
 
+import { SearchModalType } from './enum/Enum';
+
 const MIN_PRICE = 0;
 const MAX_PRICE = 40;
 
-function SelectPricePerPerson(props: { selectMin: number; selectMax: number }) {
-    const [min, setMin] = useState(props.selectMin);
-    const [max, setMax] = useState(props.selectMax);
+/**
+ * 인당 가격 필터 Modal
+ */
+function SelectPricePerPerson(props: {
+    isOpen: boolean;
+    onClose: (modalType: SearchModalType) => void;
+}) {
+    const handleReset = () => {
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.PricePerPerson);
+    };
+
+    const handleConfirm = () => {
+        alert('적용 버튼 클릭시 로직 구현 필요');
+    };
+
+    const [min, setMin] = useState(MIN_PRICE);
+    const [max, setMax] = useState(MAX_PRICE);
     const [onNotice, setNotice] = useState(false);
 
     const handleChangeSlider = (range: number[]) => {
@@ -63,94 +86,119 @@ function SelectPricePerPerson(props: { selectMin: number; selectMax: number }) {
     }
 
     return (
-        <Div>
-            <SubTitle>가격 범위</SubTitle>
-
-            <div
-                style={{
-                    marginTop: 30,
+        <Modal
+            isOpen={props.isOpen}
+            // onRequestClose={handleClose}
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                content: {
+                    width: '390px',
+                    height: '100%',
+                    padding: '0',
                     display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
                     flexDirection: 'column',
-                }}
-            >
-                <RangeSlider
-                    value={[min, max]}
-                    min={0}
-                    max={40}
-                    step={1}
-                    onChange={(val) => handleChangeSlider(val)}
-                    width={300}
-                >
-                    <RangeSliderTrack
-                        bg="lightgray
-"
-                    >
-                        <RangeSliderFilledTrack
-                            bg="#ffb100
-"
-                        />
-                    </RangeSliderTrack>
-                    <RangeSliderThumb
-                        boxSize={6}
-                        index={0}
-                        border="1px"
-                        borderColor="gray.500"
-                    />
-                    <RangeSliderThumb
-                        boxSize={6}
-                        index={1}
-                        border="1px"
-                        borderColor="gray.500"
-                    />
-                </RangeSlider>
-                <RangeTextListDiv>
-                    <RangeTextDiv>
-                        <RangeText>0원</RangeText>
-                    </RangeTextDiv>
-                    <RangeTextDiv>
-                        <RangeText>20만원</RangeText>
-                    </RangeTextDiv>
-                    <RangeTextDiv>
-                        <RangeText>40만원</RangeText>
-                    </RangeTextDiv>
-                </RangeTextListDiv>
-            </div>
+                    alignItems: 'center',
+                    inset: 0,
+                    margin: '0 auto',
+                },
+            }}
+        >
+            <FilterHeader onClickReset={handleReset} title="인당 가격" />
+            <ContentDiv>
+                <Div>
+                    <SubTitle>가격 범위</SubTitle>
 
-            <InputDiv>
-                <InputSubDiv>
-                    <Input
-                        type="number"
-                        value={min}
-                        onChange={(e) => {
-                            handleChangeInputMin(e.currentTarget.value);
+                    <div
+                        style={{
+                            marginTop: 30,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
                         }}
-                        onBlur={handleFocusOutInputMin}
-                    />
-                    <span style={{ fontWeight: 'bold' }}>만원</span>
-                </InputSubDiv>
-                <Tilde>~</Tilde>
-                <InputSubDiv>
-                    <Input
-                        type="number"
-                        value={max}
-                        onChange={(e) => {
-                            handleChangeInputMax(e.currentTarget.value);
-                        }}
-                        onBlur={handleFocusOutInputMax}
-                    />
-                    <span style={{ fontWeight: 'bold' }}>만원</span>
-                </InputSubDiv>
-            </InputDiv>
-            {onNotice && (
-                <NotiMessageDiv>
-                    <NotiMessage>
-                        최소 가격을 최대 가격보다 낮게 설정해주세요
-                    </NotiMessage>
-                </NotiMessageDiv>
-            )}
-        </Div>
+                    >
+                        <RangeSlider
+                            value={[min, max]}
+                            min={0}
+                            max={40}
+                            step={1}
+                            onChange={(val) => handleChangeSlider(val)}
+                            width={300}
+                        >
+                            <RangeSliderTrack
+                                bg="lightgray
+"
+                            >
+                                <RangeSliderFilledTrack
+                                    bg="#ffb100
+"
+                                />
+                            </RangeSliderTrack>
+                            <RangeSliderThumb
+                                boxSize={6}
+                                index={0}
+                                border="1px"
+                                borderColor="gray.500"
+                            />
+                            <RangeSliderThumb
+                                boxSize={6}
+                                index={1}
+                                border="1px"
+                                borderColor="gray.500"
+                            />
+                        </RangeSlider>
+                        <RangeTextListDiv>
+                            <RangeTextDiv>
+                                <RangeText>0원</RangeText>
+                            </RangeTextDiv>
+                            <RangeTextDiv>
+                                <RangeText>20만원</RangeText>
+                            </RangeTextDiv>
+                            <RangeTextDiv>
+                                <RangeText>40만원</RangeText>
+                            </RangeTextDiv>
+                        </RangeTextListDiv>
+                    </div>
+
+                    <InputDiv>
+                        <InputSubDiv>
+                            <Input
+                                type="number"
+                                value={min}
+                                onChange={(e) => {
+                                    handleChangeInputMin(e.currentTarget.value);
+                                }}
+                                onBlur={handleFocusOutInputMin}
+                            />
+                            <span style={{ fontWeight: 'bold' }}>만원</span>
+                        </InputSubDiv>
+                        <Tilde>~</Tilde>
+                        <InputSubDiv>
+                            <Input
+                                type="number"
+                                value={max}
+                                onChange={(e) => {
+                                    handleChangeInputMax(e.currentTarget.value);
+                                }}
+                                onBlur={handleFocusOutInputMax}
+                            />
+                            <span style={{ fontWeight: 'bold' }}>만원</span>
+                        </InputSubDiv>
+                    </InputDiv>
+                    {onNotice && (
+                        <NotiMessageDiv>
+                            <NotiMessage>
+                                최소 가격을 최대 가격보다 낮게 설정해주세요
+                            </NotiMessage>
+                        </NotiMessageDiv>
+                    )}
+                </Div>
+            </ContentDiv>
+
+            <FilterFooter onClose={handleClose} onConfirm={handleConfirm} />
+        </Modal>
     );
 }
 

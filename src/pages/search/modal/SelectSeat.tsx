@@ -1,25 +1,43 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { SeatType } from './enum/Enum';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Modal from 'react-modal';
+import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
+
+import { SeatType, SearchModalType } from './enum/Enum';
 
 /**
  * 좌석 필터 Modal
  */
-function SelectSeat() {
-    const checkedListData: Array<SeatType> = new Array<SeatType>(); // 원래 이 컴포넌트의 props로 받아와야하는 데이터
-    checkedListData.push(SeatType.Hall); // 테스트용
+function SelectSeat(props: {
+    isOpen: boolean;
+    onClose: (modalType: SearchModalType) => void;
+}) {
+    const handleReset = () => {
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
 
-    const seatTypes = Object.values(SeatType);
+    const handleClose = () => {
+        props.onClose(SearchModalType.Seat);
+    };
+
+    const handleConfirm = () => {
+        alert('적용 버튼 클릭시 로직 구현 필요');
+    };
+
+    const checkedListData: Array<SeatType> = new Array<SeatType>();
+
+    const enumTypes = Object.values(SeatType);
 
     const [checkedList, setCheckedList] =
         useState<Array<SeatType>>(checkedListData);
 
     // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
-    const handleCheck = (checkSeat: SeatType) => {
-        if (checkedList.includes(checkSeat)) {
-            setCheckedList(checkedList.filter((item) => item !== checkSeat));
+    const handleCheck = (checkItem: SeatType) => {
+        if (checkedList.includes(checkItem)) {
+            setCheckedList(checkedList.filter((item) => item !== checkItem));
         } else {
-            setCheckedList([...checkedList, checkSeat]);
+            setCheckedList([...checkedList, checkItem]);
         }
     };
 
@@ -31,15 +49,40 @@ function SelectSeat() {
     // }, [checkedList]);
 
     return (
-        <Div>
-            {seatTypes.map((type) => (
-                <CheckBoxLabel
-                    checkState={checkedList.includes(type)}
-                    seatType={type}
-                    onChange={handleCheck}
-                />
-            ))}
-        </Div>
+        <Modal
+            isOpen={props.isOpen}
+            // onRequestClose={handleClose}
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                content: {
+                    width: '390px',
+                    height: '100%',
+                    padding: '0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    inset: 0,
+                    margin: '0 auto',
+                },
+            }}
+        >
+            <FilterHeader onClickReset={handleReset} title="좌석" />
+            <ContentDiv>
+                <Div>
+                    {enumTypes.map((type) => (
+                        <CheckBoxLabel
+                            checkState={checkedList.includes(type)}
+                            seatType={type}
+                            onChange={handleCheck}
+                        />
+                    ))}
+                </Div>
+            </ContentDiv>
+
+            <FilterFooter onClose={handleClose} onConfirm={handleConfirm} />
+        </Modal>
     );
 }
 

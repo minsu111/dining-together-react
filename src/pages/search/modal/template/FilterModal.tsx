@@ -1,54 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
 import SolidLine from '../../SolidLine';
 import Button from '../../../../components/common/Button';
 
-import { SearchModalType } from '../enum/Enum';
-
-type ModalProps = {
+export function FilterHeader(props: {
     title: string;
-    children: React.ReactNode;
-    isOpen: boolean;
-    modalType: SearchModalType;
-    onConfirm: () => void;
-    onClose: (modalType: SearchModalType) => void;
-};
-
-/**
- * 상세필터들의 공통 부분을 모아놓은 컴포넌트
- */
-function FilterModal(props: ModalProps) {
-    const handleClose = () => {
-        props.onClose(props.modalType);
-    };
-
+    onClickReset: () => void;
+}) {
     return (
-        <Modal
-            isOpen={props.isOpen}
-            // onRequestClose={handleClose}
-            style={{
-                overlay: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                },
-                content: {
-                    width: '390px',
-                    height: '100%',
-                    padding: '0',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    inset: 0,
-                    margin: '0 auto',
-                },
-            }}
-        >
+        <div style={{ width: '100%' }}>
             <HeaderDiv>
                 <Title>{props.title}</Title>
-                <ResetButton onClick={() => {}}>
+                <ResetButton onClick={props.onClickReset}>
                     <FontAwesomeIcon
                         icon={faRotate}
                         style={{ color: '#FFB100' }}
@@ -57,24 +22,27 @@ function FilterModal(props: ModalProps) {
                 </ResetButton>
             </HeaderDiv>
             <SolidLine />
-
-            <ContentDiv>{props.children}</ContentDiv>
-
-            <FooterDiv>
-                <Button
-                    text="닫기"
-                    width="100px"
-                    backgroundColor="#F2F2F2"
-                    textColor="black"
-                    onClick={handleClose}
-                />
-                <Button text="적용" width="230px" onClick={props.onConfirm} />
-            </FooterDiv>
-        </Modal>
+        </div>
     );
 }
 
-export default FilterModal;
+export function FilterFooter(props: {
+    onConfirm: () => void;
+    onClose: () => void;
+}) {
+    return (
+        <FooterDiv>
+            <Button
+                text="닫기"
+                width="100px"
+                backgroundColor="#F2F2F2"
+                textColor="black"
+                onClick={props.onClose}
+            />
+            <Button text="적용" width="230px" onClick={props.onConfirm} />
+        </FooterDiv>
+    );
+}
 
 const HeaderDiv = styled.div`
     width: 100%;
@@ -87,7 +55,7 @@ const HeaderDiv = styled.div`
     justify-content: space-between;
 `;
 
-const ContentDiv = styled.div`
+export const ContentDiv = styled.div`
     width: 100%;
     height: calc(100% - 160px);
     margin-top: 20px;

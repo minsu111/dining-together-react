@@ -6,6 +6,7 @@ import DevideLine from '../../components/common/DevideLine';
 import SolidLine from './SolidLine';
 import Button from '../../components/common/Button';
 import StoreItem from './StoreItem';
+import axiosRequest from '../../api/api';
 
 function SearchKeyword() {
     const [showResult, setShowResult] = useState(false);
@@ -19,11 +20,41 @@ function SearchKeyword() {
         e.preventDefault();
 
         console.log('handleSubmit');
-        // setShowResult(true);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
+        setKeyword(e.target.value);
+    };
+
+    const [storeName, setStoreName] = useState<string>('');
+    const [keyword, setKeyword] = useState<string>('');
+    const keywordSearch = async () => {
+        // api 호출
+        try {
+            console.log('검색어: ', keyword);
+
+            const result = await axiosRequest('POST', '/stores/search', {
+                storeName,
+                keyword,
+            });
+
+            setShowResult(true);
+
+            console.log('result:', result);
+        } catch (error: any) {
+            const errorStatus = error.status;
+            switch (errorStatus) {
+                case 404:
+                    alert('가게 없음');
+                    break;
+                case 500:
+                    alert('오류가 발생했습니다. 다시 한 번 시도해주세요.');
+                    break;
+                default:
+                    break;
+            }
+            console.log('error:', error);
+        }
     };
 
     return (
@@ -36,6 +67,7 @@ function SearchKeyword() {
                         </BackButton>
                         <Input
                             placeholder="식당명, 키워드로 찾아보세요"
+                            onChange={handleInputChange}
                             required
                         />
                     </HeaderDiv>
@@ -101,7 +133,7 @@ function SearchKeyword() {
                         type="submit"
                         text="검색"
                         onClick={() => {
-                            setShowResult(true);
+                            keywordSearch();
                         }}
                         // form="keywordForm"
                     />

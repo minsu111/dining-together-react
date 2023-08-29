@@ -7,7 +7,7 @@ import Button from '../../components/common/Button';
 function EditPassword() {
     return (
         <Container>
-            <TopNaviBarBack pageName="이름 변경" prevPath="/my" />
+            <TopNaviBarBack pageName="비밀번호 변경" prevPath="/my" />
             <div style={{ marginTop: '10px' }}>
                 <Input inputType="text" placeholder="이름을 입력해주세요." />
             </div>

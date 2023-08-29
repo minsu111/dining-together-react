@@ -9,7 +9,6 @@ import Search from '../pages/search/Search';
 import Mypage from '../pages/mypage/Mypage';
 import MyInfo from '../pages/mypage/MyInfo';
 import EditName from '../pages/mypage/EditName';
-import EditPhoneNumber from '../pages/mypage/EditPhoneNumber';
 import EditPassword from '../pages/mypage/EditPassword';
 import AddStore from '../pages/mypage/AddStore';
 import SignUp from '../pages/auth/SignUp';
@@ -22,6 +21,7 @@ import SearchKeyword from '../pages/search/SearchKeyword';
 import Layout from '../components/common/Layout';
 import DeleteAccount from '../pages/mypage/DeleteAccount';
 import Terms from '../pages/auth/Terms';
+import EditPhoneNum from '../pages/mypage/EditPhoneNum';
 
 const router = createBrowserRouter([
     {
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             { path: '/my', element: <Mypage /> },
             { path: '/my/info', element: <MyInfo /> },
             { path: '/my/infoEdit/name', element: <EditName /> },
-            { path: '/my/infoEdit/phoneNumber', element: <EditPhoneNumber /> },
+            { path: '/my/infoEdit/phoneNumber', element: <EditPhoneNum /> },
             { path: '/my/infoEdit/password', element: <EditPassword /> },
             { path: '/my/infoEdit/withdraw', element: <DeleteAccount /> },
             { path: '/my/store', element: <AddStore /> },

@@ -3,14 +3,12 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import backArrowIcon from '../../assets/arrow-left-solid.svg';
 
-const TopNaviBarBack: React.FC<{ pageName: string; prevPath: string }> = ({
-    pageName,
-    prevPath,
-}) => {
+function TopNaviBarBack(props: { pageName: string; prevPath?: string }) {
     const navigate = useNavigate();
 
     const handleBackButtonClick = () => {
-        navigate(-1); // -1을 전달하여 브라우저 뒤로 가기 동작 수행
+        if (props.prevPath) navigate(props.prevPath);
+        else navigate(-1); // -1을 전달하여 브라우저 뒤로 가기 동작 수행
     };
 
     return (
@@ -18,10 +16,10 @@ const TopNaviBarBack: React.FC<{ pageName: string; prevPath: string }> = ({
             <Button onClick={handleBackButtonClick}>
                 <img src={backArrowIcon} alt="back arrow icon" />
             </Button>
-            <Title>{pageName}</Title>
+            <Title>{props.pageName}</Title>
         </Container>
     );
-};
+}
 
 export default TopNaviBarBack;
 

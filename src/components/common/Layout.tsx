@@ -1,15 +1,31 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import GNBArea from './GNB';
 
 const Layout = () => {
+    const { pathname } = useLocation();
+
     return (
         <WholeWrap>
             <Wrap>
                 <Outlet />
             </Wrap>
-            <GNBArea />
+            {pathname === '/join' ||
+            pathname === '/join/welcome' ||
+            pathname === '/my/info' ||
+            pathname === '/my/infoEdit/name' ||
+            pathname === '/my/infoEdit/phoneNumber' ||
+            pathname === '/store/:storeId' ||
+            pathname === '/search/keyword' ||
+            pathname === '/search/list' ||
+            pathname === '/my/store' ||
+            pathname === '/my/store/fin' ||
+            pathname === '/my/store/detail' ? (
+                ''
+            ) : (
+                <GNBArea />
+            )}
         </WholeWrap>
     );
 };

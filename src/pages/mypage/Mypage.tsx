@@ -9,6 +9,7 @@ import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
 import { RootState } from '../../app/store';
+import AddStoreBtn from '../../components/common/AddStoreBtn';
 
 function Mypage() {
     const navigate = useNavigate();
@@ -51,14 +52,7 @@ function Mypage() {
                         </TitleWrapper>
                         <Account>{user.userEmail}</Account>
                         <hr />
-                        <OwnerPageText>
-                            가게 등록하고 <span>간편하게</span>
-                            <br /> <span>단체 예약</span> 받으세요
-                        </OwnerPageText>
-                        <Button
-                            text="가게 등록하기"
-                            onClick={() => goToMy('store')}
-                        />
+                        <AddStoreBtn />
                     </TitleSection>
                 )}
             </Container>
@@ -120,16 +114,6 @@ const OwnerBadge = styled.div`
 
 const Account = styled.h3`
     margin-bottom: 50px;
-`;
-
-const OwnerPageText = styled.h2`
-    font-size: 24px;
-    line-height: 30px;
-    margin: 30px 0;
-
-    & > span {
-        font-weight: 600;
-    }
 `;
 
 const InfoMenu = styled.button`

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { Select } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import CommonButton from '../common/Button';
 import TagButton from '../common/TagButton';
 import axiosRequest from '../../api/api';
@@ -131,20 +130,22 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
                 추가 정보를 선택해주세요
             </Title>
             <Question>주로 어디서 회식하시나요?</Question>
-            <Select
-                ml="20px"
-                mr="20px"
-                w="350px"
-                placeholder="지역을 선택해 주세요"
-                value={selectedRegion}
-                onChange={handleSelectedRegion}
-            >
-                {regionButtonNames.map((region) => (
-                    <option key={region} value={region}>
-                        {region}
-                    </option>
-                ))}
-            </Select>
+            <SelectWrapper>
+                <Select
+                    ml="20px"
+                    mr="20px"
+                    w="350px"
+                    placeholder="지역을 선택해 주세요"
+                    value={selectedRegion}
+                    onChange={handleSelectedRegion}
+                >
+                    {regionButtonNames.map((region) => (
+                        <option key={region} value={region}>
+                            {region}
+                        </option>
+                    ))}
+                </Select>
+            </SelectWrapper>
 
             <Question>어떤 모임이 있으신가요?</Question>
             <TagButtonWrapper>
@@ -194,4 +195,13 @@ const TagButtonWrapper = styled.div`
 const Wrapper = styled.div`
     text-align: center;
     margin: 50px 0 20px 0;
+`;
+
+const SelectWrapper = styled.div`
+    Select {
+        font-size: 14px;
+        font-weight: 500;
+        border-color: #ffb100;
+        margin: 0;
+    }
 `;

@@ -31,12 +31,14 @@ function Home() {
             <TopBar>
                 <img alt="" src={Logo} />
             </TopBar>
-            <Slider autoplay speed={1000} infinite pauseOnHover>
-                <img alt="" src={BigImageSample} />
-                <img alt="" src={BigImageSample} />
-                <img alt="" src={BigImageSample} />
-            </Slider>
-            {Object.keys(storeList).map((value, index) => {
+            <Banner>
+                <Slider className='slider' autoplay speed={1000} infinite pauseOnHover>
+                    <img alt="" src={BigImageSample} />
+                    <img alt="" src={BigImageSample} />
+                    <img alt="" src={BigImageSample} />
+                </Slider>
+            </Banner>
+            {Object.keys(storeList).map((value) => {
                 return <RecommendList title={value} storeList={storeList} />;
             })}
         </>
@@ -130,4 +132,30 @@ const TopBar = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 100;
 `;
+
+const Banner = styled.div`
+    margin-top: 50px;
+    .slider .slick-prev{
+        left: 0;
+        z-index: 100;
+        width: 40px;
+        height: 40px;
+    }
+
+    .slider .slick-prev:before{
+        font-size: 40px;
+    }
+
+    .slider .slick-next{
+        right: 0px;
+        z-index: 100;
+        width: 40px;
+        height: 40px;
+    }
+
+    .slider .slick-next:before{
+        font-size: 40px;
+    }
+`

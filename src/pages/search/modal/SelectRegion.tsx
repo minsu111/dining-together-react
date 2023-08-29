@@ -17,18 +17,6 @@ function SelectRegion(props: {
     isOpen: boolean;
     onClose: (modalType: SearchModalType) => void;
 }) {
-    const handleReset = () => {
-        alert('초기화 버튼 클릭시 로직 구현 필요');
-    };
-
-    const handleClose = () => {
-        props.onClose(SearchModalType.Region);
-    };
-
-    const handleConfirm = () => {
-        alert('적용 버튼 클릭시 로직 구현 필요');
-    };
-
     enum City {
         서울,
         경기,
@@ -36,17 +24,15 @@ function SelectRegion(props: {
     }
     const [nowCity, setNowCity] = useState(City.서울);
 
+    const enumTypes = Object.values(RegionType);
+
     const dispatch = useDispatch();
     const region = useSelector((state: RootState) => {
         return state.filter.region;
     });
 
-    const checkedListData: Array<RegionType> = new Array<RegionType>();
-
-    const enumTypes = Object.values(RegionType);
-
-    const [checkedList, setCheckedList] =
-        useState<Array<RegionType>>(checkedListData);
+    const deepCopyArray: string[] = JSON.parse(JSON.stringify(region));
+    const [checkedList, setCheckedList] = useState<string[]>(deepCopyArray);
 
     // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
     const handleCheck = (checkItem: RegionType) => {
@@ -57,10 +43,28 @@ function SelectRegion(props: {
         }
     };
 
+    const handleReset = () => {
+        // TODO:
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.Region);
+    };
+
+    const handleConfirm = () => {
+        dispatch(setRegion(checkedList));
+
+        handleClose();
+    };
+
     return (
         <Modal
             isOpen={props.isOpen}
-            // onRequestClose={handleClose}
+            onAfterClose={() => {
+                // 유저가 수정은 했으나 적용하지 않은 내용을 버리고 화면을 리셋시킨다
+                setCheckedList([...region]);
+            }}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',

@@ -1,25 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { RegionType } from '../modal/enum/Enum';
 
 type FilterState = {
     visitDate: Date;
-    region: Array<RegionType>;
-    foodType: string;
+    region: string[];
+    foodType: string[];
     priceMin: number;
     priceMax: number;
-    atmosphere: string;
-    seat: string;
+    atmosphere: string[];
+    seat: string[];
 };
 
 const initialState: FilterState = {
     visitDate: new Date(),
     region: [],
-    foodType: '',
+    foodType: [],
     priceMin: 0,
-    priceMax: 0,
-    atmosphere: '',
-    seat: '',
+    priceMax: 40,
+    atmosphere: [],
+    seat: [],
 };
 
 const filterSlice = createSlice({
@@ -28,7 +27,6 @@ const filterSlice = createSlice({
     reducers: {
         setVisitDate(state, action) {
             state.visitDate = action.payload;
-            console.log(`setVisitDate ${state.visitDate}`);
         },
         setRegion(state, action) {
             state.region = action.payload;
@@ -46,6 +44,7 @@ const filterSlice = createSlice({
             state.atmosphere = action.payload;
         },
         setSeat(state, action) {
+            console.log(action.payload);
             state.seat = action.payload;
         },
     },

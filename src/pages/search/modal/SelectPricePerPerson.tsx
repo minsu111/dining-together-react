@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Modal from 'react-modal';
@@ -10,10 +11,12 @@ import {
     RangeSliderTrack,
 } from '@chakra-ui/react';
 
+import { RootState } from '../../../app/store';
+import { setPriceMin, setPriceMax } from '../store/FilterSlice';
 import { SearchModalType } from './enum/Enum';
 
-const MIN_PRICE = 0;
-const MAX_PRICE = 40;
+export const MIN_PRICE = 0;
+export const MAX_PRICE = 40;
 
 /**
  * 인당 가격 필터 Modal
@@ -22,20 +25,17 @@ function SelectPricePerPerson(props: {
     isOpen: boolean;
     onClose: (modalType: SearchModalType) => void;
 }) {
-    const handleReset = () => {
-        alert('초기화 버튼 클릭시 로직 구현 필요');
-    };
+    const dispatch = useDispatch();
+    const priceMin = useSelector((state: RootState) => {
+        return state.filter.priceMin;
+    });
 
-    const handleClose = () => {
-        props.onClose(SearchModalType.PricePerPerson);
-    };
+    const priceMax = useSelector((state: RootState) => {
+        return state.filter.priceMax;
+    });
 
-    const handleConfirm = () => {
-        alert('적용 버튼 클릭시 로직 구현 필요');
-    };
-
-    const [min, setMin] = useState(MIN_PRICE);
-    const [max, setMax] = useState(MAX_PRICE);
+    const [min, setMin] = useState(priceMin);
+    const [max, setMax] = useState(priceMax);
     const [onNotice, setNotice] = useState(false);
 
     const handleChangeSlider = (range: number[]) => {
@@ -85,10 +85,30 @@ function SelectPricePerPerson(props: {
         return Math.min(Math.max(value, minNum), maxNum);
     }
 
+    const handleReset = () => {
+        // TODO:
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.PricePerPerson);
+    };
+
+    const handleConfirm = () => {
+        dispatch(setPriceMin(min));
+        dispatch(setPriceMax(max));
+
+        handleClose();
+    };
+
     return (
         <Modal
             isOpen={props.isOpen}
-            // onRequestClose={handleClose}
+            onAfterClose={() => {
+                // 유저가 수정은 했으나 적용하지 않은 내용을 버리고 화면을 리셋시킨다
+                setMin(priceMin);
+                setMax(priceMax);
+            }}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',

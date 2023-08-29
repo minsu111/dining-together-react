@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Modal from 'react-modal';
 import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
 
+import { RootState } from '../../../app/store';
+import { setSeat } from '../store/FilterSlice';
 import { SeatType, SearchModalType } from './enum/Enum';
 
 /**
@@ -13,27 +16,18 @@ function SelectSeat(props: {
     isOpen: boolean;
     onClose: (modalType: SearchModalType) => void;
 }) {
-    const handleReset = () => {
-        alert('초기화 버튼 클릭시 로직 구현 필요');
-    };
-
-    const handleClose = () => {
-        props.onClose(SearchModalType.Seat);
-    };
-
-    const handleConfirm = () => {
-        alert('적용 버튼 클릭시 로직 구현 필요');
-    };
-
-    const checkedListData: Array<SeatType> = new Array<SeatType>();
-
     const enumTypes = Object.values(SeatType);
 
-    const [checkedList, setCheckedList] =
-        useState<Array<SeatType>>(checkedListData);
+    const dispatch = useDispatch();
+    const seat = useSelector((state: RootState) => {
+        return state.filter.seat;
+    });
+
+    const deepCopyArray: string[] = JSON.parse(JSON.stringify(seat));
+    const [checkedList, setCheckedList] = useState<string[]>(deepCopyArray);
 
     // 체크 상태가 바뀐 것을 checkedList에 넣거나 뺀다
-    const handleCheck = (checkItem: SeatType) => {
+    const handleCheck = (checkItem: string) => {
         if (checkedList.includes(checkItem)) {
             setCheckedList(checkedList.filter((item) => item !== checkItem));
         } else {
@@ -48,10 +42,28 @@ function SelectSeat(props: {
     //     });
     // }, [checkedList]);
 
+    const handleReset = () => {
+        // TODO:
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.Seat);
+    };
+
+    const handleConfirm = () => {
+        dispatch(setSeat(checkedList));
+
+        handleClose();
+    };
+
     return (
         <Modal
             isOpen={props.isOpen}
-            // onRequestClose={handleClose}
+            onAfterClose={() => {
+                // 유저가 수정은 했으나 적용하지 않은 내용을 버리고 화면을 리셋시킨다
+                setCheckedList([...seat]);
+            }}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',

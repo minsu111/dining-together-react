@@ -21,19 +21,29 @@ function DeleteAccount() {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
-    const goToHome = () => {
-        navigate('/home');
+    const goToPage = (path: string) => {
+        navigate(`/${path}`);
     };
 
     // '확인' 버튼 클릭 시 팝업 닫기
     const handleDeleteBtn = () => {
         setPopupState(true);
     };
+
     const closePopup = () => {
         setPopupState(false);
-        setFinPopupState(false);
-        goToHome();
     };
+
+    const completePopup = () => {
+        setFinPopupState(false);
+        goToPage('/');
+    };
+
+    const closeFailPopup = () => {
+        setFailPopupState(false);
+        goToPage('/reservationList');
+    };
+
     const handlePopupBtn = () => {
         deleteAccount();
     };
@@ -90,7 +100,7 @@ function DeleteAccount() {
                     <ConfirmPopup
                         title="탈퇴가 완료되었습니다"
                         contents="다시 돌아오시는 그날까지 기다릴게요!"
-                        onClose={closePopup}
+                        onClose={completePopup}
                     />
                 )}
                 {failPopupState && (
@@ -98,7 +108,7 @@ function DeleteAccount() {
                         title="탈퇴 실패🥲"
                         contents="대기중인 예약내역이 있을 경우 탈퇴할 수 없습니다. 예약내역을 확인해주세요."
                         text="예약내역 보기"
-                        onClose={closePopup}
+                        onClose={closeFailPopup}
                     />
                 )}
             </Container>
@@ -120,7 +130,7 @@ const Title = styled.h1`
 `;
 
 const TextWrapper = styled.div`
-    margin-bottom: 50px;
+    margin-bottom: 80px;
 `;
 
 const PrecautionsTitle = styled.h2`

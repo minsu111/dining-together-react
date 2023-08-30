@@ -8,9 +8,11 @@ import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
 import { login } from '../../app/UserSlice';
 import { RootState } from '../../app/store';
+import ToastMsg from '../../components/common/ToastMsg';
 
 function EditName() {
     const [name, setName] = useState<string>('');
+    const [toastStage, setToastState] = useState(false);
 
     const navigate = useNavigate();
     const goToMyInfo = () => {
@@ -34,11 +36,16 @@ function EditName() {
                         userName: `${name}`,
                     }),
                 );
-                goToMyInfo();
+                setToastState(true);
+                // goToMyInfo();
             }
         } catch (error: any) {
             alert('변경 실패');
         }
+    };
+
+    const hideToast = () => {
+        setToastState(false);
     };
 
     return (
@@ -62,6 +69,7 @@ function EditName() {
                         editName();
                     }}
                 />
+                {/* {toastStage === true && <ToastMsg onClose={hideToast} />} */}
             </Container>
         </>
     );

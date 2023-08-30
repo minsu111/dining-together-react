@@ -80,6 +80,8 @@ function SearchKeyword() {
                     {data.map((store) => (
                         <StoreItem
                             isKeywordSearch
+                            storeId={store.storeId}
+                            imgUrl="test"
                             name={store.storeName}
                             description={store.description}
                         />

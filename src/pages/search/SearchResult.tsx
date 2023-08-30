@@ -130,6 +130,8 @@ function SearchResult() {
             <ResultDiv>
                 {data.map((store) => (
                     <StoreItem
+                        storeId={store.storeId}
+                        imgUrl={store.imageUrl}
                         name={store.storeName}
                         description={store.description}
                         subInfo={`${store.foodCategory} · ${store.location}`}

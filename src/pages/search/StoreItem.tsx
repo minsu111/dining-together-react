@@ -4,35 +4,45 @@ import styled from 'styled-components';
 
 type StoreInfoProps = {
     isKeywordSearch?: boolean;
+    storeId: number;
+    imgUrl: string;
     name: string;
     description: string;
     subInfo?: string;
     price?: number;
 };
 
-const StoreItem: React.FC<StoreInfoProps> = (props) => {
+/**
+ * 검색결과 화면에서 하나하나의 가게 아이템
+ */
+function StoreItem(props: StoreInfoProps) {
     const navigate = useNavigate();
 
+    // TODO: 임시로 오늘 날짜 보내고 있음
     const isoDateString = new Date().toISOString();
     const yearMonthDay = isoDateString.split('T')[0];
 
     return (
         <Div
-            onClick={() => navigate(`/store/test?selectedDate=${yearMonthDay}`)}
+            onClick={() =>
+                navigate(`/store/${props.storeId}?selectedDate=${yearMonthDay}`)
+            }
         >
             <div
-                style={{
-                    width: 80,
-                    height: 80,
-                    backgroundColor: 'lightgray',
-                    border: '2px solid gray',
-                }}
+            // style={{
+            //     width: 80,
+            //     height: 80,
+            //     backgroundColor: 'lightgray',
+            //     border: '2px solid gray',
+            // }}
             >
-                가게사진
+                <img src={props.imgUrl} alt="가게 사진" />
             </div>
 
             <InfoDiv>
-                <InfoSubDiv>
+                <InfoSubDiv
+                    className={props.isKeywordSearch ? 'isKeyword' : ''}
+                >
                     <StoreName>{props.name}</StoreName>
                     <StoreDesc>{props.description}</StoreDesc>
                 </InfoSubDiv>
@@ -43,7 +53,7 @@ const StoreItem: React.FC<StoreInfoProps> = (props) => {
             </InfoDiv>
         </Div>
     );
-};
+}
 
 export default StoreItem;
 
@@ -68,6 +78,9 @@ const InfoSubDiv = styled.div`
     flex-direction: column;
     gap: 5px;
 
+    &.isKeyword {
+        gap: 10px;
+    }
     &.isHide {
         display: none;
     }
@@ -76,14 +89,17 @@ const InfoSubDiv = styled.div`
 const StoreName = styled.h1`
     font-size: 24px;
     font-weight: 800;
+    cursor: default;
 `;
 
 const StoreDesc = styled.p`
     font-size: 12px;
     font-weight: bold;
+    cursor: default;
 `;
 
 const StoreEtcInfo = styled.p`
     font-size: 12px;
     color: gray;
+    cursor: default;
 `;

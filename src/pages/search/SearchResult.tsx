@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -20,6 +20,8 @@ import SelectSeat from './modal/SelectSeat';
 
 import { SearchModalType } from './modal/enum/Enum';
 import { RootState } from '../../app/store';
+import { setExpectedDate } from './store/FilterSlice';
+import { parseDateString, serializeDate } from '../../utils/utils';
 
 function SearchResult() {
     const [data, setData] = useState<Store[]>([]);
@@ -28,6 +30,14 @@ function SearchResult() {
     const filterState = useSelector((state: RootState) => {
         return state.filter;
     });
+
+    // 검색하기 화면 통하지 않고 url로 직접 이 페이지 접근했을 때의 방어처리
+    useEffect(() => {
+        if (!filterState.expectedDate) {
+            dispatch(setExpectedDate(serializeDate(new Date())));
+            console.log('1방문예정일 : ', filterState.expectedDate);
+        } else console.log('2방문예정일 : ', filterState.expectedDate);
+    }, []);
 
     // TODO: 임시 코드. 이후 수정 예정.
     const [modalStateArray, setModalStateArray] = useState([
@@ -46,9 +56,17 @@ function SearchResult() {
     const filterSearch = async () => {
         // api 호출
         try {
+            console.log('filterSearch 호출');
+
             const result = await axiosRequest(
                 'GET',
-                `/stores/filter?location=${filterState.region}&foodCategory=${filterState.foodType}&mood=${filterState.atmosphere}&room=${filterState.seat}`,
+                `/stores/filter?selectedDate=${
+                    filterState.expectedDate
+                }&location=${filterState.region}&foodCategory=${
+                    filterState.foodType
+                }&minCost=${filterState.priceMin * 10000}&maxCost=${
+                    filterState.priceMax * 10000
+                }&mood=${filterState.atmosphere}&room=${filterState.seat}`,
                 {},
             );
 
@@ -73,13 +91,7 @@ function SearchResult() {
     };
 
     return (
-        <section
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-            }}
-        >
+        <Section>
             <DatetimeSelectorModal
                 isOpen={modalStateArray[SearchModalType.DatetimeSelector]}
                 modalType={SearchModalType.DatetimeSelector}
@@ -112,8 +124,8 @@ function SearchResult() {
                 onClose={handleModalToggle}
             />
 
-            <Div>
-                <div>
+            <Div2>
+                <HeaderDiv>
                     <TopNaviBarBack pageName="검색결과" prevPath="/search" />
                     <SolidLine />
                     <DatetimeSelector
@@ -124,56 +136,68 @@ function SearchResult() {
                     <SolidLine />
                     <FilterList onClickFilter={handleModalToggle} />
                     <DevideLine />
-                </div>
-            </Div>
-            <StoreCount>{data.length}개의 매장</StoreCount>
-            <ResultDiv>
-                {data.map((store) => (
-                    <StoreItem
-                        storeId={store.storeId}
-                        imgUrl={store.imageUrl}
-                        name={store.storeName}
-                        description={store.description}
-                        subInfo={`${store.foodCategory} · ${store.location}`}
-                        price={store.cost}
-                    />
-                ))}
-                {/* <StoreItem
-                    name="가게1"
-                    description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                    subInfo="육류, 고기요리 · 영등포"
-                    price="점심 저녁 동일가 1~4만원"
-                />
-                <StoreItem
-                    name="가게1"
-                    description="가게 소개 메세지"
-                    subInfo="육류, 고기요리 · 영등포"
-                    price="점심 저녁 동일가 1~4만원"
-                /> */}
-            </ResultDiv>
+                </HeaderDiv>
+                <StoreCount>{data.length}개의 매장</StoreCount>
+                <ResultDiv>
+                    {data.map((store) => (
+                        <StoreItem
+                            storeId={store.storeId}
+                            imgUrl={store.imageUrl}
+                            name={store.storeName}
+                            description={store.description}
+                            subInfo={`${store.foodCategory} · ${store.location}`}
+                            price={store.cost}
+                        />
+                    ))}
+                </ResultDiv>
+            </Div2>
             <footer>
                 <div
                     style={{
+                        width: '100%',
                         margin: '20px auto',
                         position: 'fixed',
-                        bottom: '20px',
+                        bottom: '80px',
                         backgroundColor: 'yellow',
                     }}
                 >
-                    <button type="button" onClick={() => filterSearch()}>
+                    <button
+                        style={{ width: '100%' }}
+                        type="button"
+                        onClick={() => filterSearch()}
+                    >
                         검색 테스트용 버튼 [
-                        {`/stores/filter?location=${filterState.region}&foodCategory=${filterState.foodType}&mood=${filterState.atmosphere}&room=${filterState.seat}`}
+                        {`/stores/filter?selectedDate=${
+                            filterState.expectedDate
+                        }&location=${filterState.region}&foodCategory=${
+                            filterState.foodType
+                        }&minCost=${filterState.priceMin * 10000}&maxCost=${
+                            filterState.priceMax * 10000
+                        }&mood=${filterState.atmosphere}&room=${
+                            filterState.seat
+                        }`}
                         ]
                     </button>
                 </div>
             </footer>
-        </section>
+        </Section>
     );
 }
 
 export default SearchResult;
 
-const Div = styled.div`
+const Section = styled.section`
+    height: 100vh;
+`;
+
+const Div2 = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`;
+
+const HeaderDiv = styled.div`
     width: 390px;
     //height: calc(100vh - 65px);
     //border: 1px solid black;

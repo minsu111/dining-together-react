@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 type FilterState = {
-    expectedDate: string;
+    expectedDate: string; // yy-mm-dd
     region: string[];
     foodType: string[];
     priceMin: number;
@@ -44,14 +44,13 @@ const filterSlice = createSlice({
             state.atmosphere = action.payload;
         },
         setSeat(state, action) {
-            console.log(action.payload);
             state.seat = action.payload;
         },
     },
 });
 
 export const {
-    setExpectedDate: setVisitDate,
+    setExpectedDate,
     setRegion,
     setFoodType,
     setPriceMin,

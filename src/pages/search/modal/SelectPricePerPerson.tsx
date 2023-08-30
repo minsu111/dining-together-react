@@ -86,8 +86,8 @@ function SelectPricePerPerson(props: {
     }
 
     const handleReset = () => {
-        // TODO:
-        alert('초기화 버튼 클릭시 로직 구현 필요');
+        setMin(MIN_PRICE);
+        setMax(MAX_PRICE);
     };
 
     const handleClose = () => {

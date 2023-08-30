@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,10 @@ type CheckBoxProps = {
 };
 function CheckLabel({ checkState, type, onChange }: CheckBoxProps) {
     const [opacity, setOpacity] = useState(checkState ? 1 : 0);
+
+    useEffect(() => {
+        setOpacity(checkState ? 1 : 0);
+    }, [checkState]);
 
     const toggleOpacity = () => {
         setOpacity(opacity === 1 ? 0 : 1);

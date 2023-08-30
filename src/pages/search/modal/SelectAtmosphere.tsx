@@ -37,8 +37,7 @@ function SelectAtmosphere(props: {
     };
 
     const handleReset = () => {
-        // TODO:
-        alert('초기화 버튼 클릭시 로직 구현 필요');
+        setCheckedList([]);
     };
 
     const handleClose = () => {

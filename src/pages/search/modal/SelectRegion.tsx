@@ -43,9 +43,16 @@ function SelectRegion(props: {
         }
     };
 
+    // // checkedList가 업데이트될 때마다 실행
+    // React.useEffect(() => {
+    //     console.log('checkedList length: ', checkedList.length);
+    //     checkedList.forEach((item) => {
+    //         console.log(`현재선택된타입 / ${item}`);
+    //     });
+    // }, [checkedList]);
+
     const handleReset = () => {
-        // TODO:
-        alert('초기화 버튼 클릭시 로직 구현 필요');
+        setCheckedList([]);
     };
 
     const handleClose = () => {

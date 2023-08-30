@@ -25,7 +25,7 @@ const filterSlice = createSlice({
     name: 'filter',
     initialState,
     reducers: {
-        setVisitDate(state, action) {
+        setExpectedDate(state, action) {
             state.expectedDate = action.payload;
         },
         setRegion(state, action) {
@@ -51,7 +51,7 @@ const filterSlice = createSlice({
 });
 
 export const {
-    setVisitDate,
+    setExpectedDate: setVisitDate,
     setRegion,
     setFoodType,
     setPriceMin,

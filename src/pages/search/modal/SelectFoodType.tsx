@@ -1,27 +1,37 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FoodType } from './enum/Enum';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Modal from 'react-modal';
+import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
+
+import { RootState } from '../../../app/store';
+import { setFoodType } from '../store/FilterSlice';
+import { FoodType, SearchModalType } from './enum/Enum';
 
 /**
  * 음식 유형 필터 Modal
  */
-function SelectFoodType() {
-    const checkedListData: Array<FoodType> = new Array<FoodType>(); // 원래 이 컴포넌트의 props로 받아와야하는 데이터
-    checkedListData.push(FoodType.Asian); // 테스트용
+function SelectFoodType(props: {
+    isOpen: boolean;
+    onClose: (modalType: SearchModalType) => void;
+}) {
+    const enumTypes = Object.values(FoodType);
 
-    const foodTypes = Object.values(FoodType);
+    const dispatch = useDispatch();
+    const foodType = useSelector((state: RootState) => {
+        return state.filter.foodType;
+    });
 
-    const [checkedList, setCheckedList] =
-        useState<Array<FoodType>>(checkedListData);
+    const deepCopyArray: string[] = JSON.parse(JSON.stringify(foodType));
+    const [checkedList, setCheckedList] = useState<string[]>(deepCopyArray);
 
     // 체크 상태가 바뀐 음식유형을 checkedList에 넣거나 뺀다
-    const handleCheck = (checkFoodType: FoodType) => {
-        if (checkedList.includes(checkFoodType)) {
-            setCheckedList(
-                checkedList.filter((item) => item !== checkFoodType),
-            );
+    const handleCheck = (checkItem: FoodType) => {
+        if (checkedList.includes(checkItem)) {
+            setCheckedList(checkedList.filter((item) => item !== checkItem));
         } else {
-            setCheckedList([...checkedList, checkFoodType]);
+            setCheckedList([...checkedList, checkItem]);
         }
     };
 
@@ -32,16 +42,58 @@ function SelectFoodType() {
     //     });
     // }, [checkedList]);
 
+    const handleReset = () => {
+        // TODO:
+        alert('초기화 버튼 클릭시 로직 구현 필요');
+    };
+
+    const handleClose = () => {
+        props.onClose(SearchModalType.FoodType);
+    };
+
+    const handleConfirm = () => {
+        dispatch(setFoodType(checkedList));
+
+        handleClose();
+    };
+
     return (
-        <Div>
-            {foodTypes.map((type) => (
-                <CheckBoxLabel
-                    checkState={checkedList.includes(type)}
-                    foodType={type}
-                    onChange={handleCheck}
-                />
-            ))}
-        </Div>
+        <Modal
+            isOpen={props.isOpen}
+            onAfterClose={() => {
+                // 유저가 수정은 했으나 적용하지 않은 내용을 버리고 화면을 리셋시킨다
+                setCheckedList([...foodType]);
+            }}
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                content: {
+                    width: '390px',
+                    height: '100%',
+                    padding: '0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    inset: 0,
+                    margin: '0 auto',
+                },
+            }}
+        >
+            <FilterHeader onClickReset={handleReset} title="음식 유형" />
+            <ContentDiv>
+                <Div>
+                    {enumTypes.map((type) => (
+                        <CheckBoxLabel
+                            checkState={checkedList.includes(type)}
+                            foodType={type}
+                            onChange={handleCheck}
+                        />
+                    ))}
+                </Div>
+            </ContentDiv>
+            <FilterFooter onClose={handleClose} onConfirm={handleConfirm} />
+        </Modal>
     );
 }
 

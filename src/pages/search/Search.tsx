@@ -8,11 +8,9 @@ import DatetimeSelector from './DatetimeSelector';
 import FilterList from './FilterList';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
-import GNBArea from '../../components/common/GNB';
 
 // modal들
 import DatetimeSelectorModal from './modal/DatetimeSelectorModal';
-import FilterModal from './modal/template/FilterModal';
 import TotalFilter from './modal/TotalFilter';
 import SelectRegion from './modal/SelectRegion';
 import SelectFoodType from './modal/SelectFoodType';
@@ -20,11 +18,12 @@ import SelectPricePerPerson from './modal/SelectPricePerPerson';
 import SelectAtmosphere from './modal/SelectAtmosphere';
 import SelectSeat from './modal/SelectSeat';
 
-import { FoodType, SearchModalType } from './modal/enum/Enum';
+import { SearchModalType } from './modal/enum/Enum';
 
 function Search() {
     const navigate = useNavigate();
 
+    // TODO: 임시 코드. 이후 수정 예정.
     const [modalStateArray, setModalStateArray] = useState([
         false,
         false,
@@ -33,7 +32,6 @@ function Search() {
         false,
         false,
     ]);
-
     const handleModalToggle = (modalType: SearchModalType) => {
         modalStateArray[modalType] = !modalStateArray[modalType];
         setModalStateArray([...modalStateArray]);
@@ -42,67 +40,36 @@ function Search() {
     return (
         <section>
             <DatetimeSelectorModal
-                visitDate={new Date()}
                 isOpen={modalStateArray[SearchModalType.DatetimeSelector]}
                 modalType={SearchModalType.DatetimeSelector}
                 onConfirm={() => {}}
                 onClose={handleModalToggle}
             />
 
-            <FilterModal
-                title="필터"
+            <TotalFilter
                 isOpen={modalStateArray[SearchModalType.Total]}
-                modalType={SearchModalType.Total}
-                onConfirm={() => {}}
                 onClose={handleModalToggle}
-            >
-                <TotalFilter data="123" />
-            </FilterModal>
-            <FilterModal
-                title="지역"
+            />
+            <SelectRegion
                 isOpen={modalStateArray[SearchModalType.Region]}
-                modalType={SearchModalType.Region}
-                onConfirm={() => {}}
                 onClose={handleModalToggle}
-            >
-                <SelectRegion data="123" />
-            </FilterModal>
-            <FilterModal
-                title="음식 유형"
+            />
+            <SelectFoodType
                 isOpen={modalStateArray[SearchModalType.FoodType]}
-                modalType={SearchModalType.FoodType}
-                onConfirm={() => {}}
                 onClose={handleModalToggle}
-            >
-                <SelectFoodType />
-            </FilterModal>
-            <FilterModal
-                title="인당 가격"
+            />
+            <SelectPricePerPerson
                 isOpen={modalStateArray[SearchModalType.PricePerPerson]}
-                modalType={SearchModalType.PricePerPerson}
-                onConfirm={() => {}}
                 onClose={handleModalToggle}
-            >
-                <SelectPricePerPerson selectMin={10} selectMax={30} />
-            </FilterModal>
-            <FilterModal
-                title="분위기"
+            />
+            <SelectAtmosphere
                 isOpen={modalStateArray[SearchModalType.Atmosphere]}
-                modalType={SearchModalType.Atmosphere}
-                onConfirm={() => {}}
                 onClose={handleModalToggle}
-            >
-                <SelectAtmosphere />
-            </FilterModal>
-            <FilterModal
-                title="좌석"
+            />
+            <SelectSeat
                 isOpen={modalStateArray[SearchModalType.Seat]}
-                modalType={SearchModalType.Seat}
-                onConfirm={() => {}}
                 onClose={handleModalToggle}
-            >
-                <SelectSeat />
-            </FilterModal>
+            />
 
             <Div>
                 <div>
@@ -125,10 +92,6 @@ function Search() {
                     />
                 </div>
             </Div>
-
-            <footer>
-                <GNBArea />
-            </footer>
         </section>
     );
 }

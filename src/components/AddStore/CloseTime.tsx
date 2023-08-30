@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { Select } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { styled } from 'styled-components';
-import { color } from 'framer-motion';
+
+type CloseHoursProps = {
+    closingHour: string;
+    closingMinute: string;
+    handleChangeInfo: (k: string, v: string) => void;
+}
 
 const closeHours = [
+    '00',
     '01',
     '02',
     '03',
@@ -37,27 +43,17 @@ const closeMinutes = [
 ];
 
 
-const CloseTimeSelect = () => {
-    const [selectedCloseHour, setSelectedCloseHour] = useState('');
-    const [selectedCloseMinute, setSelectedCloseMinute] = useState('');
+const CloseTimeSelect = ({closingHour,closingMinute, handleChangeInfo}:CloseHoursProps) => {
 
     const handleSelectedCloseHour = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedCloseHour(selectedValue);
+        handleChangeInfo('closingHour', selectedValue)
     };
 
     const handleSelectedCloseMinute = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedCloseMinute(selectedValue);
+        handleChangeInfo('closingMinute', selectedValue)
     };
-
-    const updatedsignUpData = {
-        hour: selectedCloseHour,
-        minute: selectedCloseMinute,
-    };
-    console.log(
-        updatedsignUpData,
-    );
 
     return (
         <section>
@@ -68,7 +64,7 @@ const CloseTimeSelect = () => {
                     mr="20px"
                     w="100px"
                     placeholder="시"
-                    value={selectedCloseHour}
+                    value={closingHour}
                     onChange={handleSelectedCloseHour}
                 >
                     {closeHours.map((hour) => (
@@ -83,7 +79,7 @@ const CloseTimeSelect = () => {
                     mr="20px"
                     w="100px"
                     placeholder="분"
-                    value={selectedCloseMinute}
+                    value={closingMinute}
                     onChange={handleSelectedCloseMinute}
                 >
                     {closeMinutes.map((minute) => (

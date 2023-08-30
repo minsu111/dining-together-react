@@ -52,6 +52,10 @@ const SignUpTest = () => {
     const goToWelcome = () => {
         navigate('/join/welcome');
     };
+    const goToHome = () => {
+        navigate('/home');
+    };
+
     const dispatch = useDispatch();
 
     const getUserInfo = async (userId: string) => {
@@ -77,6 +81,8 @@ const SignUpTest = () => {
                 email,
                 password,
             });
+
+            // 로그인 성공 시 로컬스토리지에 토큰 저장 & 유저 정보 조회
             const loginToken = result.token;
             localStorage.setItem('jwt_token', loginToken);
             await getUserInfo(result.userId);
@@ -98,13 +104,13 @@ const SignUpTest = () => {
                     signUpData,
                 );
                 loginConfirm(signUpData.email, signUpData.password);
-                console.log(
-                    '🚀 ~ file: Login.tsx:37 ~ loginConfirm ~ result:',
-                    result,
-                );
+                if (result) {
+                    loginConfirm(signUpData.email, signUpData.password);
+                }
             } catch (error: any) {
                 alert('회원가입 실패');
                 localStorage.removeItem('userType');
+                goToHome();
             }
         } else {
             setShowSignUpForm(false);

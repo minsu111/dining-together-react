@@ -2,17 +2,26 @@ import React, { useState, useRef } from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
-import Input from '../common/Input';
+import Input from '../common/CustomInput';
 import Button from '../common/Button';
 import TableTypeSelect from './TableTypeSelect';
 
 type TableInfoProps = {
+    placeName: string;
+    placeType: string;
+    minPeople: string;
+    maxPeople: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
 function TableInfo({
+    placeName,
+    placeType,
+    minPeople,
+    maxPeople,
     handleChangeInfo,
 }: TableInfoProps) {
+    
     const [mainImagePreview, setMainImagePreview] = useState<string | null>(
         null,
     );
@@ -34,19 +43,25 @@ function TableInfo({
             mainImageInputRef.current.value = '';
         }
     };
+
+
     return (
         <section>
             <Inner>
                 <FormSC>
                     <div className="content">
                         <h4>테이블 타입</h4>
-                        <TableTypeSelect />
+                        <TableTypeSelect 
+                            placeType={placeType}
+                            handleChangeInfo={handleChangeInfo}
+                        />
                     </div>
 
                     <Input
                         label="테이블 명"
                         name="placeName"
                         inputType="text"
+                        value={placeName}
                         placeholder="테이블 이름을 입력해주세요."
                         onChange={(e) => {
                             handleChangeInfo('placeName', e.target.value);
@@ -80,6 +95,7 @@ function TableInfo({
                             label="예약 가능 최소 인원"
                             name="minPeople"
                             inputType="number"
+                            value={minPeople}
                             width="80px"
                             onChange={(e) => {
                                 handleChangeInfo('minPeople', e.target.value);
@@ -92,6 +108,7 @@ function TableInfo({
                             label="예약 가능 최대 인원"
                             name="maxPeople"
                             inputType="number"
+                            value={maxPeople}
                             width="80px"
                             onChange={(e) => {
                                 handleChangeInfo('maxPeople', e.target.value);
@@ -99,7 +116,6 @@ function TableInfo({
                         />
                         <p>명</p>
                     </div>
-                    <Button text='등록' onClick={()=> {}} />
                 </FormSC>
             </Inner>
         </section>
@@ -111,7 +127,7 @@ export default TableInfo;
 const Inner = styled.div`
     margin: 20px auto;
     width: 350px;
-    height: 790px;
+    height: 700px;
     position: relative;
 `;
 

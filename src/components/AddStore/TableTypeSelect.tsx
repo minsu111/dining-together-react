@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
+type TableInfoProps = {
+    placeType: string;
+    handleChangeInfo: (k: string, v: string) => void;
+};
+
 const regionButtonNames = ['룸', '홀', '테라스'];
 
-const TableTypeSelect = () => {
-    const [selectedRegion, setSelectedRegion] = useState('');
+const TableTypeSelect = ({placeType, handleChangeInfo}:TableInfoProps) => {
 
     const handleSelectedRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedRegion(selectedValue);
+        handleChangeInfo('placeType', selectedValue);
     };
-
-    const updatedsignUpData = {
-        location: selectedRegion,
-    };
-    console.log(updatedsignUpData);
 
     return (
         <section>
@@ -27,7 +26,7 @@ const TableTypeSelect = () => {
                     mr="20px"
                     w="120px"
                     placeholder="자리 분류"
-                    value={selectedRegion}
+                    value={placeType}
                     onChange={handleSelectedRegion}
                 >
                     {regionButtonNames.map((region) => (

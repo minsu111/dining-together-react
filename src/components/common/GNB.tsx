@@ -7,21 +7,27 @@ import {
     faCalendar,
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const GNBArea: React.FC = () => {
     const location = useLocation();
-    
-    const homeActive = location.pathname.includes('/home');
+    const token = localStorage.getItem('jwt_token');
+    const navigate = useNavigate();
+
+    const homeActive = location.pathname === '/';
     const searchActive = location.pathname.includes('/search');
     const myListActive = location.pathname.includes('/reservationList');
     const myPageActive = location.pathname.includes('/my');
+
+    if ((myListActive || myPageActive) && !token) {
+        navigate('/login');
+    }
 
     return (
         <GNBAreaSC>
             <ul>
                 <li className={`${homeActive ? 'select_on' : ''}`}>
-                    <Link to="/home">
+                    <Link to="/">
                         <FontAwesomeIcon icon={faHouse} />
                     </Link>
                 </li>

@@ -6,25 +6,23 @@ type StepBarProps = {
 };
 
 const StepBar: React.FC<StepBarProps> = ({ step }) => {
-    return (
-        <StyledStepBar step={step}></StyledStepBar>
-    );
+    return <StyledStepBar step={step} />;
 };
 
 const StyledStepBar = styled.div<StepBarProps>`
     width: 200px;
     height: 5px;
-    background-color: #D9D9D9;
+    background-color: #d9d9d9;
     border-radius: 10px;
     position: relative;
     margin-bottom: 10px;
 
     &::after {
-        content: "";
+        content: '';
         display: block;
         height: 5px;
         border-radius: 10px;
-        background-color: #FFB100;
+        background-color: #ffb100;
 
         position: absolute;
         left: 0;

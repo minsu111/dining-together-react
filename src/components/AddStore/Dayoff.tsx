@@ -2,31 +2,27 @@ import React, { useState } from 'react';
 import { Select } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { styled } from 'styled-components';
-import { color } from 'framer-motion';
 
-const dayoffM = ['없음', '매 주', '매 월', '매 년'];
+type DayOffProps = {
+    dayoff1: string;
+    dayoff2: string;
+    handleChangeInfo: (k: string, v: string) => void;
+};
 
-const dayoffS = ['-', '월', '화', '수', '목', '금', '토', '일'];
+const dayoffM = ['없음', '매주', '매월'];
 
-const DayoffSelect = () => {
-    const [selectedDayoffM, setSelectedDayoffM] = useState('');
-    const [selectedDayoffS, setSelectedDayoffS] = useState('');
+const dayoffS = ['월', '화', '수', '목', '금', '토', '일'];
 
+const DayoffSelect = ({ dayoff1, dayoff2, handleChangeInfo }: DayOffProps) => {
     const handleSelectedDayoffM = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedDayoffM(selectedValue);
+        handleChangeInfo('dayoff1', selectedValue);
     };
 
     const handleSelectedDayoffS = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedDayoffS(selectedValue);
+        handleChangeInfo('dayoff2', selectedValue);
     };
-
-    const updatedsignUpData = {
-        units: selectedDayoffM,
-        days: selectedDayoffS,
-    };
-    console.log(updatedsignUpData);
 
     return (
         <section>
@@ -36,7 +32,7 @@ const DayoffSelect = () => {
                     mr="20px"
                     w="100px"
                     placeholder="단위"
-                    value={selectedDayoffM}
+                    value={dayoff1}
                     onChange={handleSelectedDayoffM}
                 >
                     {dayoffM.map((units) => (
@@ -45,13 +41,12 @@ const DayoffSelect = () => {
                         </option>
                     ))}
                 </Select>
-                <span> : </span>
                 <Select
                     ml="20px"
                     mr="20px"
                     w="100px"
                     placeholder="요일"
-                    value={selectedDayoffS}
+                    value={dayoff2}
                     onChange={handleSelectedDayoffS}
                 >
                     {dayoffS.map((days) => (
@@ -87,7 +82,7 @@ const OpenTimeSelector = styled.div`
     }
 
     .chakra-select__wrapper:last-child {
-        margin-left: 20px;
+        margin-left: 25px;
     }
 
     span {

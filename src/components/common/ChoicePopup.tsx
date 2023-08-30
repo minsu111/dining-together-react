@@ -1,35 +1,52 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-
 type ChoicePopupProps = {
     title?: string;
     contents: string;
+    text?: string;
+    onClose: () => void;
+    rightBtn?: () => void;
 };
 
-
-const ChoicePopup: React.FC<ChoicePopupProps> = ({ title, contents }) => {
+const ChoicePopup: React.FC<ChoicePopupProps> = ({
+    title,
+    contents,
+    text,
+    onClose,
+    rightBtn,
+}) => {
     const cancleClickBtn = () => {
-        console.log("취소");
-    } 
+        console.log('취소');
+        onClose();
+    };
     const confirmClickBtn = () => {
-        console.log("확인");
-    } 
+        console.log('확인');
+        onClose();
+    };
     return (
         <ChoicePopupSC>
             <div className="confirm_popup">
                 {title && <h3>{title}</h3>}
                 <span>{contents}</span>
                 <div className="btn_area">
-                    <button type='button' onClick={cancleClickBtn}>취소</button>
-                    <button type='button' onClick={confirmClickBtn}>확인</button>
+                    <button type="button" onClick={cancleClickBtn}>
+                        취소
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            confirmClickBtn();
+                            rightBtn?.();
+                        }}
+                    >
+                        {text || '확인'}
+                    </button>
                 </div>
             </div>
         </ChoicePopupSC>
     );
 };
-
-
 
 export default ChoicePopup;
 
@@ -49,7 +66,7 @@ const ChoicePopupSC = styled.div`
         width: 345px;
         height: 225px;
         border-radius: 20px;
-        padding: 50px 0;
+        padding: 32px 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -66,6 +83,8 @@ const ChoicePopupSC = styled.div`
 
     span {
         font-size: 18px;
+        margin: 10px 20px;
+        text-align: center;
     }
 
     button {
@@ -81,9 +100,8 @@ const ChoicePopupSC = styled.div`
     }
 
     button:first-child {
-        background-color: #E2E2E3;
+        background-color: #e2e2e3;
         color: #000;
         margin-right: 10px;
     }
 `;
-

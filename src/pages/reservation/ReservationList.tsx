@@ -5,7 +5,6 @@ import TopNaviBar from '../../components/common/TopNaviBar';
 import StatusList from '../../components/ReservationList/StatusList';
 import DetailInfo from '../../components/ReservationList/DetailInfo';
 
-
 function ReservationList() {
     return (
         <section>
@@ -15,10 +14,7 @@ function ReservationList() {
             <Inner>
                 <StatusList />
             </Inner>
-            <DetailInfo/>
-            <footer>
-                <GNBArea />
-            </footer>
+            {/* <DetailInfo /> */}
         </section>
     );
 }

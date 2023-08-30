@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Modal from 'react-modal'; // 공식문서: https://reactcommunity.org/react-modal/
@@ -10,8 +11,10 @@ import Button from '../../../components/common/Button';
 
 import { SearchModalType } from './enum/Enum';
 
+import { RootState } from '../../../app/store';
+import { setVisitDate } from '../store/FilterSlice';
+
 type ModalProps = {
-    visitDate: Date;
     isOpen: boolean;
     modalType: SearchModalType;
     onConfirm: () => void;
@@ -22,18 +25,46 @@ type ModalProps = {
  * 검색할 날짜를 선택하는 Modal
  */
 function DatetimeSelectorModal(props: ModalProps) {
-    const handleClose = () => {
-        props.onClose(props.modalType);
+    const dispatch = useDispatch();
+    const expectedDate = useSelector((state: RootState) => {
+        return state.filter.expectedDate;
+    });
+
+    let temp;
+    // expectedDate가 비어있다면
+    if (!expectedDate) {
+        const isoDateString = new Date().toISOString();
+        const yearMonthDay = isoDateString.split('T')[0];
+        temp = new Date(yearMonthDay);
+    } else temp = new Date();
+
+    const [selectedDate, setDate] = React.useState(temp);
+    const handleDayClick = (date: Date) => {
+        setDate(date);
     };
 
     const formattedDate = Intl.DateTimeFormat('ko', {
         dateStyle: 'full',
-    }).format(props.visitDate);
+    }).format(temp);
+
+    const handleClose = () => {
+        props.onClose(props.modalType);
+    };
+
+    const handleConfirm = () => {
+        // const testDate = new Date();
+        // testDate.setDate(expectedDate.getDate() + 1);
+        // dispatch(setVisitDate(testDate));
+        // dispatch(setVisitDate(selectedDate));
+
+        props.onConfirm();
+        handleClose();
+    };
 
     return (
         <Modal
             isOpen={props.isOpen}
-            onRequestClose={handleClose}
+            // onRequestClose={handleClose}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -46,6 +77,7 @@ function DatetimeSelectorModal(props: ModalProps) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     inset: 0,
+                    margin: '0 auto',
                 },
             }}
         >
@@ -62,11 +94,12 @@ function DatetimeSelectorModal(props: ModalProps) {
                     onClick={handleClose}
                 />
             </HeaderDiv>
+            {/* <Calendar seletedDate={visitDate} onDayClick={handleDayClick} /> */}
             <Calendar />
             <SolidLine />
             <Text>{formattedDate}</Text>
             <FooterDiv>
-                <Button text="확인" onClick={props.onConfirm} />
+                <Button text="확인" onClick={handleConfirm} />
             </FooterDiv>
         </Modal>
     );

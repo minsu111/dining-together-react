@@ -6,9 +6,12 @@ import DevideLine from '../../components/common/DevideLine';
 import SolidLine from './SolidLine';
 import Button from '../../components/common/Button';
 import StoreItem from './StoreItem';
+import axiosRequest from '../../api/api';
 
 function SearchKeyword() {
+    const [keyword, setKeyword] = useState<string>('');
     const [showResult, setShowResult] = useState(false);
+    const [data, setData] = useState<StoreType[]>([]);
 
     const navigate = useNavigate();
     const handleBackButtonClick = () => {
@@ -19,80 +22,69 @@ function SearchKeyword() {
         e.preventDefault();
 
         console.log('handleSubmit');
-        // setShowResult(true);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
+        setKeyword(e.target.value);
+    };
+
+    const keywordSearch = async () => {
+        // api 호출
+        try {
+            setShowResult(false);
+
+            const result = await axiosRequest(
+                'GET',
+                `/stores/search?searchItem=${keyword}`,
+                {},
+            );
+
+            setData(result);
+            setShowResult(true);
+
+            // console.log('result[0]: ', result[0].storeId);
+
+            // console.log('data.length: ', data.length);
+
+            // console.log('result:', result);
+        } catch (error: any) {
+            const errorStatus = error.status;
+            switch (errorStatus) {
+                default:
+                    alert('오류가 발생했습니다. 다시 한 번 시도해주세요.');
+                    break;
+            }
+            console.log('error:', error);
+        }
     };
 
     return (
         <Div>
             <Div2>
-                <form onSubmit={handleSubmit} id="keywordForm">
-                    <HeaderDiv>
-                        <BackButton onClick={handleBackButtonClick}>
-                            <img src={backArrowIcon} alt="back arrow icon" />
-                        </BackButton>
+                <HeaderDiv>
+                    <BackButton onClick={handleBackButtonClick}>
+                        <img src={backArrowIcon} alt="back arrow icon" />
+                    </BackButton>
+
+                    <form onSubmit={handleSubmit} id="keywordForm">
                         <Input
                             placeholder="식당명, 키워드로 찾아보세요"
+                            onChange={handleInputChange}
                             required
                         />
-                    </HeaderDiv>
-                    <DevideLine />
-                    <ResultDiv isHidden={!showResult}>
+                    </form>
+                </HeaderDiv>
+                <DevideLine />
+
+                <ResultDiv isHidden={!showResult}>
+                    {data.map((store) => (
                         <StoreItem
                             isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
+                            name={store.storeName}
+                            description={store.description}
                         />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                        <StoreItem
-                            isKeywordSearch
-                            name="가게1"
-                            description="가게 소개 메세지가게 소개 메세지가게 소개 메세지가게 소개 메세지"
-                        />
-                    </ResultDiv>
-                </form>
+                    ))}
+                </ResultDiv>
             </Div2>
             <FooterDiv>
                 <SolidLine />
@@ -101,9 +93,10 @@ function SearchKeyword() {
                         type="submit"
                         text="검색"
                         onClick={() => {
-                            setShowResult(true);
+                            // 입력칸이 비어있지 않은 걸 체크
+                            if (keyword) keywordSearch();
                         }}
-                        // form="keywordForm"
+                        form="keywordForm"
                     />
                 </div>
             </FooterDiv>
@@ -185,3 +178,39 @@ const ResultDiv = styled.div<ResultDivProps>`
             display: none;
         `}
 `;
+
+type AddressType = {
+    postalCode: string;
+    roadAddress: string;
+    detailAddress: string;
+};
+
+type OperatingHoursType = {
+    openingHour: string;
+    openingMinute: string;
+    closingHour: string;
+    closingMinute: string;
+};
+
+type StoreType = {
+    storeId: number;
+    userId: number;
+    storeName: string;
+    storeContact: string;
+    address: AddressType;
+    description: string;
+    location: string;
+    keyword: string;
+    mood: string;
+    operatingHours: OperatingHoursType;
+    closedDays: string;
+    foodCategory: string;
+    maxNum: number;
+    cost: number;
+    isParking: number;
+    createdAt: string;
+    modifiedAt: string;
+    averageRating: number;
+    reviewCount: number;
+    isDeleted: number;
+};

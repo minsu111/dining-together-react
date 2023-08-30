@@ -6,38 +6,56 @@ import FoodTypeTag from './FoodTag';
 import ParkingTag from './ParkingTag';
 import MoodTag from './MoodTag';
 
+type StoreForm2ndProps = {
+    foodCategory: string;
+    mood: string[];
+    isParking: string;
+    handleChangeInfo: (k: string, v: string) => void;
+    handleChangeArrayInfo: (k: string, v: string[]) => void;
+};
 
-function StoreForm2nd() {
-
+function StoreForm2nd({
+    foodCategory,
+    mood,
+    isParking,
+    handleChangeInfo,
+    handleChangeArrayInfo,
+}: StoreForm2ndProps) {
     return (
         <section>
             <Inner>
                 <FormSC>
-                    <div className='content'>
+                    <div className="content">
                         <h4>음식 유형</h4>
-                        <FoodTypeTag />
+                        <FoodTypeTag
+                            foodCategory={foodCategory}
+                            handleChangeInfo={handleChangeInfo}
+                        />
                     </div>
 
-                    <div className='content'>
+                    <div className="content">
                         <h4>가게 분위기</h4>
-                        <div className='description'>
+                        <div className="description">
                             <FontAwesomeIcon icon={faCircleExclamation} />
                             <span>최대 3개까지 선택 가능합니다.</span>
                         </div>
-                        <MoodTag />
+                        <MoodTag
+                            mood={mood}
+                            handleChangeArrayInfo={handleChangeArrayInfo}
+                        />
                     </div>
 
-                    <div className='content'>
+                    <div className="content">
                         <h4>주차 가능 여부</h4>
-                        <ParkingTag />
+                        <ParkingTag
+                            isParking={isParking}
+                            handleChangeInfo={handleChangeInfo}
+                        />
                     </div>
-                    
                 </FormSC>
             </Inner>
-            
         </section>
     );
-
 }
 
 export default StoreForm2nd;
@@ -76,6 +94,4 @@ const FormSC = styled.div`
         display: block;
         margin-left: 2px;
     }
-
-    
 `;

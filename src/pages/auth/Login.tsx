@@ -7,7 +7,7 @@ import { emailRegEx } from '../../utils/utils';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
 import { login } from '../../app/UserSlice';
-import HandleError from '../../utils/Error';
+import HandleError from '../../api/Error';
 
 function Login() {
     const [email, setEmail] = useState<string>('');
@@ -25,13 +25,13 @@ function Login() {
     const activeButton = password.length >= 4;
 
     // '확인' 버튼 클릭 시 팝업 닫기
-    const closeFailLoginPopup = () => {
+    const closePopup = () => {
         setPopupState(false);
     };
 
     const navigate = useNavigate();
     const goToHome = () => {
-        navigate('/home');
+        navigate('/');
     };
     const dispatch = useDispatch();
 
@@ -48,13 +48,11 @@ function Login() {
                 }),
             );
         } catch (error: any) {
-            alert('조회 실패');
+            console.log('조회 실패');
         }
     };
-
+    // 로그인 api 호출
     const loginConfirm = async () => {
-        // 로그인 api 호출
-        // try {
         const result = await axiosRequest(
             'POST',
             '/user/login',
@@ -66,11 +64,11 @@ function Login() {
             HandleError,
         );
         // 로컬스토리지에 토큰 저장
-        localStorage.setItem('jwt_token', result.token);
-        // localStorage.setItem('userType', result.userType);
-
-        await getUserInfo(result.userId);
-        goToHome();
+        if (result) {
+            localStorage.setItem('jwt_token', result.token);
+            await getUserInfo(result.userId);
+            goToHome();
+        }
     };
 
     return (
@@ -107,7 +105,7 @@ function Login() {
                     title="로그인 실패"
                     contents="존재하지 않는 아이디거나
 비밀번호가 일치하지 않습니다."
-                    onClose={closeFailLoginPopup}
+                    onClose={closePopup}
                 />
             )}
 

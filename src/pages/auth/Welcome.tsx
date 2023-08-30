@@ -11,9 +11,11 @@ const Welcome = () => {
     const navigate = useNavigate();
     const goToHome = () => {
         navigate('/home');
+        localStorage.removeItem('userType');
     };
     const goToAddStore = () => {
         navigate('/my/store');
+        localStorage.removeItem('userType');
     };
 
     return (
@@ -33,7 +35,7 @@ const Welcome = () => {
                         <img
                             src={WelcomCustomerImg}
                             alt="가입완료_일반회원"
-                            style={{ width: '50%', marginBottom: '80px' }}
+                            style={{ width: '50%', marginBottom: '60px' }}
                         />
                         <Button
                             type="button"
@@ -57,7 +59,7 @@ const Welcome = () => {
                         <img
                             src={WelcomOwnerImg}
                             alt="가입완료_사장님"
-                            style={{ width: '50%', marginBottom: '80px' }}
+                            style={{ width: '50%', marginBottom: '60px' }}
                         />
                         <Button
                             // type="button"
@@ -73,19 +75,8 @@ const Welcome = () => {
 export default Welcome;
 
 const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
     display: flex;
     flex-direction: column;
-    border: 1px solid #e8e8e8;
 `;
 
 const Title = styled.h1`
@@ -93,6 +84,7 @@ const Title = styled.h1`
     line-height: 45px;
     font-weight: 600;
     padding: 50px 20px 10px 20px;
+    margin-top: 20px;
 `;
 
 const MiddleTitle = styled.span`
@@ -108,16 +100,4 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-`;
-
-const ImsiButton = styled.button`
-    all: unset;
-    font-size: 14px;
-    color: #474747;
-    padding: 12px 22px;
-    text-align: right;
-    text-decoration: underline;
-    text-decoration-color: #474747;
-
-    cursor: pointer;
 `;

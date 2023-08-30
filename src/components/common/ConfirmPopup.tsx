@@ -47,7 +47,7 @@ const ConfirmPopupSC = styled.div`
         width: 345px;
         height: 225px;
         border-radius: 20px;
-        padding: 32px 0; // 50px -> 32px
+        padding: 32px 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -64,7 +64,8 @@ const ConfirmPopupSC = styled.div`
 
     span {
         font-size: 18px;
-        margin: 10px 20px; // margin 추가
+        margin: 10px 20px;
+        text-align: center;
     }
 
     button {

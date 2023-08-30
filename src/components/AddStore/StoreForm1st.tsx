@@ -1,14 +1,27 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import Input from '../common/Input';
+
+import Input from '../common/CustomInput';
 import Postcode from './PostCode';
 import AreaSelect from './AreaSelect';
 
 type StoreForm1stProps = {
+    storeName: string;
+    storeContact: string;
+    zipCode: string;
+    roadAddress: string;
+    detailAddress: string;
+    location: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
 function StoreForm1st({
+    storeName,
+    storeContact,
+    zipCode,
+    roadAddress,
+    detailAddress,
+    location,
     handleChangeInfo,
 }: StoreForm1stProps) {
     return (
@@ -19,6 +32,7 @@ function StoreForm1st({
                         label="가게 상호명"
                         name="storeName"
                         inputType="text"
+                        value={storeName}
                         placeholder="가게명을 입력해주세요."
                         onChange={(e) => {
                             handleChangeInfo('storeName', e.target.value);
@@ -28,6 +42,7 @@ function StoreForm1st({
                         label="전화번호"
                         name="storeContact"
                         inputType="number"
+                        value={storeContact}
                         placeholder="전화번호를 입력해주세요."
                         onChange={(e) =>
                             handleChangeInfo('storeContact', e.target.value)
@@ -36,12 +51,20 @@ function StoreForm1st({
 
                     <div>
                         <h4>가게주소</h4>
-                        <Postcode />
+                        <Postcode
+                            zipCode={zipCode}
+                            roadAddress={roadAddress}
+                            detailAddress={detailAddress}
+                            handleChangeInfo={handleChangeInfo}
+                        />
                     </div>
 
                     <div className="select-areat">
                         <h4>지역선택</h4>
-                        <AreaSelect />
+                        <AreaSelect
+                            location={location}
+                            handleChangeInfo={handleChangeInfo}
+                        />
                     </div>
                 </FormSC>
             </Inner>
@@ -55,7 +78,6 @@ const Inner = styled.div`
     margin: 0 auto;
     width: 350px;
     height: 790px;
-    padding: 20px 0;
     position: relative;
 `;
 

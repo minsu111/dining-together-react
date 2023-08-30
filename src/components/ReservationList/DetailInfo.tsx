@@ -5,14 +5,36 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import DimmedLayer from '../common/DimmedLayer';
 import Button from '../common/Button';
 
-const DetailInfo = () => {
+type SimpleDataType = {
+    dDay: number;
+    restaurant: string;
+    category: string;
+    status: string;
+    bookingInfo: string;
+};
+
+type DetailInfoProps = {
+    detailOpen: boolean;
+    setDetailOpen: (value: boolean) => void;
+    dataDetail: SimpleDataType;
+};
+
+const DetailInfo = ({
+    detailOpen,
+    setDetailOpen,
+    dataDetail,
+}: DetailInfoProps) => {
     return (
-        <DetailInfoSC>
+        <DetailInfoSC style={{ display: detailOpen ? '' : 'none' }}>
             <DimmedLayer />
             <InfoSC>
-                <div className="btn_close">
+                <button
+                    type="button"
+                    className="btn_close"
+                    onClick={() => setDetailOpen(false)}
+                >
                     <FontAwesomeIcon icon={faCircleXmark} />
-                </div>
+                </button>
 
                 <div className="booking_detail_info">
                     <h3>예약 상세조회</h3>
@@ -20,6 +42,7 @@ const DetailInfo = () => {
                         <div className="title_detail_info">
                             <h4>예약 내용</h4>
                             <span>예약번호 : 1234567</span>
+                            {/* <span>{dataDetail.status}</span> */}
                         </div>
                         <table>
                             <tr>
@@ -82,8 +105,9 @@ export default DetailInfo;
 
 const DetailInfoSC = styled.div`
     width: 100%;
-    display: none;
+    // display: none;
 `;
+
 const InfoSC = styled.div`
     width: 100%;
     padding: 25px 0;

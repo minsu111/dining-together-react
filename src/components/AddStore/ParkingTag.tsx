@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TagBtn from './TagBtn';
 
+type TagProps = {
+    isParking: string;
+    handleChangeInfo: (k: string, v: string) => void;
+};
 
-const ParkingTag: React.FC = () => {
-    const [selectedButton, setSelectedButton] = useState<string | null>(null);
-
+const ParkingTag = ({ isParking, handleChangeInfo }: TagProps) => {
     const handleTagClick = (name: string) => {
-        if (selectedButton === name) {
-            setSelectedButton(null); // 이미 선택된 버튼을 다시 클릭하면 선택 해제
+        if (isParking === name) {
+            handleChangeInfo('isParking', '');
         } else {
-            setSelectedButton(name);
+            handleChangeInfo('isParking', name);
         }
     };
 
@@ -17,13 +19,13 @@ const ParkingTag: React.FC = () => {
         <div>
             <TagBtn
                 name="가능"
-                onClick={() => handleTagClick("Tag 1")}
-                checked={selectedButton === "Tag 1"}
+                onClick={() => handleTagClick('1')}
+                checked={isParking === '1'}
             />
             <TagBtn
                 name="불가능"
-                onClick={() => handleTagClick("Tag 2")}
-                checked={selectedButton === "Tag 2"}
+                onClick={() => handleTagClick('0')}
+                checked={isParking === '0'}
             />
         </div>
     );

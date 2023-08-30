@@ -44,8 +44,9 @@ function MyInfo() {
             <Container>
                 <MenuWrapper>
                     <MenuName>가입 계정 (이매일)</MenuName>
-                    <div style={{ marginTop: '2px' }}>{user.userEmail}</div>
+                    <div style={{ marginTop: '4px' }}>{user.userEmail}</div>
                 </MenuWrapper>
+                <hr />
                 <MenuWrapper>
                     <MenuName>이름</MenuName>
                     <InfoMenu onClick={() => goToEditPage('name')}>
@@ -53,6 +54,7 @@ function MyInfo() {
                         <FontAwesomeIcon icon={faChevronRight} />
                     </InfoMenu>
                 </MenuWrapper>
+                <hr />
                 <MenuWrapper>
                     <MenuName>휴대폰 번호</MenuName>
                     <InfoMenu onClick={() => goToEditPage('phoneNumber')}>
@@ -60,13 +62,13 @@ function MyInfo() {
                         <FontAwesomeIcon icon={faChevronRight} />
                     </InfoMenu>
                 </MenuWrapper>
-                <MenuWrapper>
+                {/* <MenuWrapper>
                     <MenuName>비밀번호</MenuName>
                     <InfoMenu onClick={() => goToEditPage('password')}>
                         <div>********</div>
                         <FontAwesomeIcon icon={faChevronRight} />
                     </InfoMenu>
-                </MenuWrapper>
+                </MenuWrapper> */}
             </Container>
             <DevideLine />
             <Logout
@@ -92,7 +94,11 @@ const Container = styled.section`
 `;
 
 const MenuWrapper = styled.div`
-    margin: 30px 0;
+    margin: 40px 0;
+    div {
+        font-size: 18px;
+        font-weight: 600;
+    }
 `;
 
 const MenuName = styled.span`
@@ -103,13 +109,14 @@ const MenuName = styled.span`
 
 const InfoMenu = styled.button`
     width: 100%;
-    margin: 2px 0;
+    margin: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    & > div {
+    div {
         font-size: 18px;
+        font-weight: 600;
     }
 `;
 

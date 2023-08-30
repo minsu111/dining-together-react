@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import Input from '../../components/common/Input';
@@ -8,9 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../app/UserSlice';
+import HandleError from '../../api/Error';
+import { useToast } from '@chakra-ui/react';
 
 function EditPhoneNum() {
     const [phoneNum, setPhoneNum] = useState<string>('');
+    const [toastStage, setToastState] = useState(false);
+    const [data, setData] = useState('');
 
     const navigate = useNavigate();
     const goToMyInfo = () => {
@@ -19,25 +23,46 @@ function EditPhoneNum() {
     const handleNum = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNum(e.target.value);
     };
+
+    const toast = useToast();
+
+    const showToast = () => {
+        if (toastStage) {
+            toast({
+                description: '휴대폰 번호 변경이 완료되었습니다.',
+                status: 'success',
+                duration: 3000,
+                // isClosable: true,
+            });
+            goToMyInfo();
+        }
+    };
+
+    useEffect(() => {
+        showToast();
+    }, [data]);
+
     const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
 
     const editPhoneNum = async () => {
-        try {
-            const result = await axiosRequest('PUT', `/user/${user.userId}`, {
+        const result = await axiosRequest(
+            'PUT',
+            `/user/${user.userId}`,
+            {
                 phoneNum,
-            });
-            if (result) {
-                dispatch(
-                    login({
-                        ...user,
-                        userPhoneNum: `${phoneNum}`,
-                    }),
-                );
-                goToMyInfo();
-            }
-        } catch (error: any) {
-            alert('변경 실패');
+            },
+            HandleError,
+        );
+        if (result) {
+            dispatch(
+                login({
+                    ...user,
+                    userPhoneNum: `${phoneNum}`,
+                }),
+            );
+            setToastState(true);
+            setData(result);
         }
     };
     return (

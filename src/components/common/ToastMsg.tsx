@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, useToast } from '@chakra-ui/react';
 
-const ToastMsg = ({ onClose }: any) => {
+function ToastMsg() {
     const toast = useToast();
-    toast({
-        title: 'Account created.',
-        description: "We've created your account for you.",
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-        // onClose = { onClose },
-    });
-};
+    const showToast = () => {
+        toast({
+            title: '변경 완료',
+            description: '변경이 완료되었습니다.',
+            status: 'success',
+            duration: 2000,
+            // isClosable: true,
+        });
+    };
+
+    useEffect(() => {
+        showToast();
+    }, []);
+    return null;
+}
 export default ToastMsg;

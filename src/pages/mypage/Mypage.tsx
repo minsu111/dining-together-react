@@ -11,30 +11,24 @@ import { RootState } from '../../app/store';
 import AddStoreBtn from '../../components/common/AddStoreBtn';
 import HandleError from '../../api/Error';
 import { OwnerData } from '../../@types/Store';
-
-type ImgProps = {
-    imageId: number;
-    imageUrl: string;
-    storeId: number;
-};
+import StoreImg from '../../assets/storefront-outline.svg';
+import Loading from '../../components/common/Loading';
 
 function Mypage() {
     const [ownerData, setOwnerData] = useState<OwnerData | null>(null);
-    // const [storeImg, setStoreImg] = useState<ImgProps[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
-    const goToMy = (path: string) => {
+    const goToPage = (path: string) => {
         navigate(`/${path}`);
     };
-    const goLogin = () => {
-        navigate(`/login`);
-    };
+
     const user = useSelector((state: RootState) => state.user);
     const token = localStorage.getItem('jwt_token');
 
     useEffect(() => {
         if (!token) {
-            goLogin();
+            goToPage('login');
         } else {
             const getOwnerData = async () => {
                 const result = await axiosRequest(
@@ -47,37 +41,12 @@ function Mypage() {
             };
             getOwnerData();
         }
-
-        // const getStoreImage = async () => {
-        //     if (ownerData && ownerData.storeId !== null) {
-        //         const result = await axiosRequest(
-        //             'GET',
-        //             `stores/${ownerData.storeId}/images`,
-        //             {},
-        //             HandleError,
-        //         );
-        //         setStoreImg(result);
-        //         console.log(storeImg);
-        //     }
-        // };
-        // if (ownerData && ownerData.storeId !== null) {
-        //     getStoreImage();
-        // }
     }, []);
-
-    // if (storeImg && storeImg.length > 0) {
-    //     const firstImageUrl = storeImg[0]?.imageUrl;
-    // }
-
-    // const firstImageUrl =
-    //     storeImg && storeImg.length > 0
-    //         ? storeImg[0]?.imageUrl
-    //         : '기본 이미지 URL';
 
     return (
         <div>
+            <TopNaviBar pageName="마이페이지" />
             <Container>
-                <TopNaviBar pageName="마이페이지" />
                 {user.userType === '1' && (
                     <TitleSection>
                         <TitleWrapper>
@@ -92,43 +61,49 @@ function Mypage() {
                     <TitleSection>
                         <TitleWrapper>
                             <Title>
-                                안녕하세요 <span>{user.userName}</span> 님
+                                안녕하세요, <span>{user.userName}</span> 님
                             </Title>
                             <OwnerBadge>사장님</OwnerBadge>
                         </TitleWrapper>
                         <Account>{user.userEmail}</Account>
                         <hr />
-                        {ownerData === null && <AddStoreBtn />}
                         {ownerData && ownerData.storeId !== null && (
-                            <>
-                                <StoreInfoTitle>내 가게</StoreInfoTitle>
-                                <StoreInfo>
+                            <StoreInfoSection>
+                                <StoreInfoTitle>
+                                    <img src={StoreImg} alt="가게아이콘" />
+                                    <span>내 가게</span>
+                                </StoreInfoTitle>
+                                <StoreInfo
+                                    onClick={() => {
+                                        goToPage(`store/${ownerData.storeId}`);
+                                    }}
+                                >
                                     <img
                                         src={`http://13.209.102.55/${ownerData.imageUrl}`}
                                         alt="가게이미지"
                                     />
                                     <StoreInfoText>
                                         <span>{ownerData.storeName}</span>
-                                        <span>
-                                            {ownerData.address.roadAddress}
-                                        </span>
+                                        {ownerData.address.roadAddress}
                                     </StoreInfoText>
                                 </StoreInfo>
-                            </>
+                            </StoreInfoSection>
                         )}
+                        {ownerData && ownerData === null && <AddStoreBtn />}
                     </TitleSection>
                 )}
             </Container>
             <DevideLine />
             <Container>
-                <InfoMenu onClick={() => goToMy('my/info')}>
+                <InfoMenu onClick={() => goToPage('my/info')}>
                     <span>내 정보</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>
-                <InfoMenu onClick={() => goToMy('reservationlist')}>
+                <InfoMenu onClick={() => goToPage('reservationlist')}>
                     <span>내 예약 내역</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>
+                {isLoading && <Loading />}
             </Container>
         </div>
     );
@@ -147,6 +122,7 @@ const TitleSection = styled.section`
 
 const TitleWrapper = styled.div`
     display: flex;
+    /* justify-content: center; */
     align-items: center;
 `;
 
@@ -154,14 +130,14 @@ const Title = styled.h1`
     font-size: 30px;
     line-height: 45px;
     padding: 10px 0;
-    margin-right: 12px;
+    margin-right: 22px;
 
-    & > span {
+    span {
         font-weight: 700;
     }
 `;
 
-const OwnerBadge = styled.div`
+const OwnerBadge = styled.button`
     all: unset;
     width: 40px;
     height: 20px;
@@ -172,44 +148,65 @@ const OwnerBadge = styled.div`
     font-weight: 800;
     text-align: center;
     padding: 6px 8px;
+    white-space: nowrap;
     cursor: default;
 `;
 
 const Account = styled.h3`
+    font-size: 20px;
     margin-bottom: 50px;
+`;
+
+const StoreInfoSection = styled.section`
+    height: 22vw;
 `;
 
 const StoreInfoTitle = styled.h3`
     font-size: 20px;
     font-weight: 600;
-    padding: 20px 0 10px 0;
+    padding: 20px 0 10px 2px;
+    display: flex;
+    align-items: center;
+    span {
+        padding: 3px 0 0 6px;
+    }
 `;
 
 const StoreInfo = styled.div`
     display: flex;
     justify-content: flex-start;
+    cursor: pointer;
 
     img {
-        width: 124px;
-        height: 124px;
+        width: 110px;
+        height: 110px;
         border-radius: 8px;
     }
 `;
 
 const StoreInfoText = styled.div`
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+
+    span {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
 `;
 
 const InfoMenu = styled.button`
     width: 100%;
-    margin: 30px 0;
+    margin: 32px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    & > span {
+    span {
         font-size: 18px;
     }
 `;

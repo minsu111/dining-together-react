@@ -14,6 +14,10 @@ import CalendarIcon from '../../assets/calendar.svg';
 import PeopleIcon from '../../assets/people.svg'
 import WatchIcon from '../../assets/watch.svg';
 import axiosRequest from '../../api/api';
+import HandleError from '../../utils/Error';
+import store from '../../app/store';
+import { stringify } from 'querystring';
+import { format } from 'path';
 
 function StoreDetail() {
     const storeId = window.location.href.split('/').pop();
@@ -35,16 +39,39 @@ function StoreDetail() {
     const [reserveValue, setReserveValue] = useState({
         placeId: 0,
         people: 0,
-        reservedDate: "YYYY-MM-DD",
-        visitTime: "HH:MM"
+        reservedDate: undefined,
+        visitTime: undefined
     });
 
-    const updateVisitTime = (event: any) =>{
-        const newState = {...reserveValue, visitTime : event.target.value};
+    const updateReserveValue = (keyToUpdate: string, value: any) => {
+        const newState = { ...reserveValue, [keyToUpdate] : value};
         setReserveValue(newState);
-    }
+      }
+    
+    const [placeList, setPlaceList] = useState({});
+    
+    useEffect(()=>{
+        const PlaceList = async () => {
+            try {
+                setPlaceList(await axiosRequest('GET', `/reserve/placelist`, {
+                    params: {
+                        storeId,
+                        date: reserveValue.visitTime,
+                    },
+                    // headers: {
+                    //     Authorization: `Bearer ${token}`
+                    // }
+                }));
+            } catch (error) {
+                // 여기에 에러 처리
+                console.log('에러');
+            }
+        }
+        PlaceList();
+    },[reserveValue.reservedDate])
 
-    useEffect(()=>{console.log(reserveValue);},[reserveValue]);
+    console.log(placeList);
+    useEffect(()=>{console.log(reserveValue, placeList);},[reserveValue]);
 
     return (
         <Section>
@@ -90,7 +117,7 @@ function StoreDetail() {
                     </tr>
                     <tr>
                         <td>룸 유무</td>
-                        <td>.</td>
+                        <td>{storeDetail.isRoom ? '있음': '없음'}</td>
                     </tr>
                     <tr>
                         <td>인당 금액</td>
@@ -129,7 +156,8 @@ function StoreDetail() {
                 openingMinute={storeDetail.operatingHours?.openingMinute}
                 closingHour={storeDetail.operatingHours?.closingHour}
                 closingMinute={storeDetail.operatingHours?.closingMinute}
-                updateVisitTime={updateVisitTime}
+                visitTime={reserveValue.visitTime}
+                updateReserveValue={updateReserveValue}
                 />}
                 {pageNum === 2 && <SetTable />}
                 {pageNum === 3 && <SetHeadcount />}
@@ -150,24 +178,29 @@ type SetVisitDateProps = {
     openingMinute : string;
     closingHour : string;
     closingMinute : string;
-    updateVisitTime: (event:any) => void;
+    visitTime: string | undefined;
+    updateReserveValue: (keyToUpdate: string, value: any) => void;
 }
 
 function SetVisitDate(props:SetVisitDateProps){
     const VisitTime = styled.span`
         width: 300px;
-
         select {
             border-color: #AFBCCF;
         }
     `
+    const [dateSelected, setDateSelected] = React.useState<Date>();
+    useEffect(()=>{
+        const date = dateSelected?.toLocaleDateString().replace(/\./g, '').replace(/\s/g, '-');;
+        props.updateReserveValue('reservedDate', date);
+    },[dateSelected]);
 
     return(
     <>   
-        <Calendar />
+        <Calendar dateSelected={dateSelected} setDateSelected={(value)=>{setDateSelected(value)}}/>
         <VisitTime>
             <h4>방문 시간을 입력해 주세요</h4>
-            <Select onChange={(event)=>props.updateVisitTime(event)}>
+            <Select value={props.visitTime} onChange={(event)=>props.updateReserveValue('visitTime', event.target.value)}>
                 <option>
                     { }
                 </option>

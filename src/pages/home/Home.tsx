@@ -38,8 +38,8 @@ function Home() {
                     <img alt="" src={BigImageSample} />
                 </Slider>
             </Banner>
-            {Object.keys(storeList).map((value) => {
-                return <RecommendList title={value} storeList={storeList} />;
+            {Object.keys(storeList).map((key) => {
+                return <RecommendList title={key} storeList={storeList} />;
             })}
         </>
     );
@@ -50,7 +50,8 @@ type StoreCardProps = {
     storeName: string;
     minCount: number;
     maxCount: number;
-    foodType: string;
+    foodCategory: string;
+    storeUrl: string;
 };
 
 const StoreCard = (props: StoreCardProps) => {
@@ -71,13 +72,15 @@ const StoreCard = (props: StoreCardProps) => {
         }
     `;
     return (
+        <a href={props.storeUrl} >
         <Card>
-            <Image alt="" src={props.imgUrl} />
+            <Image alt="" src={props.imgUrl}/>
             <h5>{props.storeName}</h5>
             <p>
-                {props.minCount} ~ {props.maxCount}명 · {props.foodType}
+                {props.minCount} ~ {props.maxCount}명 · {props.foodCategory}
             </p>
         </Card>
+        </a>
     );
 };
 
@@ -90,6 +93,7 @@ const RecommendList = (props: RecommendListProps) => {
     const Title = styled.h3`
         font-size: 20px;
         font-weight: bold;
+        margin: 10px;
     `;
     const Container = styled.div`
         margin: 30px 0 0 20px;
@@ -101,14 +105,15 @@ const RecommendList = (props: RecommendListProps) => {
 
             <ScrollMenu>
                 {props.storeList[props.title].map(
-                    (value: Record<string, any>) => {
+                    (storeInfo: Record<string, any>) => {
                         return (
                             <StoreCard
-                                imgUrl={SmallImageSmaple}
-                                storeName={value.storeId}
+                                imgUrl={storeInfo.imgUrl}
+                                storeName={storeInfo.storeName}
                                 minCount={10}
                                 maxCount={40}
-                                foodType={value.foodType}
+                                foodCategory={storeInfo.foodCategory}
+                                storeUrl={`/store/${storeInfo.storeId}`}
                             />
                         );
                     },

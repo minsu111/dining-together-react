@@ -89,7 +89,7 @@ function Mypage() {
                                 </StoreInfo>
                             </StoreInfoSection>
                         )}
-                        {ownerData && ownerData === null && <AddStoreBtn />}
+                        {ownerData === null && <AddStoreBtn />}
                     </TitleSection>
                 )}
             </Container>

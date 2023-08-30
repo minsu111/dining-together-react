@@ -35,8 +35,7 @@ function DeleteAccount() {
     };
 
     const completePopup = () => {
-        setFinPopupState(false);
-        goToPage('/');
+        goToPage('');
     };
 
     const closeFailPopup = () => {

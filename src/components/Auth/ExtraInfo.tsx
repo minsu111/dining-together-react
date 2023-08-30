@@ -5,7 +5,7 @@ import { Select } from '@chakra-ui/react';
 import CommonButton from '../common/Button';
 import TagButton from '../common/TagButton';
 import axiosRequest from '../../api/api';
-import HandleError from '../../utils/Error';
+import HandleError from '../../api/Error';
 import { login } from '../../app/UserSlice';
 import { useDispatch } from 'react-redux';
 

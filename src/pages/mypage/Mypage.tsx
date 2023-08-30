@@ -6,12 +6,22 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import DevideLine from '../../components/common/DevideLine';
-import Button from '../../components/common/Button';
 import axiosRequest from '../../api/api';
 import { RootState } from '../../app/store';
 import AddStoreBtn from '../../components/common/AddStoreBtn';
+import HandleError from '../../api/Error';
+import { StoreData } from '../../@types/Store';
+
+type ImgProps = {
+    imageId: number;
+    imageUrl: string;
+    storeId: number;
+};
 
 function Mypage() {
+    const [ownerData, setOwnerData] = useState<StoreData | null>(null);
+    const [storeImg, setStoreImg] = useState<ImgProps[]>([]);
+
     const navigate = useNavigate();
     const goToMy = (path: string) => {
         navigate(`/${path}`);
@@ -25,8 +35,44 @@ function Mypage() {
     useEffect(() => {
         if (!token) {
             goLogin();
+        } else {
+            const getOwnerData = async () => {
+                const result = await axiosRequest(
+                    'GET',
+                    '/stores/my',
+                    {},
+                    HandleError,
+                );
+                setOwnerData(result);
+            };
+            getOwnerData();
+        }
+
+        const getStoreImage = async () => {
+            if (ownerData && ownerData.storeId !== null) {
+                const result = await axiosRequest(
+                    'GET',
+                    `stores/${ownerData.storeId}/images`,
+                    {},
+                    HandleError,
+                );
+                setStoreImg(result);
+                console.log(storeImg);
+            }
+        };
+        if (ownerData && ownerData.storeId !== null) {
+            getStoreImage();
         }
     }, []);
+
+    // if (storeImg && storeImg.length > 0) {
+    //     const firstImageUrl = storeImg[0]?.imageUrl;
+    // }
+
+    const firstImageUrl =
+        storeImg && storeImg.length > 0
+            ? storeImg[0]?.imageUrl
+            : '기본 이미지 URL';
 
     return (
         <div>
@@ -52,7 +98,15 @@ function Mypage() {
                         </TitleWrapper>
                         <Account>{user.userEmail}</Account>
                         <hr />
-                        <AddStoreBtn />
+                        {ownerData === null && <AddStoreBtn />}
+                        {ownerData && ownerData.storeId !== null && (
+                            <StoreInfo>
+                                <p>내 가게</p>
+                                <span>{ownerData.storeName}</span>
+                                <span>{ownerData.address.roadAddress}</span>
+                                <img src={firstImageUrl} alt="가게이미지" />
+                            </StoreInfo>
+                        )}
                     </TitleSection>
                 )}
             </Container>
@@ -115,6 +169,8 @@ const OwnerBadge = styled.div`
 const Account = styled.h3`
     margin-bottom: 50px;
 `;
+
+const StoreInfo = styled.div``;
 
 const InfoMenu = styled.button`
     width: 100%;

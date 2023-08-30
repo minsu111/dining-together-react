@@ -7,7 +7,7 @@ import { emailRegEx } from '../../utils/utils';
 import Button from '../../components/common/Button';
 import ConfirmPopup from '../../components/common/ConfirmPopup';
 import { login } from '../../app/UserSlice';
-import HandleError from '../../utils/Error';
+import HandleError from '../../api/Error';
 
 function Login() {
     const [email, setEmail] = useState<string>('');

@@ -7,7 +7,7 @@ type StoreInfoProps = {
     name: string;
     description: string;
     subInfo?: string;
-    price?: string;
+    price?: number;
 };
 
 const StoreItem: React.FC<StoreInfoProps> = (props) => {
@@ -38,7 +38,7 @@ const StoreItem: React.FC<StoreInfoProps> = (props) => {
                 </InfoSubDiv>
                 <InfoSubDiv className={props.isKeywordSearch ? 'isHide' : ''}>
                     <StoreEtcInfo>{props.subInfo}</StoreEtcInfo>
-                    <StoreEtcInfo>{props.price}</StoreEtcInfo>
+                    <StoreEtcInfo>{`${props.price}원`}</StoreEtcInfo>
                 </InfoSubDiv>
             </InfoDiv>
         </Div>
@@ -85,5 +85,5 @@ const StoreDesc = styled.p`
 
 const StoreEtcInfo = styled.p`
     font-size: 12px;
-    color: lightgray;
+    color: gray;
 `;

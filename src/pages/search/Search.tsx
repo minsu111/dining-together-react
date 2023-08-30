@@ -18,12 +18,12 @@ import SelectPricePerPerson from './modal/SelectPricePerPerson';
 import SelectAtmosphere from './modal/SelectAtmosphere';
 import SelectSeat from './modal/SelectSeat';
 
-import { FoodType, SearchModalType } from './modal/enum/Enum';
+import { SearchModalType } from './modal/enum/Enum';
 
 function Search() {
     const navigate = useNavigate();
 
-    // 임시 코드. 이후 수정 예정.
+    // TODO: 임시 코드. 이후 수정 예정.
     const [modalStateArray, setModalStateArray] = useState([
         false,
         false,
@@ -32,7 +32,6 @@ function Search() {
         false,
         false,
     ]);
-
     const handleModalToggle = (modalType: SearchModalType) => {
         modalStateArray[modalType] = !modalStateArray[modalType];
         setModalStateArray([...modalStateArray]);

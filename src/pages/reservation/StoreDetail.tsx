@@ -1,11 +1,10 @@
-import React, {useState, useEffect, createContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { Select } from "@chakra-ui/select";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
-import BigImageSample from '../../assets/ImageSampleB.svg';
 import DevideLine from '../../components/common/DevideLine';
 import Button from '../../components/common/Button';
 import DimmedLayer from '../../components/common/DimmedLayer';
@@ -14,9 +13,7 @@ import CalendarIcon from '../../assets/calendar.svg';
 import PeopleIcon from '../../assets/people.svg'
 import WatchIcon from '../../assets/watch.svg';
 import axiosRequest from '../../api/api';
-import store from '../../app/store';
-import { stringify } from 'querystring';
-import { format } from 'path';
+import StoreMap from './StoreMap';
 
 function StoreDetail() {
     const storeId = window.location.href.split('/').pop();
@@ -33,6 +30,7 @@ function StoreDetail() {
     GetStoreDetail();
     }, [storeId]);   
     console.log(storeDetail);
+    console.log(storeDetail.address?.roadAddress);
 
     const [showModal, setShowModal] = useState(false);
     const [pageNum, setPageNum] = useState(1);
@@ -136,8 +134,10 @@ function StoreDetail() {
             <DevideLine />
 
             <Heading>매장 위치</Heading>
+            
             <Content>
-                {storeDetail.location}
+            {storeDetail && storeDetail.address && (
+            <StoreMap address={storeDetail.address.roadAddress} />)}
                 {storeDetail.address?.roadAddress}{' '}
                 {storeDetail.address?.detailAddress} 
             </Content>
@@ -160,7 +160,7 @@ function StoreDetail() {
                 openingMinute={storeDetail.operatingHours?.openingMinute}
                 closingHour={storeDetail.operatingHours?.closingHour}
                 closingMinute={storeDetail.operatingHours?.closingMinute}
-visitTime={reserveValue.visitTime}
+                visitTime={reserveValue.visitTime}
                 updateReserveValue={updateReserveValue}
                 />}
 
@@ -334,7 +334,7 @@ function SetTable(props: SetTableProps){
         <>
             <DrawerBoxTitle>테이블을 선택해주세요.</DrawerBoxTitle>
             <TableBoxGroup>
-                {placeList ? (
+                {placeList[0] ? (
                 placeList.map((table, index)=>(
                     <TableBox htmlFor={`table${index}`} >
                         <input 
@@ -355,7 +355,7 @@ function SetTable(props: SetTableProps){
                         [{table.placeType}] {table.placeName}
                         <br/>{table.minPeople} ~{table.maxPeople} 명
                     </TableBox>)
-                )): <Heading>예약 가능한 테이블이 없습니다.</Heading> }
+                )): '예약 가능한 테이블이 없습니다.' }
             </ TableBoxGroup>
         </>
     )
@@ -459,8 +459,8 @@ const Content = styled.div`
     }
 `
 const BottomFixed = styled.div`
-    // position: fixed;
-    // bottom: 0;
+    position: fixed;
+    bottom: 0;
     width: 100vw;
     max-width: 390px;
     text-align: center;

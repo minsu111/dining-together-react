@@ -1,38 +1,104 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Modal from 'react-modal';
 import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
 import FilterButtonInModal from './FilterButtonInModal';
 
+import { RootState } from '../../../app/store';
+import {
+    setRegion,
+    setFoodType,
+    setPriceMin,
+    setPriceMax,
+    setAtmosphere,
+    setSeat,
+} from '../store/FilterSlice';
 import { FilterType, SearchModalType } from './enum/Enum';
+import { MAX_PRICE, MIN_PRICE } from './SelectPricePerPerson';
 
 /**
  * 전체 필터를 확인하거나 이동할 수 있는 Modal
  */
 function TotalFilter(props: {
     isOpen: boolean;
-    onClose: (modalType: SearchModalType) => void;
+    onToggleFilterDisplay: (modalType: SearchModalType) => void;
 }) {
+    const dispatch = useDispatch();
+    const filterState = useSelector((state: RootState) => {
+        return state.filter;
+    });
+
+    const [region, setRegionData] = useState<string[]>([]);
+    const [foodType, setFoodTypeData] = useState<string[]>([]);
+    const [priceRange, setPriceRangeData] = useState<string[]>([]);
+    const [atmosphere, setAtmosphereData] = useState<string[]>([]);
+    const [seat, setSeatData] = useState<string[]>([]);
+
+    useEffect(() => {
+        setRegionData(filterState.region);
+    }, [filterState.region]);
+
+    useEffect(() => {
+        setFoodTypeData(filterState.foodType);
+    }, [filterState.foodType]);
+
+    useEffect(() => {
+        if (
+            filterState.priceMin === MIN_PRICE &&
+            filterState.priceMax === MAX_PRICE
+        ) {
+            setPriceRangeData([]);
+        } else {
+            const priceMin =
+                filterState.priceMin === 0
+                    ? '0원'
+                    : `${filterState.priceMin}만원`;
+            setPriceRangeData([`${priceMin} ~ ${filterState.priceMax}만원`]);
+        }
+    }, [filterState.priceMin, filterState.priceMax]);
+
+    useEffect(() => {
+        setAtmosphereData(filterState.atmosphere);
+    }, [filterState.atmosphere]);
+
+    useEffect(() => {
+        setSeatData(filterState.seat);
+    }, [filterState.seat]);
+
     const handleReset = () => {
-        alert('초기화 버튼 클릭시 로직 구현 필요');
+        console.log('초기화 버튼 클릭');
+
+        setRegionData([]);
+        setFoodTypeData([]);
+        setPriceRangeData([]);
+        setAtmosphereData([]);
+        setSeatData([]);
     };
 
     const handleClose = () => {
-        props.onClose(SearchModalType.Total);
+        props.onToggleFilterDisplay(SearchModalType.Total);
     };
 
     const handleConfirm = () => {
-        alert('적용 버튼 클릭시 로직 구현 필요');
+        dispatch(setRegion([]));
+        dispatch(setFoodType([]));
+        dispatch(setPriceMin(MIN_PRICE));
+        dispatch(setPriceMax(MAX_PRICE));
+        dispatch(setAtmosphere([]));
+        dispatch(setSeat([]));
+
+        handleClose();
     };
 
     return (
         <Modal
             isOpen={props.isOpen}
-            // onRequestClose={handleClose}
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: 500,
                 },
                 content: {
                     width: '390px',
@@ -51,23 +117,28 @@ function TotalFilter(props: {
                 <Div>
                     <FilterButtonInModal
                         filterType={FilterType.Region}
-                        selectData=""
+                        selectData={region}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.FoodType}
-                        selectData=""
+                        selectData={foodType}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.PricePerPerson}
-                        selectData=""
+                        selectData={priceRange}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.Atmosphere}
-                        selectData=""
+                        selectData={atmosphere}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.Seat}
-                        selectData=""
+                        selectData={seat}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                 </Div>
             </ContentDiv>

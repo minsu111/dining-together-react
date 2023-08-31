@@ -20,8 +20,6 @@ function SearchKeyword() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log('handleSubmit');
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +57,7 @@ function SearchKeyword() {
     };
 
     return (
-        <Div>
+        <Section>
             <Div2>
                 <HeaderDiv>
                     <BackButton onClick={handleBackButtonClick}>
@@ -80,6 +78,8 @@ function SearchKeyword() {
                     {data.map((store) => (
                         <StoreItem
                             isKeywordSearch
+                            storeId={store.storeId}
+                            imgUrl={store.imageUrl}
                             name={store.storeName}
                             description={store.description}
                         />
@@ -100,14 +100,14 @@ function SearchKeyword() {
                     />
                 </div>
             </FooterDiv>
-        </Div>
+        </Section>
     );
 }
 
 export default SearchKeyword;
 
-const Div = styled.div`
-    width: 390px;
+const Section = styled.section`
+    // width: 390px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -213,4 +213,5 @@ type StoreType = {
     averageRating: number;
     reviewCount: number;
     isDeleted: number;
+    imageUrl: string;
 };

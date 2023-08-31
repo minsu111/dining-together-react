@@ -14,7 +14,7 @@ function CheckButton(props: {
                 props.onClick(props.type);
             }}
         >
-            {props.type}
+            {`#${props.type}`}
         </Button>
     );
 }

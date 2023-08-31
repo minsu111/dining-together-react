@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -11,35 +11,68 @@ import {
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FilterType } from './enum/Enum';
+import { FilterType, SearchModalType } from './enum/Enum';
 
-const FilterButtonInModal: React.FC<{
+/**
+ * TotalFilter Modal에서만 쓰는 버튼
+ */
+function FilterButtonInModal({
+    filterType,
+    selectData,
+    onToggleFilterDisplay,
+}: {
     filterType: FilterType;
-    selectData: string;
-}> = ({ filterType, selectData }) => {
-    const data = selectData === '' ? '미선택' : selectData;
+    selectData: string[];
+    onToggleFilterDisplay: (modalType: SearchModalType) => void;
+}) {
+    let temp = '미선택';
+    const [data, setData] = useState(temp);
+
+    // 컴포넌트가 처음 렌더링될 때 한 번 실행되고, 그 이후에는 selectData를 감시하면서 변경이 있을 때마다 업데이트된다.
+    useEffect(() => {
+        if (selectData.length > 0) {
+            let concatenatedString = selectData.join(', '); // 배열의 문자열들을 쉼표와 공백으로 연결
+
+            if (concatenatedString.length > 20) {
+                concatenatedString = `${concatenatedString.slice(0, 20)} ...`; // 20자 이상인 경우 자르고 ... 추가
+            }
+
+            temp = concatenatedString;
+        }
+        setData(temp);
+    }, [selectData]);
 
     let icon: IconProp;
+    let modalType: SearchModalType;
     switch (filterType) {
         case FilterType.Region:
             icon = faLocationDot;
+            modalType = SearchModalType.Region;
             break;
         case FilterType.FoodType:
             icon = faUtensils;
+            modalType = SearchModalType.FoodType;
             break;
         case FilterType.PricePerPerson:
             icon = faWonSign;
+            modalType = SearchModalType.PricePerPerson;
             break;
         case FilterType.Atmosphere:
             icon = faFaceSmile;
+            modalType = SearchModalType.Atmosphere;
             break;
         default: // FilterType.Seat:
             icon = faChair;
+            modalType = SearchModalType.Seat;
             break;
     }
 
     return (
-        <Div>
+        <Div
+            onClick={() => {
+                onToggleFilterDisplay(modalType);
+            }}
+        >
             <LeftDiv>
                 <FontAwesomeIcon icon={icon} />
             </LeftDiv>
@@ -54,7 +87,7 @@ const FilterButtonInModal: React.FC<{
             </RightDiv>
         </Div>
     );
-};
+}
 
 export default FilterButtonInModal;
 

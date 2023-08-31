@@ -12,7 +12,7 @@ import Button from '../../../components/common/Button';
 import { SearchModalType } from './enum/Enum';
 
 import { RootState } from '../../../app/store';
-import { setVisitDate } from '../store/FilterSlice';
+// import { setExpectedDate } from '../store/FilterSlice';
 
 type ModalProps = {
     isOpen: boolean;

@@ -21,7 +21,7 @@ import Login from '../pages/auth/Login';
 import SearchKeyword from '../pages/search/SearchKeyword';
 import Layout from '../components/common/Layout';
 import DeleteAccount from '../pages/mypage/DeleteAccount';
-import Terms from '../pages/auth/Terms';
+import Terms from '../components/auth/Terms';
 import EditPhoneNum from '../pages/mypage/EditPhoneNum';
 
 const router = createBrowserRouter([

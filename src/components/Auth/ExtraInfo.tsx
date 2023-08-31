@@ -42,6 +42,7 @@ const tagButtonNames = [
     '스포츠 동호회',
     '동창회',
     '업계 네트워킹',
+    '기타',
 ];
 
 const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {

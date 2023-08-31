@@ -11,10 +11,11 @@ type OperatingHours = {
     openingMinute: string;
 };
 
-export type StoreData = {
+export type OwnerData = {
     storeId: number;
     userId: number;
     storeName: string;
+    imageUrl: string;
     storeContact: string;
     address: Address;
     description: string;

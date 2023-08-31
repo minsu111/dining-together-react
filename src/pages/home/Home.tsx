@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import GNBArea from '../../components/common/GNB';
 import Logo from '../../assets/logo.svg';
-import BigImageSample from '../../assets/ImageSampleB.svg';
-import SmallImageSmaple from '../../assets/ImageSampleS.svg';
 import axiosRequest from '../../api/api';
+import { useNavigate } from 'react-router-dom';
+import Banner01 from '../../assets/banner01.svg'
+import Banner02 from '../../assets/banner02.svg'
+import Banner03 from '../../assets/banner03.svg'
 
 function Home() {
     const [storeList, setStoreList] = useState<Record<string, any>>({});
@@ -33,9 +34,9 @@ function Home() {
             </TopBar>
             <Banner>
                 <Slider className='slider' autoplay speed={1000} infinite pauseOnHover>
-                    <img alt="" src={BigImageSample} />
-                    <img alt="" src={BigImageSample} />
-                    <img alt="" src={BigImageSample} />
+                    <img alt="" src={Banner01} />
+                    <img alt="" src={Banner02} />
+                    <img alt="" src={Banner03} />
                 </Slider>
             </Banner>
             {Object.keys(storeList).map((key) => {
@@ -54,6 +55,7 @@ type StoreCardProps = {
     storeUrl: string;
 };
 
+
 const StoreCard = (props: StoreCardProps) => {
     const Image = styled.img`
         width: 124px;
@@ -71,16 +73,15 @@ const StoreCard = (props: StoreCardProps) => {
             font-size: 12px;
         }
     `;
+    const navigate = useNavigate();
     return (
-        <a href={props.storeUrl} >
-        <Card>
+        <Card onClick={()=>{navigate(props.storeUrl)}}>
             <Image alt="" src={props.imageUrl}/>
             <h5>{props.storeName}</h5>
             <p>
                 {props.minCount} ~ {props.maxCount}명 · {props.foodCategory}
             </p>
         </Card>
-        </a>
     );
 };
 
@@ -88,6 +89,7 @@ type RecommendListProps = {
     title: string;
     storeList: Record<string, any>;
 };
+
 
 const RecommendList = (props: RecommendListProps) => {
     const Title = styled.h3`
@@ -97,13 +99,34 @@ const RecommendList = (props: RecommendListProps) => {
     `;
     const Container = styled.div`
         margin: 30px 0 0 20px;
+        .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+            display: none;
+          }
+          .react-horizontal-scrolling-menu--scroll-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
     `;
 
+    const [duration, setDuration] = React.useState(500);
+
+    const onWheel = (api: React.ContextType<typeof VisibilityContext>, ev: React.WheelEvent) => {
+    const isTouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
+        if (isTouchpad) {
+        ev.stopPropagation();
+        }
+        if (ev.deltaY < 0) {
+            api.scrollPrev(undefined, undefined, undefined, { duration });
+        } else if (ev.deltaY > 0) {
+            api.scrollNext(undefined, undefined, undefined, { duration });
+            }
+    }
+    
     return (
         <Container>
             <Title>{props.title}</Title>
 
-            <ScrollMenu>
+            <ScrollMenu onWheel={onWheel} >
                 {props.storeList[props.title].map(
                     (storeInfo: Record<string, any>) => {
                         return (

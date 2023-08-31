@@ -15,8 +15,8 @@ import StoreForm3rd from '../../components/AddStore/StoreForm3rd';
 import StoreForm4th from '../../components/AddStore/StoreForm4th';
 import StoreForm5th from '../../components/AddStore/StoreForm5th';
 
-import axiosRequest from '../../api/api';
-import HandleError from '../../api/Error';
+import axios from 'axios';
+
 
 function AddStore() {
     const user = useSelector((state: RootState) => state.user);
@@ -112,7 +112,7 @@ function AddStore() {
         const combinedKeyword = filteredKeywords.join(',');
 
         const storeData = {
-            userId: user.userId,
+            userId: '10',
             storeName,
             storeContact,
             address: {
@@ -143,23 +143,31 @@ function AddStore() {
         formData.append('userId', storeData.userId);
         formData.append('storeName', storeData.storeName);
         formData.append('storeContact', storeData.storeContact);
-        const stringifyAddress = JSON.stringify({
-            postalCode: storeData.address.postalCode,
-            roadAddress: storeData.address.roadAddress,
-            detailAddress: storeData.address.detailAddress
-        });
-        formData.append('address', stringifyAddress);
+        formData.append('address[postalCode]', storeData.address.postalCode);
+        formData.append('address[roadAddress]', storeData.address.roadAddress);
+        formData.append(
+            'address[detailAddress]',
+            storeData.address.detailAddress,
+        );
         formData.append('location', storeData.location);
         formData.append('keyword', storeData.keyword);
         formData.append('mood', storeData.mood);
-
-        const stringifyOperatingHours = JSON.stringify({
-            openingHour: storeData.operatingHours.openingHour,
-            openingMinute: storeData.operatingHours.openingMinute,
-            closingHour: storeData.operatingHours.closingMinute,
-            closingMinute: storeData.operatingHours.closingMinute,
-        });
-        formData.append('operatingHours', stringifyOperatingHours);
+        formData.append(
+            'operatingHours[openingHour]',
+            storeData.operatingHours.openingHour,
+        );
+        formData.append(
+            'operatingHours[openingMinute]',
+            storeData.operatingHours.openingMinute,
+        );
+        formData.append(
+            'operatingHours[closingHour]',
+            storeData.operatingHours.closingMinute,
+        );
+        formData.append(
+            'operatingHours[closingMinute]',
+            storeData.operatingHours.closingMinute,
+        );
 
         formData.append('closedDays', storeData.closedDays);
         formData.append('foodCategory', storeData.foodCategory);
@@ -174,22 +182,31 @@ function AddStore() {
 
         const storeFormData = async () => {
             try {
-                const result = await axiosRequest(
-                    'POST',
-                    '/stores',
+                // 로컬 스토리지에서 JWT 토큰 가져오기
+                const jwtToken = localStorage.getItem('jwt_token');
+
+                const result = await axios.post(
+                    'http://13.209.102.55/api/stores',
                     formData,
-                    // HandleError,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${jwtToken}`,
+                        },
+                    },
                 );
+
                 if (result !== null) {
                     console.log(result);
                     navigate('/my/store/fin', {
-                        state: { storeId: result.storeId },
+                        state: { storeId: result.data.storeId },
                     });
                 }
             } catch (error) {
                 console.log(error);
             }
         };
+
         storeFormData();
     };
 

@@ -32,7 +32,7 @@ function AddStoreDetail() {
     return (
         <section>
             <Header>
-                <TopNaviBar pageName="자리 등록" />
+                <TopNaviBar pageName="단체석 등록" />
             </Header>
             <Inner>
                 <FormSC>

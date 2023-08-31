@@ -9,7 +9,7 @@ type DayOffProps = {
     handleChangeInfo: (k: string, v: string) => void;
 };
 
-const dayoffM = ['없음', '매주', '매월'];
+const dayoffM = ['없음', '매주', '첫째주', '둘째주', '셋째주', '넷째주', '다섯번째주'];
 
 const dayoffS = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -31,7 +31,7 @@ const DayoffSelect = ({ dayoff1, dayoff2, handleChangeInfo }: DayOffProps) => {
                     ml="20px"
                     mr="20px"
                     w="100px"
-                    placeholder="단위"
+                    placeholder="주기"
                     value={dayoff1}
                     onChange={handleSelectedDayoffM}
                 >

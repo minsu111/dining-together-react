@@ -6,7 +6,18 @@ import {
     faCircleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 
-function StoreForm5th() {
+type StoreForm5thProps = {
+    setStoreImageMain: (value: File | null) => void;
+    setStoreImageSub1: (value: File | null) => void;
+    setStoreImageSub2: (value: File | null) => void;
+};
+
+function StoreForm5th({
+    setStoreImageMain,
+    setStoreImageSub1,
+    setStoreImageSub2,
+}: StoreForm5thProps) {
+    /* 이미지 미리보기 */
     const [mainImagePreview, setMainImagePreview] = useState<string | null>(
         null,
     );
@@ -24,6 +35,7 @@ function StoreForm5th() {
     const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
+            setStoreImageMain(selectedFile);
             const reader = new FileReader();
             reader.onload = (event) => {
                 setMainImagePreview(event.target?.result as string);
@@ -35,6 +47,7 @@ function StoreForm5th() {
     const handleSubImage1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
+            setStoreImageSub1(selectedFile);
             const reader = new FileReader();
             reader.onload = (event) => {
                 setSubImage1Preview(event.target?.result as string);
@@ -46,6 +59,7 @@ function StoreForm5th() {
     const handleSubImage2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
+            setStoreImageSub2(selectedFile);
             const reader = new FileReader();
             reader.onload = (event) => {
                 setSubImage2Preview(event.target?.result as string);
@@ -54,8 +68,10 @@ function StoreForm5th() {
         }
     };
 
+    /* 이미지 업로드 취소 */
     const clearMainImage = () => {
         setMainImagePreview(null);
+        setStoreImageMain(null);
         if (mainImageInputRef.current) {
             mainImageInputRef.current.value = '';
         }
@@ -63,6 +79,7 @@ function StoreForm5th() {
 
     const clearSubImage1 = () => {
         setSubImage1Preview(null);
+        setStoreImageSub1(null);
         if (subImage1InputRef.current) {
             subImage1InputRef.current.value = '';
         }
@@ -70,6 +87,7 @@ function StoreForm5th() {
 
     const clearSubImage2 = () => {
         setSubImage2Preview(null);
+        setStoreImageSub2(null);
         if (subImage2InputRef.current) {
             subImage2InputRef.current.value = '';
         }
@@ -86,7 +104,9 @@ function StoreForm5th() {
                             <input
                                 id="mainPic"
                                 type="file"
-                                onChange={handleMainImageChange}
+                                onChange={(e) => {
+                                    handleMainImageChange(e);
+                                }}
                             />
                         </StyledLabel>
 
@@ -113,7 +133,9 @@ function StoreForm5th() {
                                     <input
                                         id="subPic"
                                         type="file"
-                                        onChange={handleSubImage1Change}
+                                        onChange={(e) => {
+                                            handleSubImage1Change(e);
+                                        }}
                                     />
                                 </StyledLabel>
                                 {subImage1Preview && (
@@ -132,15 +154,18 @@ function StoreForm5th() {
                                     <input
                                         id="subPic2"
                                         type="file"
-                                        onChange={handleSubImage2Change}
+                                        onChange={(e) => {
+                                            handleSubImage2Change(e);
+                                        }}
                                     />
                                 </StyledLabel>
                                 {subImage2Preview && (
                                     <PreviewMinPic onClick={clearSubImage2}>
+                                        {' '}
                                         <PreviewMinImage
                                             src={subImage2Preview}
-                                            alt="Sub Preview 2"
-                                        />
+                                            alt="Sub Preview"
+                                        />{' '}
                                     </PreviewMinPic>
                                 )}
                             </div>

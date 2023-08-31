@@ -15,6 +15,9 @@ import StoreForm3rd from '../../components/AddStore/StoreForm3rd';
 import StoreForm4th from '../../components/AddStore/StoreForm4th';
 import StoreForm5th from '../../components/AddStore/StoreForm5th';
 
+import axiosRequest from '../../api/api';
+import HandleError from '../../api/Error';
+
 function AddStore() {
     const user = useSelector((state: RootState) => state.user);
 
@@ -54,6 +57,11 @@ function AddStore() {
     const [keyword1, setKeyword1] = useState<string>('');
     const [keyword2, setKeyword2] = useState<string>('');
     const [keyword3, setKeyword3] = useState<string>('');
+
+    // page_5
+    const [storeImageMain, setStoreImageMain] = useState<File | null>(null);
+    const [storeImageSub1, setStoreImageSub1] = useState<File | null>(null);
+    const [storeImageSub2, setStoreImageSub2] = useState<File | null>(null);
 
     const handleChangeInfo = (key: string, value: string) => {
         if (key === 'storeName') setStoreName(value);
@@ -104,7 +112,7 @@ function AddStore() {
         const combinedKeyword = filteredKeywords.join(',');
 
         const storeData = {
-            userId: 'user1234',
+            userId: user.userId,
             storeName,
             storeContact,
             address: {
@@ -123,14 +131,66 @@ function AddStore() {
             },
             closedDays: dayoff,
             foodCategory,
-            isParking: Number(isParking),
+            isParking,
             description,
-            maxNum: Number(maxNum),
-            cost: Number(cost),
-            storeImage: '사진.jpg',
+            maxNum,
+            cost,
         };
-        console.log(storeData);
-        // navigate('/my/store/fin');
+
+        // FormData 객체 생성
+        const formData = new FormData();
+
+        formData.append('userId', storeData.userId);
+        formData.append('storeName', storeData.storeName);
+        formData.append('storeContact', storeData.storeContact);
+        const stringifyAddress = JSON.stringify({
+            postalCode: storeData.address.postalCode,
+            roadAddress: storeData.address.roadAddress,
+            detailAddress: storeData.address.detailAddress
+        });
+        formData.append('address', stringifyAddress);
+        formData.append('location', storeData.location);
+        formData.append('keyword', storeData.keyword);
+        formData.append('mood', storeData.mood);
+
+        const stringifyOperatingHours = JSON.stringify({
+            openingHour: storeData.operatingHours.openingHour,
+            openingMinute: storeData.operatingHours.openingMinute,
+            closingHour: storeData.operatingHours.closingMinute,
+            closingMinute: storeData.operatingHours.closingMinute,
+        });
+        formData.append('operatingHours', stringifyOperatingHours);
+
+        formData.append('closedDays', storeData.closedDays);
+        formData.append('foodCategory', storeData.foodCategory);
+        formData.append('isParking', storeData.isParking);
+        formData.append('description', storeData.description);
+        formData.append('maxNum', storeData.maxNum);
+        formData.append('cost', storeData.cost);
+
+        if (storeImageMain) formData.append('storeImage', storeImageMain);
+        if (storeImageSub1) formData.append('storeImage', storeImageSub1);
+        if (storeImageSub2) formData.append('storeImage', storeImageSub2);
+
+        const storeFormData = async () => {
+            try {
+                const result = await axiosRequest(
+                    'POST',
+                    '/stores',
+                    formData,
+                    // HandleError,
+                );
+                if (result !== null) {
+                    console.log(result);
+                    navigate('/my/store/fin', {
+                        state: { storeId: result.storeId },
+                    });
+                }
+            } catch (error) {
+                console.log('error');
+            }
+        };
+        storeFormData();
     };
 
     if (userType === '1') {
@@ -148,6 +208,7 @@ function AddStore() {
 
     /* 다음 버튼 눌렀을 때 이벤트 */
     const handleNextButton = () => {
+        /* 유효성 검사 */
         // if (step === 0) {
         //     if (storeName === '' || storeContact=== ''|| zipCode === '') {
         //         alert('입력되지않은 항목이 있습니다');
@@ -210,7 +271,13 @@ function AddStore() {
                         handleChangeInfo={handleChangeInfo}
                     />
                 )}
-                {step === 4 && <StoreForm5th />}
+                {step === 4 && (
+                    <StoreForm5th
+                        setStoreImageMain={setStoreImageMain}
+                        setStoreImageSub1={setStoreImageSub1}
+                        setStoreImageSub2={setStoreImageSub2}
+                    />
+                )}
 
                 <div className="bottom-area">
                     <Step>

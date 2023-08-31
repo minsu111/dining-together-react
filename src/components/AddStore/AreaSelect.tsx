@@ -9,7 +9,6 @@ type RegionProps = {
 }
 
 const regionButtonNames = [
-    '서울 전체',
     '강남',
     '서초',
     '잠실/송파/강동',

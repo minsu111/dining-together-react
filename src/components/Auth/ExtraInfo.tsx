@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { Select } from '@chakra-ui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import CommonButton from '../common/Button';
 import TagButton from '../common/TagButton';
 import axiosRequest from '../../api/api';
 import HandleError from '../../api/Error';
 import { login } from '../../app/UserSlice';
-import { useDispatch } from 'react-redux';
 
 type ExtraInfoProps = {
     signUpData: {
@@ -169,7 +171,16 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
                 </Select>
             </SelectWrapper>
 
-            <Question>어떤 모임이 있으신가요?</Question>
+            <Question>
+                어떤 모임이 있으신가요?
+                <span>
+                    <FontAwesomeIcon
+                        className="icon"
+                        icon={faCircleExclamation}
+                    />
+                    최대 3개까지 선택 가능합니다.
+                </span>
+            </Question>
             <TagButtonWrapper>
                 {tagButtonNames.map((name) => (
                     <TagButton
@@ -197,7 +208,7 @@ export default ExtraInfo;
 
 const Title = styled.h1`
     font-size: 30px;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 40px;
     padding: 70px 20px 10px 20px;
 `;
@@ -206,12 +217,24 @@ const Question = styled.h2`
     font-size: 22px;
     font-weight: 500;
     line-height: 30px;
-    margin: 30px 20px 20px 20px;
+    margin: 40px 20px 10px 20px;
+    display: flex;
+    flex-direction: column;
+
+    span {
+        font-size: 14px;
+        color: #767676;
+    }
+
+    .icon {
+        font-size: 14px;
+        padding: 0 4px;
+    }
 `;
 
 const TagButtonWrapper = styled.div`
     width: 80%;
-    margin: 10px 20px;
+    margin: 20px 20px;
 `;
 
 const Wrapper = styled.div`

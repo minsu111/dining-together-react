@@ -19,7 +19,7 @@ authInstance.interceptors.request.use(
             result.headers.Authorization = `Bearer ${token}`;
         }
         // multi 타입 헤더 요청
-        if (result.data.dataType === 'multi') {
+        if (result.data.storeImage !== null) {
             result.headers['Content-Type'] = 'multipart/form-data';
         }
 

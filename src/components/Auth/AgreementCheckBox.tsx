@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+import Terms from './Terms';
 
 type CheckBoxProps = {
     handleStartBtn: (key: string, value: boolean) => void;
+    handleTermsDetail: () => void;
+    handlePrivacyDetail: () => void;
 };
 
-const AgreementCheckBox = ({ handleStartBtn }: CheckBoxProps) => {
+const AgreementCheckBox = ({
+    handleStartBtn,
+    handleTermsDetail,
+    handlePrivacyDetail,
+}: CheckBoxProps) => {
     const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
     const [isTermsChecked, setIsTermsChecked] = useState<boolean>(false);
     const [isPrivacyChecked, setIsPrivacyChecked] = useState<boolean>(false);
@@ -55,7 +62,7 @@ const AgreementCheckBox = ({ handleStartBtn }: CheckBoxProps) => {
                     />
                     <span>[필수] 회식어때 이용 약관 동의</span>
                 </CheckBoxLabel>
-                <GoToContents to="/join/terms">보기</GoToContents>
+                <GoToContents onClick={handleTermsDetail}>보기</GoToContents>
             </BoxWrapper>
 
             <BoxWrapper>
@@ -67,7 +74,7 @@ const AgreementCheckBox = ({ handleStartBtn }: CheckBoxProps) => {
                     />
                     <span>[필수] 개인정보 처리방침 동의</span>
                 </CheckBoxLabel>
-                <GoToContents to="/join/terms">보기</GoToContents>
+                <GoToContents onClick={handlePrivacyDetail}>보기</GoToContents>
             </BoxWrapper>
         </Container>
     );
@@ -115,7 +122,7 @@ const BoxWrapper = styled.div`
     align-items: center;
 `;
 
-const GoToContents = styled(Link)`
+const GoToContents = styled.button`
     all: unset;
     font-size: 14px;
     cursor: pointer;

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/common/Button';
 import WelcomCustomerImg from '../../assets/party.svg';
 import WelcomOwnerImg from '../../assets/store.svg';
@@ -10,7 +12,7 @@ const Welcome = () => {
 
     const navigate = useNavigate();
     const goToHome = () => {
-        navigate('/home');
+        navigate('/');
         localStorage.removeItem('userType');
     };
     const goToAddStore = () => {
@@ -66,6 +68,10 @@ const Welcome = () => {
                             text="회식장소 등록하러 가기"
                             onClick={goToAddStore}
                         />
+                        <HomeButton onClick={goToHome}>
+                            <FontAwesomeIcon className="icon" icon={faHouse} />
+                            홈으로 가기
+                        </HomeButton>
                     </Wrapper>
                 </Section>
             )}
@@ -100,4 +106,20 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const HomeButton = styled.button`
+    font-size: 14px;
+    color: #474747;
+    padding: 14px 22px;
+
+    text-decoration: underline;
+    text-decoration-color: #474747;
+
+    cursor: pointer;
+
+    .icon {
+        padding: 0 4px;
+        color: #585858;
+    }
 `;

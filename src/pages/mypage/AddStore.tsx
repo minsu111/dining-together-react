@@ -112,7 +112,7 @@ function AddStore() {
         const combinedKeyword = filteredKeywords.join(',');
 
         const storeData = {
-            userId: '10',
+            userId: user.userId,
             storeName,
             storeContact,
             address: {
@@ -162,7 +162,7 @@ function AddStore() {
         );
         formData.append(
             'operatingHours[closingHour]',
-            storeData.operatingHours.closingMinute,
+            storeData.operatingHours.closingHour,
         );
         formData.append(
             'operatingHours[closingMinute]',
@@ -182,7 +182,6 @@ function AddStore() {
 
         const storeFormData = async () => {
             try {
-                // 로컬 스토리지에서 JWT 토큰 가져오기
                 const jwtToken = localStorage.getItem('jwt_token');
 
                 const result = await axios.post(
@@ -210,14 +209,14 @@ function AddStore() {
         storeFormData();
     };
 
-    if (userType === '1') {
+    if (userType === '1' || userType === null) {
         return (
             <section>
                 <Header>
-                    <TopNaviBarBack pageName="가게등록" prevPath="" />
+                    <TopNaviBarBack pageName="가게등록" prevPath="/my" />
                 </Header>
                 <Inner>
-                    {userType === '1' && <h2>비정상적인 접근입니다🙅‍♀️</h2>}
+                    {userType === '1' || userType === null && <h2>비정상적인 접근입니다🙅‍♀️</h2>}
                 </Inner>
             </section>
         );
@@ -226,24 +225,36 @@ function AddStore() {
     /* 다음 버튼 눌렀을 때 이벤트 */
     const handleNextButton = () => {
         /* 유효성 검사 */
-        // if (step === 0) {
-        //     if (storeName === '' || storeContact=== ''|| zipCode === '') {
-        //         alert('입력되지않은 항목이 있습니다');
-        //         return;
-        //     }
-        //     // if (storeName === '') {
-        //     //     alert('가게이름이 입력되지 않았습니다');
-        //     //    8 return;
-        //     // }
-        // }
+        if (step === 0) {
+            if (storeName === '' || storeContact=== ''|| location === '' || roadAddress === '' || detailAddress === '' ) {
+                return;
+            }
+        }
 
+        if (step === 1) {
+            if (foodCategory === '' || combineKeywords(mood) === ''|| isParking === '') {
+                return;
+            }
+        }
+
+        if (step === 2) {
+            if (openingHour === '' || openingMinute === ''|| closingHour === '' || closingMinute === '' || dayoff1 === '' || maxNum === '' || cost === '') {
+                return;
+            }
+        }
+
+        if (step === 3) {
+            if (description === '' || keyword1=== '' ) {
+                return;
+            }
+        }
         setStep((prev) => prev + 1);
     };
 
     return (
         <section>
             <Header>
-                <TopNaviBarBack pageName="가게등록" prevPath="" />
+                <TopNaviBarBack pageName="가게등록" prevPath="/my" />
             </Header>
             <Inner>
                 {step === 0 && (
@@ -320,10 +331,7 @@ function AddStore() {
                             <Button
                                 text="다음"
                                 width="150px"
-                                // onClick={handleNextButton}
-                                onClick={() => {
-                                    setStep((prev) => prev + 1);
-                                }}
+                                onClick={handleNextButton}
                             />
                         )}
                         {step === 0 && (

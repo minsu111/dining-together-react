@@ -21,7 +21,8 @@ const Layout = () => {
             pathname === '/search/list' ||
             pathname === '/my/store' ||
             pathname === '/my/store/fin' ||
-            pathname === '/my/store/detail' ? (
+            pathname === '/my/store/detail' ||
+            pathname === '/my/infoEdit/withdraw' ? (
                 ''
             ) : (
                 <GNBArea />

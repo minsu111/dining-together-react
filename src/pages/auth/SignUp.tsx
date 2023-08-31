@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { useDispatch } from 'react-redux';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import LandscapeImg from '../../assets/landscape_photographer.svg';
 import Button from '../../components/common/Button';
@@ -9,19 +10,23 @@ import SignUpForm from '../../components/auth/SignUpForm';
 import AgreementCheckBox from '../../components/auth/AgreementCheckBox';
 import ExtraInfo from '../../components/auth/ExtraInfo';
 import axiosRequest from '../../api/api';
-import { useDispatch } from 'react-redux';
 import { login } from '../../app/UserSlice';
+import Terms from '../../components/auth/Terms';
+import Privacy from '../../components/auth/Privacy';
 
 const SignUpTest = () => {
     // 회원 유형 선택 상태 관리
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
     const [showExtraInfo, setShowExtraInfo] = useState<boolean>(false);
     const [isNextBtnEnabled, setIsNextBtnEnabled] = useState(false);
+    const [viewTerms, setViewTerms] = useState<boolean>(false);
+    const [viewPrivacy, setViewPrivacy] = useState<boolean>(false);
+
     const [checkState, setCheckState] = useState({
         signUpForm: false,
         agreement: false,
     });
-    // const [checkValid, setCheckValid] = useState({})
+
     // 회원가입 폼 관리
     const [signUpData, setSignUpData] = useState({
         userType: '',
@@ -32,7 +37,6 @@ const SignUpTest = () => {
     });
     const handleStartBtn = useCallback((key: string, value: boolean) => {
         setCheckState((prev) => ({ ...prev, [key]: value }));
-        // console.log('setCheckState', checkState);
     }, []);
 
     const setSignUpForm = (key: string, value: string) => {
@@ -46,6 +50,18 @@ const SignUpTest = () => {
 
     const handleNextClick = () => {
         setShowSignUpForm(true);
+    };
+
+    const handleTermsDetail = () => {
+        setViewTerms(true);
+    };
+    const handlePrivacyDetail = () => {
+        setViewPrivacy(true);
+    };
+
+    const handleOnClose = () => {
+        setViewTerms(false);
+        setViewPrivacy(false);
     };
 
     const navigate = useNavigate();
@@ -120,39 +136,46 @@ const SignUpTest = () => {
 
     return (
         <div>
-            {!showSignUpForm && !showExtraInfo && (
-                <>
-                    <TopNaviBarBack pageName=" " prevPath="/login" />
-                    <Title>
-                        가입 목적을 <br />
-                        알려주세요
-                    </Title>
-                    <Wrapper>
-                        <img
-                            src={LandscapeImg}
-                            alt="가입목적을 알려주세요"
-                            style={{ width: '54%' }}
-                        />
-                        <SeleckUserType
-                            userType={signUpData.userType}
-                            onOptionChange={handleOptionChange}
-                        />
-                        <Button
-                            text="다음"
-                            onClick={handleNextClick}
-                            disabled={!isNextBtnEnabled}
-                        />
-                    </Wrapper>
-                </>
-            )}
-            {showSignUpForm && (
+            {!showSignUpForm &&
+                !showExtraInfo &&
+                !viewTerms &&
+                !viewPrivacy && (
+                    <>
+                        <TopNaviBarBack pageName=" " prevPath="/login" />
+                        <Title>
+                            가입 목적을 <br />
+                            알려주세요
+                        </Title>
+                        <Wrapper>
+                            <img
+                                src={LandscapeImg}
+                                alt="가입목적을 알려주세요"
+                                style={{ width: '54%' }}
+                            />
+                            <SeleckUserType
+                                userType={signUpData.userType}
+                                onOptionChange={handleOptionChange}
+                            />
+                            <Button
+                                text="다음"
+                                onClick={handleNextClick}
+                                disabled={!isNextBtnEnabled}
+                            />
+                        </Wrapper>
+                    </>
+                )}
+            {showSignUpForm && !viewTerms && !viewPrivacy && (
                 <>
                     <SignUpForm
                         // signUpData={signUpData}
                         setSignUpForm={setSignUpForm}
                         handleStartBtn={handleStartBtn}
                     />
-                    <AgreementCheckBox handleStartBtn={handleStartBtn} />
+                    <AgreementCheckBox
+                        handleStartBtn={handleStartBtn}
+                        handleTermsDetail={handleTermsDetail}
+                        handlePrivacyDetail={handlePrivacyDetail}
+                    />
                     <Wrapper>
                         <Button
                             text="시작하기"
@@ -165,7 +188,11 @@ const SignUpTest = () => {
                     </Wrapper>
                 </>
             )}
-            {showExtraInfo && <ExtraInfo signUpData={signUpData} />}
+            {showExtraInfo && !viewTerms && !viewPrivacy && (
+                <ExtraInfo signUpData={signUpData} />
+            )}
+            {viewTerms && <Terms handleOnClose={handleOnClose} />}
+            {viewPrivacy && <Privacy handleOnClose={handleOnClose} />}
         </div>
     );
 };

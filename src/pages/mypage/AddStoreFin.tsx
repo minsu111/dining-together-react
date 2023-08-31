@@ -18,7 +18,7 @@ function AddStoreFin() {
                 </ConSC>
                 <ButtonSC>
                     <Link to="/my/store/detail">
-                        <Button text="좌석 등록하러 가기" onClick={() => {}} />                    
+                        <Button text="단체석 등록하러 가기" onClick={() => {}} />                    
                     </Link>
                 </ButtonSC>
             </Inner>
@@ -54,6 +54,7 @@ const ConSC = styled.div`
     span {
         font-size: 24px;
         font-weight: 600;
+        line-height: 1.4;
     }
 `;
 

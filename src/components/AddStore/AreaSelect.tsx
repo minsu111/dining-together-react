@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+
+type RegionProps = {
+    location: string;
+    handleChangeInfo: (k: string, v: string) => void;
+}
 
 const regionButtonNames = [
     '서울 전체',
@@ -18,20 +23,13 @@ const regionButtonNames = [
 ];
 
 
-const AreaSelect = () => {
-    const [selectedRegion, setSelectedRegion] = useState('');
+const AreaSelect = ({location, handleChangeInfo}:RegionProps) => {
 
     const handleSelectedRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedRegion(selectedValue);
+        handleChangeInfo('location', selectedValue)
     };
 
-    const updatedsignUpData = {
-        location: selectedRegion,
-    };
-    console.log(
-        updatedsignUpData,
-    );
 
     return (
         <section>
@@ -41,7 +39,7 @@ const AreaSelect = () => {
                     mr="20px"
                     w="350px"
                     placeholder="지역을 선택해 주세요"
-                    value={selectedRegion}
+                    value={location}
                     onChange={handleSelectedRegion}
                 >
                     {regionButtonNames.map((region) => (

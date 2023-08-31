@@ -14,6 +14,9 @@ import CalendarIcon from '../../assets/calendar.svg';
 import PeopleIcon from '../../assets/people.svg'
 import WatchIcon from '../../assets/watch.svg';
 import axiosRequest from '../../api/api';
+import store from '../../app/store';
+import { stringify } from 'querystring';
+import { format } from 'path';
 
 function StoreDetail() {
     const storeId = window.location.href.split('/').pop();
@@ -28,32 +31,60 @@ function StoreDetail() {
             }
         }
     GetStoreDetail();
-    }, [storeId]);
+    }, [storeId]);   
+    console.log(storeDetail);
 
     const [showModal, setShowModal] = useState(false);
     const [pageNum, setPageNum] = useState(1);
-    const [reserveValue, setReserveValue] = useState({
-        placeId: 0,
-        people: 0,
-        reservedDate: "YYYY-MM-DD",
-        visitTime: "HH:MM"
-    });
+    const initialReserveValue = {
+        placeId: undefined,
+        people: undefined,
+        reservedDate: undefined,
+        visitTime: undefined
+    }
+    const [reserveValue, setReserveValue] = useState(initialReserveValue);
 
-    const updateVisitTime = (event: any) =>{
-        const newState = {...reserveValue, visitTime : event.target.value};
+    useEffect(()=>{console.log(reserveValue)},[reserveValue])
+
+    const updateReserveValue = (keyToUpdate: string, value: any) => {
+        const newState = { ...reserveValue, [keyToUpdate] : value};
         setReserveValue(newState);
     }
 
-    useEffect(()=>{console.log(reserveValue);},[reserveValue]);
+    const [maxPeople, setMaxPeople] = useState(0);
+    const [minPeople, setMinPeople] = useState(0);
+    const updateMaxPeople = (maxNum:number) =>{
+        setMaxPeople(maxNum);
+    }
+    const updateMinPeople = (minNum:number) =>{
+        setMinPeople(minNum);
+    }
+
+    const [result, setResult] = useState({
+        storeName: undefined, 
+        people: undefined,
+        reservedDate: undefined, 
+        visitTime: undefined
+    });
+
+    const complete = async() =>{
+        try {
+            setResult(await axiosRequest('POST', `/reserve/`,
+                reserveValue
+            ));
+        } catch (error) {
+            // 여기에 에러 처리
+            console.log('에러');
+        }
+        
+    }
 
     return (
         <Section>
             <TopNaviBarBack pageName='' prevPath='' />
             <StoreImg>
                 <Slider className='slider' autoplay speed={1000} infinite pauseOnHover>
-                    <img alt="" src={BigImageSample} />
-                    <img alt="" src={BigImageSample} />
-                    <img alt="" src={BigImageSample} />
+                    <img alt="" src={storeDetail.imageUrl}/>
                 </Slider>
             </StoreImg>
             <Heading>
@@ -66,7 +97,6 @@ function StoreDetail() {
             </Content>
 
             <DevideLine />
-            
             <Heading>상세정보</Heading>
             <Content>
                 <table>
@@ -90,7 +120,7 @@ function StoreDetail() {
                     </tr>
                     <tr>
                         <td>룸 유무</td>
-                        <td>.</td>
+                        <td>{storeDetail.isRoom ? '있음': '없음'}</td>
                     </tr>
                     <tr>
                         <td>인당 금액</td>
@@ -123,26 +153,66 @@ function StoreDetail() {
             <>
             <DimmedLayer /> 
             <DrawerBox>
+                <Exit onClick={()=>{setShowModal(current => !current); setPageNum(1); setReserveValue(initialReserveValue)}}/>
                 {pageNum === 1 && 
                 <SetVisitDate 
                 openingHour={storeDetail.operatingHours?.openingHour}
                 openingMinute={storeDetail.operatingHours?.openingMinute}
                 closingHour={storeDetail.operatingHours?.closingHour}
                 closingMinute={storeDetail.operatingHours?.closingMinute}
-                updateVisitTime={updateVisitTime}
+visitTime={reserveValue.visitTime}
+                updateReserveValue={updateReserveValue}
                 />}
-                {pageNum === 2 && <SetTable />}
-                {pageNum === 3 && <SetHeadcount />}
-                {pageNum === 4 && <ShowReservation />}
+
+                {pageNum === 2 && 
+                <SetTable 
+                storeId= {storeId}
+                reserveValue = {reserveValue}
+                updateReserveValue={updateReserveValue}
+                updateMaxPeople = {updateMaxPeople}
+                updateMinPeople = {updateMinPeople}
+                />}
+
+                {pageNum === 3 && 
+                <SetHeadcount 
+                updateReserveValue={updateReserveValue}
+                maxPeople={maxPeople}
+                minPeople={minPeople}
+                />}
+
+                {pageNum === 4 && 
+                <ShowReservation 
+                storeName = {result.storeName}
+                people = {result.people}
+                reservedDate = {result.reservedDate}
+                visitTime = {result.visitTime}
+                />}
+
                 <BoxPageButton>
                     {(pageNum !== 1 && pageNum !==4) && <Button text="이전" width="155px" backgroundColor='#E2E2E3' textColor='#FFFFFF' onClick={()=>{setPageNum(pageNum-1)}}/>}
-                    {pageNum !== 4 && <Button text="다음" width="155px" onClick={()=>{setPageNum(pageNum+1)}}/>}
-                    {pageNum === 4 && <Button text="완료" width="350px" onClick={()=>{setShowModal(current => !current); setPageNum(1);}}/>}
+                    {pageNum === 1 && <Button text="다음" width="155px" onClick={()=>{setPageNum(pageNum+1)}} disabled={reserveValue.reservedDate==='undefined-aN-ed' || !(reserveValue.visitTime)}/>}
+                    {pageNum === 2 && <Button text="다음" width="155px" onClick={()=>{setPageNum(pageNum+1)}} disabled={!(reserveValue.placeId)}/>}
+                    {pageNum === 3 && <Button text="다음" width="155px" onClick={()=>{setPageNum(pageNum+1); complete(); }}/>}
+                    {pageNum === 4 && <Button text="완료" width="350px" onClick={()=>{setShowModal(current => !current); setPageNum(1); setReserveValue(initialReserveValue)} }/>}
                 </BoxPageButton>
             </DrawerBox>
             </>}
         </Section>
     );
+}
+function Exit(props:{onClick:()=> void}){
+    const ExitButton = styled.div`
+        position: absolute;
+        top: -60px;
+        font-size: 50px;
+        color: #FFFFFF;
+        cursor: pointer;
+    `
+    return(
+        <ExitButton onClick={props.onClick}>
+            ×
+        </ExitButton>
+    )
 }
 
 type SetVisitDateProps = {
@@ -150,40 +220,76 @@ type SetVisitDateProps = {
     openingMinute : string;
     closingHour : string;
     closingMinute : string;
-    updateVisitTime: (event:any) => void;
+    visitTime: string | undefined;
+    updateReserveValue: (keyToUpdate: string, value: any) => void;
 }
 
 function SetVisitDate(props:SetVisitDateProps){
     const VisitTime = styled.span`
         width: 300px;
-
         select {
             border-color: #AFBCCF;
         }
     `
+    const [dateSelected, setDateSelected] = React.useState<Date>(new Date());
+    useEffect(()=>{
+        const year = dateSelected?.getFullYear().toString().slice(2);
+        const month = (`0${(Number(dateSelected?.getMonth())+1).toString()}`).slice(-2);
+        const date = (`0${dateSelected?.getDate().toString()}`).slice(-2);
+        props.updateReserveValue('reservedDate', `${year}-${month}-${date}`);
+    },[dateSelected]);
+    
+    const openingHour = Number(props.openingHour);
+    const closingHour = Number(props.closingHour)< 12? Number(props.closingHour) +12 : Number(props.closingHour);
+    const openingMinute = Number(props.openingMinute);
+    const closingMinute = Number(props.closingMinute);
+    const HourArray = [];
+    const TimeArray:string[] = [];
+
+    for(let i = 0; i< Math.abs(closingHour - openingHour); i+=1){
+        HourArray.push(openingHour+i);
+    }
+    HourArray.forEach((e) => {
+        TimeArray.push(`${e}:00`);
+        TimeArray.push(`${e}:30`);
+    })
+    if(openingMinute === 30){
+        TimeArray.unshift();
+    }
+    if(closingMinute === 0){
+        TimeArray.pop();
+    }
+    console.log(closingMinute);
+    console.log(TimeArray);
 
     return(
     <>   
-        <Calendar />
+        <Calendar dateSelected={dateSelected} setDateSelected={(value)=>{setDateSelected(value as Date)}}/>
         <VisitTime>
             <h4>방문 시간을 입력해 주세요</h4>
-            <Select onChange={(event)=>props.updateVisitTime(event)}>
-                <option>
-                    { }
-                </option>
-                <option>
-                    {props.openingHour} : {props.openingMinute}
-                </option>
-                <option>
-                    {props.closingHour} : {props.closingMinute}
-                </option>
+            <Select placeholder={' '} value={props.visitTime} onChange={(event)=>props.updateReserveValue('visitTime', event.target.value)}>
+                {TimeArray.map(e=>{
+                    return(
+                        <option>
+                            {e}
+                        </option>
+                    )
+                })}
             </Select>
         </VisitTime>
     </>
     )
 }
 
-function SetTable(){
+type SetTableProps = {
+    storeId: string | undefined;
+    reserveValue : Record<string, any>;
+    updateReserveValue: (keyToUpdate: string, value: any) => void;
+    updateMaxPeople: (props:number) => void;
+    updateMinPeople: (props:number) => void;
+}
+
+function SetTable(props: SetTableProps){
     const TableBoxGroup = styled.div`
         width: 350px;
         display: flex;
@@ -191,96 +297,139 @@ function SetTable(){
         flex-wrap: wrap;
     `
     const TableBox = styled.label`
-       input{
-        visibility: hidden;
-       }
+        input {
+            visibility: hidden;
+        }
 
-       :checked + img{
+       : checked + img{
         border: 3px solid #FFB100;
         border-radius: 5px;
        }
+       
     `
+    interface Place {
+        placeId: number;
+        placeName: string;
+        placeType: string;
+        placeImage: string;
+        maxPeople: number;
+        minPeople: number;
+      }
 
+    const [placeList, setPlaceList] = useState<Place[]>([]);
+    useEffect(()=>{
+        const PlaceList = async () => {
+            try {
+                setPlaceList(await axiosRequest('GET', `/reserve/placelist?storeId=${props.storeId}&date=${props.reserveValue.reservedDate}`,{}));
+            } catch (error) {
+                // 여기에 에러 처리
+                console.log('에러');
+            }
+        }
+        PlaceList();
+    },[props.reserveValue.visitTime])
+
+    const [selectedTable, setSelectedTable] = useState('');
     return(
         <>
             <DrawerBoxTitle>테이블을 선택해주세요.</DrawerBoxTitle>
             <TableBoxGroup>
-                <TableBox htmlFor='table1'>
-                <input type="radio" name="table" id="table1"/>
-                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
-                10인석
-                </TableBox>
-
-                <TableBox htmlFor='table2'>
-                <input type="radio" name="table" id="table2"/>
-                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
-                10인석
-                </TableBox>
-
-                <TableBox htmlFor='table3'>
-                <input type="radio" name="table" id="table3"/>
-                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
-                10인석
-                </TableBox>
-                
-                <TableBox htmlFor='table4'>
-                <input type="radio" name="table" id="table4"/>
-                <img alt="" src={BigImageSample} style={{width: '150px', height: '100px'}} />
-                10인석
-                </TableBox>
+                {placeList ? (
+                placeList.map((table, index)=>(
+                    <TableBox htmlFor={`table${index}`} >
+                        <input 
+                        type="radio" 
+                        id={`table${index}`} 
+                        name="table" 
+                        value={table.placeId}
+                        checked={selectedTable === table.placeId.toString()}
+                        onChange={(event) => 
+                        {
+                        setSelectedTable(event.target.value);
+                        props.updateReserveValue('placeId', Number(event.target.value));
+                        props.updateMaxPeople(table.maxPeople);
+                        props.updateMinPeople(table.minPeople);
+                        }}
+                        />
+                        <img alt="" src={table.placeImage} style={{width: '150px', height: '100px'}} />
+                        [{table.placeType}] {table.placeName}
+                        <br/>{table.minPeople} ~{table.maxPeople} 명
+                    </TableBox>)
+                )): <Heading>예약 가능한 테이블이 없습니다.</Heading> }
             </ TableBoxGroup>
         </>
     )
 }
 
-function SetHeadcount(){
-    const [headcount, setHeadcount] = useState(8);
+type SetHeadcountProps = {
+    updateReserveValue: (keyToUpdate: string, value: any) => void; 
+    maxPeople: number;
+    minPeople: number;
+}
+
+
+function SetHeadcount(props: SetHeadcountProps){
+    const [headcount, setHeadcount] = useState(props.minPeople);
     const CountButton = styled.button`
         width: 30px;
         height: 30px;
-        border: solid #21272A;
+        border: solid;
+        border-color: ${p => p.disabled ? '#e8e8e8': '#21272A'};
         border-width: 3px; 
         border-radius: 100%;
-        background: none;
         font-size: 30px;
         font-weight: bold;
-        color: #21272A;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
+        color: ${p => p.disabled ? '#e8e8e8': '#21272A'}
     `
     const CountNum = styled.span`
         font-size: 50px;
         font-weight: bold;
         color: #21272A;
     `
+
+    useEffect(()=>{
+        props.updateReserveValue('people', headcount);
+    },[headcount]) 
+
     // 인원 최대 최소 제한 추가
     return(
         <>
             <DrawerBoxTitle>인원 수를 선택해주세요.</DrawerBoxTitle>
             <BorderBox>
-                <CountButton type="button" onClick={()=>{setHeadcount(headcount-1)}}>−</CountButton>
+                <CountButton type="button" onClick={()=>{setHeadcount(headcount-1)}} disabled={headcount<=props.minPeople}>−</CountButton>
                 <CountNum>{headcount}</CountNum>
-                <CountButton type="button" onClick={()=>{setHeadcount(headcount+1)}}>+</CountButton>
+                <CountButton type="button" onClick={()=>{setHeadcount(headcount+1)}} disabled={headcount>=props.maxPeople}>+</CountButton>
             </BorderBox>
         </>
     )
 }
 
-function ShowReservation(){
+type ShowReservationProps = {
+    storeName : string | undefined;
+    people : number | undefined;
+    reservedDate : string | undefined;
+    visitTime : string | undefined;
+}
+
+function ShowReservation(props: ShowReservationProps){
     return(
         <>
             <DrawerBoxTitle>예약이 완료되었습니다.</DrawerBoxTitle>
+            {props.storeName}
             <BorderBox>
-                <FlexBox><img alt="" src={CalendarIcon} />날짜</FlexBox>
-                <FlexBox><img alt="" src={WatchIcon} />시간</FlexBox>
-                <FlexBox><img alt="" src={PeopleIcon} />인원</FlexBox>
+                <FlexBox><img alt="" src={CalendarIcon} />{props.reservedDate}</FlexBox>
+                <FlexBox><img alt="" src={WatchIcon} />{props.visitTime}</FlexBox>
+                <FlexBox><img alt="" src={PeopleIcon} />{props.people}</FlexBox>
             </BorderBox>
         </>
     )
 }
 
 export default StoreDetail;
+
 
 const Section = styled.section`
     position: absolute;

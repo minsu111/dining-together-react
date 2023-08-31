@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { Select } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { styled } from 'styled-components';
-import { color } from 'framer-motion';
+
+type OpenHoursProps = {
+    openingHour: string;
+    openingMinute: string;
+    handleChangeInfo: (k: string, v: string) => void;
+}
 
 const openHours = [
+    '00',
     '01',
     '02',
     '03',
@@ -37,27 +43,18 @@ const openMinutes = [
 ];
 
 
-const OpenTimeSelect = () => {
-    const [selectedOpenHour, setSelectedOpenHour] = useState('');
-    const [selectedOpenMinute, setSelectedOpenMinute] = useState('');
+const OpenTimeSelect = ({openingHour,openingMinute, handleChangeInfo}:OpenHoursProps) => {
 
     const handleSelectedOpenHour = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedOpenHour(selectedValue);
+        handleChangeInfo('openingHour', selectedValue)
     };
 
     const handleSelectedOpenMinute = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = e.target.value;
-        setSelectedOpenMinute(selectedValue);
+        handleChangeInfo('openingMinute', selectedValue)
     };
 
-    const updatedsignUpData = {
-        hour: selectedOpenHour,
-        minute: selectedOpenMinute,
-    };
-    console.log(
-        updatedsignUpData,
-    );
 
     return (
         <section>
@@ -68,7 +65,7 @@ const OpenTimeSelect = () => {
                     mr="20px"
                     w="100px"
                     placeholder="시"
-                    value={selectedOpenHour}
+                    value={openingHour}
                     onChange={handleSelectedOpenHour}
                 >
                     {openHours.map((hour) => (
@@ -83,7 +80,7 @@ const OpenTimeSelect = () => {
                     mr="20px"
                     w="100px"
                     placeholder="분"
-                    value={selectedOpenMinute}
+                    value={openingMinute}
                     onChange={handleSelectedOpenMinute}
                 >
                     {openMinutes.map((minute) => (

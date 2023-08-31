@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import Input from '../common/Input';
+import Input from '../common/CustomInput';
 
 type StoreForm4thProps = {
+    description: string;
+    keyword1: string;
+    keyword2: string;
+    keyword3: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
 function StoreForm4th({
+    description,
+    keyword1,
+    keyword2,
+    keyword3,
     handleChangeInfo,
 }: StoreForm4thProps) {
-    const [input, setInput] = useState('');
-
-    const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const inputValue = e.target.value; // 입력된 값 저장
-        setInput(inputValue); // input 상태 업데이트
-        handleChangeInfo('description', inputValue); // handleChangeInfo 호출 시 저장한 값 전달
-        console.log(inputValue);
-    };
+    
     return (
         <section>
             <Inner>
@@ -33,11 +34,10 @@ function StoreForm4th({
                         <textarea
                             name="description"
                             maxLength={150}
-                            value={input}
-                            onChange={(e) => {
-                                onChangeInput(e);
-                                handleChangeInfo('description', e.target.value);
-                            }}
+                            value={description}
+                            onChange={(e) =>
+                                handleChangeInfo('description', e.target.value)
+                            }
                         />
                     </div>
                     <div className="content">
@@ -51,24 +51,27 @@ function StoreForm4th({
                             width="150px"
                             name="keyword1"
                             inputType="text"
+                            value={keyword1}
                             onChange={(e) =>
-                                handleChangeInfo('keyword', e.target.value)
+                                handleChangeInfo('keyword1', e.target.value)
                             }
                         />
                         <Input
                             width="150px"
                             name="keyword2"
                             inputType="text"
+                            value={keyword2}
                             onChange={(e) =>
-                                handleChangeInfo('keyword', e.target.value)
+                                handleChangeInfo('keyword2', e.target.value)
                             }
                         />
                         <Input
                             width="150px"
                             name="keyword3"
                             inputType="text"
+                            value={keyword3}
                             onChange={(e) =>
-                                handleChangeInfo('keyword', e.target.value)
+                                handleChangeInfo('keyword3', e.target.value)
                             }
                         />
                     </div>

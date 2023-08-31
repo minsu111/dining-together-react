@@ -1,15 +1,33 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import Input from '../common/Input';
+import Input from '../common/CustomInput';
 import OpenTimeSelect from './OpenTime';
 import CloseTimeSelect from './CloseTime';
 import DayoffSelect from './Dayoff';
 
 type StoreForm3rdProps = {
+    openingHour: string;
+    openingMinute: string;
+    closingHour: string;
+    closingMinute: string;
+    dayoff1: string;
+    dayoff2: string;
+    cost: string;
+    maxNum: string;
     handleChangeInfo: (k: string, v: string) => void;
 };
 
-function StoreForm3rd({ handleChangeInfo }: StoreForm3rdProps) {
+function StoreForm3rd({
+    openingHour,
+    openingMinute,
+    closingHour,
+    closingMinute,
+    dayoff1,
+    dayoff2,
+    cost,
+    maxNum,
+    handleChangeInfo,
+}: StoreForm3rdProps) {
     return (
         <section>
             <Inner>
@@ -17,26 +35,39 @@ function StoreForm3rd({ handleChangeInfo }: StoreForm3rdProps) {
                     <div className="content">
                         <h4>영업시간</h4>
                         <div>
-                            <OpenTimeSelect />
-                            <CloseTimeSelect />
+                            <OpenTimeSelect
+                                openingHour={openingHour}
+                                openingMinute={openingMinute}
+                                handleChangeInfo={handleChangeInfo}
+                            />
+                            <CloseTimeSelect
+                                closingHour={closingHour}
+                                closingMinute={closingMinute}
+                                handleChangeInfo={handleChangeInfo}
+                            />
                         </div>
                     </div>
 
                     <div className="content">
                         <h4>휴무일</h4>
                         <div>
-                            <DayoffSelect />
+                            <DayoffSelect
+                                dayoff1={dayoff1}
+                                dayoff2={dayoff2}
+                                handleChangeInfo={handleChangeInfo}
+                            />
                         </div>
                     </div>
 
                     <div className="inputarea">
                         <Input
-                            name='maxNum'
+                            name="maxNum"
                             label="최대 수용 인원"
                             inputType="number"
+                            value={maxNum}
                             width="80px"
                             onChange={(e) =>
-                                handleChangeInfo('storeContact', e.target.value)
+                                handleChangeInfo('maxNum', e.target.value)
                             }
                         />
                         <p>명</p>
@@ -44,12 +75,13 @@ function StoreForm3rd({ handleChangeInfo }: StoreForm3rdProps) {
 
                     <div className="inputarea">
                         <Input
-                            name='cost'
+                            name="cost"
                             label="인당 가격"
                             inputType="number"
+                            value={cost}
                             width="150px"
                             onChange={(e) =>
-                                handleChangeInfo('storeContact', e.target.value)
+                                handleChangeInfo('cost', e.target.value)
                             }
                         />
                         <p>원</p>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -12,7 +12,8 @@ import Button from '../../../components/common/Button';
 import { SearchModalType } from './enum/Enum';
 
 import { RootState } from '../../../app/store';
-// import { setExpectedDate } from '../store/FilterSlice';
+import { parseDateString, serializeDate } from '../../../utils/utils';
+import { setExpectedDate } from '../store/FilterSlice';
 
 type ModalProps = {
     isOpen: boolean;
@@ -30,32 +31,44 @@ function DatetimeSelectorModal(props: ModalProps) {
         return state.filter.expectedDate;
     });
 
-    let temp;
-    // expectedDate가 비어있다면
-    if (!expectedDate) {
-        const isoDateString = new Date().toISOString();
-        const yearMonthDay = isoDateString.split('T')[0];
-        temp = new Date(yearMonthDay);
-    } else temp = new Date();
+    let initialDate;
+    try {
+        if (!expectedDate) {
+            initialDate = new Date();
+        } else initialDate = parseDateString(expectedDate);
+    } catch (error) {
+        initialDate = new Date();
+        console.error('Error occurred:', error);
+    }
 
-    const [selectedDate, setDate] = React.useState(temp);
+    const [selectedDate, setSelectedDate] = useState(initialDate);
+    const [formattedDate, setFormattedDate] = useState('');
+
     const handleDayClick = (date: Date) => {
-        setDate(date);
+        setSelectedDate(date);
     };
 
-    const formattedDate = Intl.DateTimeFormat('ko', {
-        dateStyle: 'full',
-    }).format(temp);
+    // 테스트용
+    // useEffect(() => {
+    //     dispatch(setExpectedDate(serializeDate(new Date())));
+    // }, []);
+
+    useEffect(() => {
+        setFormattedDate(
+            Intl.DateTimeFormat('ko', {
+                dateStyle: 'full',
+            }).format(selectedDate),
+        );
+    }, [selectedDate]);
 
     const handleClose = () => {
         props.onClose(props.modalType);
     };
 
     const handleConfirm = () => {
-        // const testDate = new Date();
-        // testDate.setDate(expectedDate.getDate() + 1);
-        // dispatch(setVisitDate(testDate));
-        // dispatch(setVisitDate(selectedDate));
+        const aaaaaaaaa = serializeDate(selectedDate);
+        console.log(aaaaaaaaa, selectedDate);
+        dispatch(setExpectedDate(aaaaaaaaa));
 
         props.onConfirm();
         handleClose();
@@ -95,7 +108,13 @@ function DatetimeSelectorModal(props: ModalProps) {
                 />
             </HeaderDiv>
             {/* <Calendar seletedDate={visitDate} onDayClick={handleDayClick} /> */}
-            <Calendar />
+            <Calendar
+                dateSelected={selectedDate}
+                showFooter={false}
+                setDateSelected={(value) => {
+                    if (value) handleDayClick(value);
+                }}
+            />
             <SolidLine />
             <Text>{formattedDate}</Text>
             <FooterDiv>

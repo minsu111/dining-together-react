@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -42,6 +42,10 @@ function SelectRegion(props: {
             setCheckedList([...checkedList, checkItem]);
         }
     };
+
+    useEffect(() => {
+        setCheckedList(region);
+    }, [region]);
 
     // 테스트용
     // React.useEffect(() => {

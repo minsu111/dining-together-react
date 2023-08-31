@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { RootState } from '../../app/store';
+import { useSelector } from 'react-redux';
+import { parseDateString } from '../../utils/utils';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 type StoreInfoProps = {
     isKeywordSearch?: boolean;
@@ -18,24 +23,31 @@ type StoreInfoProps = {
 function StoreItem(props: StoreInfoProps) {
     const navigate = useNavigate();
 
-    // TODO: 임시로 오늘 날짜 보내고 있음
-    const isoDateString = new Date().toISOString();
-    const yearMonthDay = isoDateString.split('T')[0];
+    const expectedDate = useSelector((state: RootState) => {
+        return state.filter.expectedDate;
+    });
+
+    let initialDate;
+    try {
+        if (!expectedDate) {
+            initialDate = new Date();
+        } else initialDate = parseDateString(expectedDate);
+    } catch (error) {
+        initialDate = new Date();
+        console.error('Error occurred:', error);
+    }
+
+    const formattedDate = format(initialDate, 'yyyy-MM-dd', { locale: ko });
 
     return (
         <Div
             onClick={() =>
-                navigate(`/store/${props.storeId}?selectedDate=${yearMonthDay}`)
+                navigate(
+                    `/store/${props.storeId}?selectedDate=${formattedDate}`,
+                )
             }
         >
-            <div
-            // style={{
-            //     width: 80,
-            //     height: 80,
-            //     backgroundColor: 'lightgray',
-            //     border: '2px solid gray',
-            // }}
-            >
+            <div>
                 <img src={props.imgUrl} alt="가게 사진" />
             </div>
 

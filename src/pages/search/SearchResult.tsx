@@ -22,6 +22,7 @@ import { SearchModalType } from './modal/enum/Enum';
 import { RootState } from '../../app/store';
 import { setExpectedDate } from './store/FilterSlice';
 import { parseDateString, serializeDate } from '../../utils/utils';
+import Button from '../../components/common/Button';
 
 function SearchResult() {
     const [data, setData] = useState<Store[]>([]);
@@ -151,7 +152,20 @@ function SearchResult() {
                     ))}
                 </ResultDiv>
             </Div2>
-            <footer>
+            <FooterDiv>
+                <SolidLine />
+                <div style={{ margin: '20px auto' }}>
+                    <Button
+                        type="submit"
+                        text="검색"
+                        onClick={() => {
+                            filterSearch();
+                        }}
+                        form="keywordForm"
+                    />
+                </div>
+            </FooterDiv>
+            {/* <footer>
                 <div
                     style={{
                         width: '100%',
@@ -179,7 +193,7 @@ function SearchResult() {
                         ]
                     </button>
                 </div>
-            </footer>
+            </footer> */}
         </Section>
     );
 }
@@ -191,7 +205,7 @@ const Section = styled.section`
 `;
 
 const Div2 = styled.div`
-    height: 100%;
+    height: calc(100% - 93px); // 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -220,6 +234,11 @@ const ResultDiv = styled.div`
     align-items: center;
     gap: 20px;
     overflow-y: auto;
+`;
+
+const FooterDiv = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 type Address = {

@@ -18,7 +18,7 @@ export enum SearchModalType {
 }
 
 export enum RegionType {
-    Seoul_Total = '서울 전체',
+    // Seoul_Total = '서울 전체',
     Seoul_1 = '강남',
     Seoul_2 = '서초',
     Seoul_3 = '잠실/송파/강동',

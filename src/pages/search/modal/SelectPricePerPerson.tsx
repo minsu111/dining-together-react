@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -84,6 +84,11 @@ function SelectPricePerPerson(props: {
     function clamp(value: number, minNum: number, maxNum: number) {
         return Math.min(Math.max(value, minNum), maxNum);
     }
+
+    useEffect(() => {
+        setMin(priceMin);
+        setMax(priceMax);
+    }, [priceMin, priceMax]);
 
     const handleReset = () => {
         setMin(MIN_PRICE);

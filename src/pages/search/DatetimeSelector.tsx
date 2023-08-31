@@ -1,18 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { RootState } from '../../app/store';
+import { useSelector } from 'react-redux';
+import { parseDateString } from '../../utils/utils';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale'; // 한국어 로케일 가져오기
 
-const DatetimeSelector: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+function DatetimeSelector(props: { onClick: () => void }) {
+    const expectedDate = useSelector((state: RootState) => {
+        return state.filter.expectedDate;
+    });
+
+    const [formattedDate, setFormattedDate] = useState('');
+    useEffect(() => {
+        let initialDate;
+        try {
+            if (!expectedDate) {
+                initialDate = new Date();
+            } else initialDate = parseDateString(expectedDate);
+        } catch (error) {
+            initialDate = new Date();
+            console.error('Error occurred:', error);
+        }
+
+        setFormattedDate(format(initialDate, 'yyyy.M.d(EEE)', { locale: ko })); // 2023.8.15(화)
+    }, [expectedDate]);
+
     const handleClick = () => {
-        onClick();
+        props.onClick();
     };
 
     return (
         <Div onClick={handleClick}>
             <FontAwesomeIcon icon={faCalendar} style={{ marginTop: '2px' }} />
-            <Span>2023.8.15(화)</Span>
+            <Span>{formattedDate}</Span>
             <FontAwesomeIcon
                 icon={faAngleDown}
                 style={{
@@ -23,7 +47,7 @@ const DatetimeSelector: React.FC<{ onClick: () => void }> = ({ onClick }) => {
             />
         </Div>
     );
-};
+}
 
 export default DatetimeSelector;
 

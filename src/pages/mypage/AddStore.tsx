@@ -182,7 +182,6 @@ function AddStore() {
 
         const storeFormData = async () => {
             try {
-                // 로컬 스토리지에서 JWT 토큰 가져오기
                 const jwtToken = localStorage.getItem('jwt_token');
 
                 const result = await axios.post(

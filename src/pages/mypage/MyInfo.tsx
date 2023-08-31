@@ -94,7 +94,7 @@ const Container = styled.section`
 `;
 
 const MenuWrapper = styled.div`
-    margin: 40px 0;
+    margin: 20px 0;
     div {
         font-size: 18px;
         font-weight: 600;

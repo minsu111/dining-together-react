@@ -58,7 +58,7 @@ const GNBAreaSC = styled.div`
     height: 65px;
     position: fixed;
     bottom: 0;
-    left: 50%;
+    left: 65%;
     transform: translate(-50%, 0);
     background-color: #fff;
 

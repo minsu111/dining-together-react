@@ -7,32 +7,38 @@ const Layout = () => {
     const { pathname } = useLocation();
 
     return (
-        <WholeWrap>
-            <Wrap>
-                <Outlet />
-            </Wrap>
-            {pathname === '/join' ||
-            pathname === '/join/welcome' ||
-            pathname === '/my/info' ||
-            pathname === '/my/infoEdit/name' ||
-            pathname === '/my/infoEdit/phoneNumber' ||
-            pathname === '/store/:storeId' ||
-            pathname === '/search/keyword' ||
-            pathname === '/search/list' ||
-            pathname === '/my/store' ||
-            pathname === '/my/store/fin' ||
-            pathname === '/my/store/detail' ||
-            pathname === '/my/infoEdit/withdraw' ? (
-                ''
-            ) : (
-                <GNBArea />
-            )}
-        </WholeWrap>
+        <Background>
+            <WholeWrap>
+                <Wrap>
+                    <Outlet />
+                </Wrap>
+                {pathname === '/join' ||
+                pathname === '/join/welcome' ||
+                pathname === '/my/info' ||
+                pathname === '/my/infoEdit/name' ||
+                pathname === '/my/infoEdit/phoneNumber' ||
+                pathname === '/store/:storeId' ||
+                pathname === '/search/keyword' ||
+                pathname === '/search/list' ||
+                pathname === '/my/store' ||
+                pathname === '/my/store/fin' ||
+                pathname === '/my/store/detail' ||
+                pathname === '/my/infoEdit/withdraw' ? (
+                    ''
+                ) : (
+                    <GNBArea />
+                )}
+            </WholeWrap>
+        </Background>
     );
 };
 
 export default Layout;
 
+const Background = styled.section`
+    width: 1080;
+    background-color: #ffca50;
+`;
 const WholeWrap = styled.div`
     width: 100%;
     height: 100vh;
@@ -48,12 +54,18 @@ const Wrap = styled.div`
         5px 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: scroll;
     position: absolute;
-    left: 50%;
+    left: 65%;
     top: 0;
     transform: translate(-50%, 0);
     padding-bottom: 70px;
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    @media (max-width: 800px) {
+        width: 100%;
+        left: 0;
+        transform: none;
     }
 `;

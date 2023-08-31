@@ -108,8 +108,9 @@ function Login() {
                     onClose={closePopup}
                 />
             )}
-
-            <SignInButton to="/join">이메일 회원가입</SignInButton>
+            <BtnWrapper>
+                <SignInButton to="/join">이메일 회원가입</SignInButton>
+            </BtnWrapper>
         </Section>
     );
 }
@@ -158,12 +159,16 @@ const PasswordInput = styled.input`
         border-bottom: 1px solid black;
     }
 `;
+const BtnWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
 
 const SignInButton = styled(Link)`
     font-size: 14px;
     color: #474747;
     padding: 12px 22px;
-    text-align: right;
+
     text-decoration: underline;
     text-decoration-color: #474747;
 

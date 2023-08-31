@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -34,6 +34,10 @@ function SelectSeat(props: {
             setCheckedList([...checkedList, checkItem]);
         }
     };
+
+    useEffect(() => {
+        setCheckedList(seat);
+    }, [seat]);
 
     // checkedList가 업데이트될 때마다 실행
     // React.useEffect(() => {

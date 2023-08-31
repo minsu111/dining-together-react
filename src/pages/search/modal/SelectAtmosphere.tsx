@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -35,6 +35,10 @@ function SelectAtmosphere(props: {
             setCheckedList([...checkedList, checkItem]);
         }
     };
+
+    useEffect(() => {
+        setCheckedList(atmosphere);
+    }, [atmosphere]);
 
     const handleReset = () => {
         setCheckedList([]);

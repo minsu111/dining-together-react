@@ -46,7 +46,7 @@ function Home() {
 }
 
 type StoreCardProps = {
-    imgUrl: string;
+    imageUrl: string;
     storeName: string;
     minCount: number;
     maxCount: number;
@@ -74,7 +74,7 @@ const StoreCard = (props: StoreCardProps) => {
     return (
         <a href={props.storeUrl} >
         <Card>
-            <Image alt="" src={props.imgUrl}/>
+            <Image alt="" src={props.imageUrl}/>
             <h5>{props.storeName}</h5>
             <p>
                 {props.minCount} ~ {props.maxCount}명 · {props.foodCategory}
@@ -108,10 +108,10 @@ const RecommendList = (props: RecommendListProps) => {
                     (storeInfo: Record<string, any>) => {
                         return (
                             <StoreCard
-                                imgUrl={storeInfo.imgUrl}
+                                imageUrl={storeInfo.imageUrl}
                                 storeName={storeInfo.storeName}
-                                minCount={10}
-                                maxCount={40}
+                                minCount={storeInfo.minPeople}
+                                maxCount={storeInfo.maxPeople}
                                 foodCategory={storeInfo.foodCategory}
                                 storeUrl={`/store/${storeInfo.storeId}`}
                             />

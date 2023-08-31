@@ -187,7 +187,7 @@ function AddStore() {
                     });
                 }
             } catch (error) {
-                console.log('error');
+                console.log(error);
             }
         };
         storeFormData();

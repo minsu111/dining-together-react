@@ -23,7 +23,7 @@ import { MAX_PRICE, MIN_PRICE } from './SelectPricePerPerson';
  */
 function TotalFilter(props: {
     isOpen: boolean;
-    onClose: (modalType: SearchModalType) => void;
+    onToggleFilterDisplay: (modalType: SearchModalType) => void;
 }) {
     const dispatch = useDispatch();
     const filterState = useSelector((state: RootState) => {
@@ -78,7 +78,7 @@ function TotalFilter(props: {
     };
 
     const handleClose = () => {
-        props.onClose(SearchModalType.Total);
+        props.onToggleFilterDisplay(SearchModalType.Total);
     };
 
     const handleConfirm = () => {
@@ -98,6 +98,7 @@ function TotalFilter(props: {
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: 500,
                 },
                 content: {
                     width: '390px',
@@ -117,22 +118,27 @@ function TotalFilter(props: {
                     <FilterButtonInModal
                         filterType={FilterType.Region}
                         selectData={region}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.FoodType}
                         selectData={foodType}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.PricePerPerson}
                         selectData={priceRange}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.Atmosphere}
                         selectData={atmosphere}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                     <FilterButtonInModal
                         filterType={FilterType.Seat}
                         selectData={seat}
+                        onToggleFilterDisplay={props.onToggleFilterDisplay}
                     />
                 </Div>
             </ContentDiv>

@@ -43,6 +43,11 @@ function SelectRegion(props: {
         }
     };
 
+    // 테스트용
+    // React.useEffect(() => {
+    //     console.log('~~~~ filterState.region: ', region);
+    // }, [region]);
+
     // // checkedList가 업데이트될 때마다 실행
     // React.useEffect(() => {
     //     console.log('checkedList length: ', checkedList.length);
@@ -75,6 +80,7 @@ function SelectRegion(props: {
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: 1000,
                 },
                 content: {
                     width: '390px',

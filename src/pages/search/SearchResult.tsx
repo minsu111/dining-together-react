@@ -101,7 +101,7 @@ function SearchResult() {
 
             <TotalFilter
                 isOpen={modalStateArray[SearchModalType.Total]}
-                onClose={handleModalToggle}
+                onToggleFilterDisplay={handleModalToggle}
             />
             <SelectRegion
                 isOpen={modalStateArray[SearchModalType.Region]}

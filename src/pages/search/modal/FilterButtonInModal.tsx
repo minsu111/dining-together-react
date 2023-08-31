@@ -11,7 +11,7 @@ import {
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FilterType } from './enum/Enum';
+import { FilterType, SearchModalType } from './enum/Enum';
 
 /**
  * TotalFilter Modal에서만 쓰는 버튼
@@ -19,9 +19,11 @@ import { FilterType } from './enum/Enum';
 function FilterButtonInModal({
     filterType,
     selectData,
+    onToggleFilterDisplay,
 }: {
     filterType: FilterType;
     selectData: string[];
+    onToggleFilterDisplay: (modalType: SearchModalType) => void;
 }) {
     let temp = '미선택';
     const [data, setData] = useState(temp);
@@ -41,26 +43,36 @@ function FilterButtonInModal({
     }, [selectData]);
 
     let icon: IconProp;
+    let modalType: SearchModalType;
     switch (filterType) {
         case FilterType.Region:
             icon = faLocationDot;
+            modalType = SearchModalType.Region;
             break;
         case FilterType.FoodType:
             icon = faUtensils;
+            modalType = SearchModalType.FoodType;
             break;
         case FilterType.PricePerPerson:
             icon = faWonSign;
+            modalType = SearchModalType.PricePerPerson;
             break;
         case FilterType.Atmosphere:
             icon = faFaceSmile;
+            modalType = SearchModalType.Atmosphere;
             break;
         default: // FilterType.Seat:
             icon = faChair;
+            modalType = SearchModalType.Seat;
             break;
     }
 
     return (
-        <Div>
+        <Div
+            onClick={() => {
+                onToggleFilterDisplay(modalType);
+            }}
+        >
             <LeftDiv>
                 <FontAwesomeIcon icon={icon} />
             </LeftDiv>

@@ -4,17 +4,20 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import styled from 'styled-components';
 
-export default function Calendar() {
-  const [selected, setSelected] = React.useState<Date>();
+type CalendarProps = {
+  dateSelected?: Date;
+  setDateSelected?: (props?: Date) => void;
+}
 
-  const footer=  selected ? <p>{format(selected, 'PP')}</p> : <p>날짜를 선택해주세요.</p>;
+export default function Calendar(props:CalendarProps) {
+  const footer=  props.dateSelected ? <p>{format(props.dateSelected, 'PP')}</p> : <p>날짜를 선택해주세요.</p>;
 
   return (
     <CalendarSC>
     <DayPicker
       mode="single"
-      selected={selected}
-      onSelect={setSelected}
+      selected={props.dateSelected}
+      onSelect={props.setDateSelected}
       footer={footer}
       modifiersClassNames={{
         selected: 'my-selected',

@@ -9,7 +9,7 @@ import axiosRequest from '../../api/api';
 import { login } from '../../app/UserSlice';
 import { RootState } from '../../app/store';
 import HandleError from '../../api/Error';
-import { Wrap, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 function EditName() {
     const [name, setName] = useState<string>('');

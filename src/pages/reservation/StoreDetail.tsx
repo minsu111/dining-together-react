@@ -82,7 +82,12 @@ function StoreDetail() {
             <TopNaviBarBack pageName='' prevPath='' />
             <StoreImgSlide>
                 <Slider className='slider' autoplay speed={1000} infinite pauseOnHover>
-                    <StoreImg alt="" src={`http://13.209.102.55/${storeDetail.imageUrl}`}/>
+                {Array.isArray(storeDetail.imageUrls) && storeDetail.imageUrls.map((e: string) => {
+                    if (typeof e === 'string' && e.trim() !== '') {
+                        return <StoreImg alt="" src={`http://13.209.102.55/${e}`} />;
+                    }
+                    return null;
+                    })}
                 </Slider>
             </StoreImgSlide>
             <Heading>

@@ -45,8 +45,6 @@ function SetVisitDate(props:SetVisitDateProps){
     if(closingMinute === 0){
         TimeArray.pop();
     }
-    console.log(closingMinute);
-    console.log(TimeArray);
 
     return(
     <>   

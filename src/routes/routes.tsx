@@ -3,7 +3,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/home/Home';
 import StoreDetail from '../pages/reservation/StoreDetail';
-//import Reservation from '../pages/reservation/Reservation';
 import ReservationList from '../pages/reservation/ReservationList';
 import Search from '../pages/search/Search';
 import Mypage from '../pages/mypage/Mypage';
@@ -39,7 +38,6 @@ const router = createBrowserRouter([
             { path: '/admin', element: <AdminStore /> },
 
             { path: '/store/:storeId', element: <StoreDetail /> },
-            //{ path: '/store/reservation', element: <Reservation /> },
 
             { path: '/search', element: <Search /> },
             { path: '/search/list', element: <SearchResult /> },

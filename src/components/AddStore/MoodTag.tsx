@@ -64,10 +64,10 @@ const MoodTag = ({ mood, handleChangeArrayInfo }: TagProps) => {
                 isChecked={mood.includes('#전통적인')}
             />
             <TagButton
-                name="#이색적인"
-                onClick={() => handleTagClick('#이색적인')}
+                name="#시끌벅적한"
+                onClick={() => handleTagClick('#시끌벅적한')}
                 selectedCnt={mood.length}
-                isChecked={mood.includes('#이색적인')}
+                isChecked={mood.includes('#시끌벅적한')}
             />
         </div>
     );

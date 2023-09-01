@@ -1,37 +1,111 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import GNBArea from './GNB';
+import BgImg from '../../assets/Group 1532.svg';
+import Insta from '../../assets/logo-instagram.svg';
+import Facebook from '../../assets/logo-facebook.svg';
 
 const Layout = () => {
     const { pathname } = useLocation();
 
+    type HandleClickType = (event: React.MouseEvent<HTMLButtonElement>) => void;
+
+    const handleInstaClick: HandleClickType = () => {
+        window.open('https://www.instagram.com/dining_togetherr/');
+    };
+
+    const handleFacebookClick: HandleClickType = () => {
+        window.open(
+            'https://www.facebook.com/profile.php?id=61550831071342&mibextid=LQQJ4d',
+        );
+    };
+
     return (
-        <WholeWrap>
-            <Wrap>
-                <Outlet />
-            </Wrap>
-            {pathname === '/join' ||
-            pathname === '/join/welcome' ||
-            pathname === '/my/info' ||
-            pathname === '/my/infoEdit/name' ||
-            pathname === '/my/infoEdit/phoneNumber' ||
-            pathname === '/store/:storeId' ||
-            pathname === '/search/keyword' ||
-            pathname === '/search/list' ||
-            pathname === '/my/store' ||
-            pathname === '/my/store/fin' ||
-            pathname === '/my/store/detail' ||
-            pathname === '/my/infoEdit/withdraw' ? (
-                ''
-            ) : (
-                <GNBArea />
-            )}
-        </WholeWrap>
+        <Background>
+            <BackgroundImg>
+                <img src={BgImg} alt="로고이미지" />
+            </BackgroundImg>
+            <LogoWrapper>
+                <SocialBtn type="button" onClick={handleInstaClick}>
+                    <img src={Insta} alt="인스타그램" />
+                </SocialBtn>
+                <SocialBtn type="button" onClick={handleFacebookClick}>
+                    <img src={Facebook} alt="로고이미지" />
+                </SocialBtn>
+            </LogoWrapper>
+            <WholeWrap>
+                <Wrap>
+                    <Outlet />
+                </Wrap>
+                {pathname === '/join' ||
+                pathname === '/join/welcome' ||
+                pathname === '/my/info' ||
+                pathname === '/my/infoEdit/name' ||
+                pathname === '/my/infoEdit/phoneNumber' ||
+                pathname === '/store/:storeId' ||
+                pathname === '/search/keyword' ||
+                pathname === '/search/list' ||
+                pathname === '/my/store' ||
+                pathname === '/my/store/fin' ||
+                pathname === '/my/store/detail' ||
+                pathname === '/my/infoEdit/withdraw' ? (
+                    <></>
+                ) : (
+                    <GNBArea />
+                )}
+            </WholeWrap>
+        </Background>
     );
 };
 
 export default Layout;
+
+const Background = styled.section`
+    width: 100%;
+    background-color: #ffc53e;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        background-color: #fff;
+    }
+`;
+
+const BackgroundImg = styled.section`
+    position: absolute;
+    width: 460px;
+    height: auto;
+    padding: 100px 20px;
+    margin: 0 30px;
+    top: 25%;
+
+    @media (max-width: 1080px) {
+        display: none;
+    }
+`;
+
+const LogoWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    img {
+        width: 40px;
+        margin: 0 4px;
+    }
+`;
+
+const SocialBtn = styled.button`
+    cursor: pointer;
+    z-index: 1;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
 
 const WholeWrap = styled.div`
     width: 100%;
@@ -51,7 +125,7 @@ const Wrap = styled.div`
     left: 50%;
     top: 0;
     transform: translate(-50%, 0);
-    padding-bottom: 70px;
+    padding-bottom: 20px;
 
     &::-webkit-scrollbar {
         display: none;

@@ -62,13 +62,6 @@ function MyInfo() {
                         <FontAwesomeIcon icon={faChevronRight} />
                     </InfoMenu>
                 </MenuWrapper>
-                {/* <MenuWrapper>
-                    <MenuName>비밀번호</MenuName>
-                    <InfoMenu onClick={() => goToEditPage('password')}>
-                        <div>********</div>
-                        <FontAwesomeIcon icon={faChevronRight} />
-                    </InfoMenu>
-                </MenuWrapper> */}
             </Container>
             <DevideLine />
             <Logout
@@ -94,7 +87,7 @@ const Container = styled.section`
 `;
 
 const MenuWrapper = styled.div`
-    margin: 40px 0;
+    margin: 20px 0;
     div {
         font-size: 18px;
         font-weight: 600;

@@ -15,6 +15,9 @@ import StoreForm3rd from '../../components/AddStore/StoreForm3rd';
 import StoreForm4th from '../../components/AddStore/StoreForm4th';
 import StoreForm5th from '../../components/AddStore/StoreForm5th';
 
+import axios from 'axios';
+
+
 function AddStore() {
     const user = useSelector((state: RootState) => state.user);
 
@@ -54,6 +57,11 @@ function AddStore() {
     const [keyword1, setKeyword1] = useState<string>('');
     const [keyword2, setKeyword2] = useState<string>('');
     const [keyword3, setKeyword3] = useState<string>('');
+
+    // page_5
+    const [storeImageMain, setStoreImageMain] = useState<File | null>(null);
+    const [storeImageSub1, setStoreImageSub1] = useState<File | null>(null);
+    const [storeImageSub2, setStoreImageSub2] = useState<File | null>(null);
 
     const handleChangeInfo = (key: string, value: string) => {
         if (key === 'storeName') setStoreName(value);
@@ -104,7 +112,7 @@ function AddStore() {
         const combinedKeyword = filteredKeywords.join(',');
 
         const storeData = {
-            userId: 'user1234',
+            userId: user.userId,
             storeName,
             storeContact,
             address: {
@@ -123,24 +131,92 @@ function AddStore() {
             },
             closedDays: dayoff,
             foodCategory,
-            isParking: Number(isParking),
+            isParking,
             description,
-            maxNum: Number(maxNum),
-            cost: Number(cost),
-            storeImage: '사진.jpg',
+            maxNum,
+            cost,
         };
-        console.log(storeData);
-        // navigate('/my/store/fin');
+
+        // FormData 객체 생성
+        const formData = new FormData();
+
+        formData.append('userId', storeData.userId);
+        formData.append('storeName', storeData.storeName);
+        formData.append('storeContact', storeData.storeContact);
+        formData.append('address[postalCode]', storeData.address.postalCode);
+        formData.append('address[roadAddress]', storeData.address.roadAddress);
+        formData.append(
+            'address[detailAddress]',
+            storeData.address.detailAddress,
+        );
+        formData.append('location', storeData.location);
+        formData.append('keyword', storeData.keyword);
+        formData.append('mood', storeData.mood);
+        formData.append(
+            'operatingHours[openingHour]',
+            storeData.operatingHours.openingHour,
+        );
+        formData.append(
+            'operatingHours[openingMinute]',
+            storeData.operatingHours.openingMinute,
+        );
+        formData.append(
+            'operatingHours[closingHour]',
+            storeData.operatingHours.closingHour,
+        );
+        formData.append(
+            'operatingHours[closingMinute]',
+            storeData.operatingHours.closingMinute,
+        );
+
+        formData.append('closedDays', storeData.closedDays);
+        formData.append('foodCategory', storeData.foodCategory);
+        formData.append('isParking', storeData.isParking);
+        formData.append('description', storeData.description);
+        formData.append('maxNum', storeData.maxNum);
+        formData.append('cost', storeData.cost);
+
+        if (storeImageMain) formData.append('storeImage', storeImageMain);
+        if (storeImageSub1) formData.append('storeImage', storeImageSub1);
+        if (storeImageSub2) formData.append('storeImage', storeImageSub2);
+
+        const storeFormData = async () => {
+            try {
+                const jwtToken = localStorage.getItem('jwt_token');
+
+                const result = await axios.post(
+                    'http://13.209.102.55/api/stores',
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${jwtToken}`,
+                        },
+                    },
+                );
+
+                if (result !== null) {
+                    console.log(result);
+                    navigate('/my/store/fin', {
+                        state: { storeId: result.data.storeId },
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        storeFormData();
     };
 
-    if (userType === '1') {
+    if (userType === '1' || userType === null) {
         return (
             <section>
                 <Header>
-                    <TopNaviBarBack pageName="가게등록" prevPath="" />
+                    <TopNaviBarBack pageName="가게등록" prevPath="/my" />
                 </Header>
                 <Inner>
-                    {userType === '1' && <h2>비정상적인 접근입니다🙅‍♀️</h2>}
+                    {userType === '1' || userType === null && <h2>비정상적인 접근입니다🙅‍♀️</h2>}
                 </Inner>
             </section>
         );
@@ -148,24 +224,37 @@ function AddStore() {
 
     /* 다음 버튼 눌렀을 때 이벤트 */
     const handleNextButton = () => {
-        // if (step === 0) {
-        //     if (storeName === '' || storeContact=== ''|| zipCode === '') {
-        //         alert('입력되지않은 항목이 있습니다');
-        //         return;
-        //     }
-        //     // if (storeName === '') {
-        //     //     alert('가게이름이 입력되지 않았습니다');
-        //     //    8 return;
-        //     // }
-        // }
+        /* 유효성 검사 */
+        if (step === 0) {
+            if (storeName === '' || storeContact=== ''|| location === '' || roadAddress === '' || detailAddress === '' ) {
+                return;
+            }
+        }
 
+        if (step === 1) {
+            if (foodCategory === '' || combineKeywords(mood) === ''|| isParking === '') {
+                return;
+            }
+        }
+
+        if (step === 2) {
+            if (openingHour === '' || openingMinute === ''|| closingHour === '' || closingMinute === '' || dayoff1 === '' || maxNum === '' || cost === '') {
+                return;
+            }
+        }
+
+        if (step === 3) {
+            if (description === '' || keyword1=== '' ) {
+                return;
+            }
+        }
         setStep((prev) => prev + 1);
     };
 
     return (
         <section>
             <Header>
-                <TopNaviBarBack pageName="가게등록" prevPath="" />
+                <TopNaviBarBack pageName="가게등록" prevPath="/my" />
             </Header>
             <Inner>
                 {step === 0 && (
@@ -210,7 +299,13 @@ function AddStore() {
                         handleChangeInfo={handleChangeInfo}
                     />
                 )}
-                {step === 4 && <StoreForm5th />}
+                {step === 4 && (
+                    <StoreForm5th
+                        setStoreImageMain={setStoreImageMain}
+                        setStoreImageSub1={setStoreImageSub1}
+                        setStoreImageSub2={setStoreImageSub2}
+                    />
+                )}
 
                 <div className="bottom-area">
                     <Step>
@@ -236,10 +331,7 @@ function AddStore() {
                             <Button
                                 text="다음"
                                 width="150px"
-                                // onClick={handleNextButton}
-                                onClick={() => {
-                                    setStep((prev) => prev + 1);
-                                }}
+                                onClick={handleNextButton}
                             />
                         )}
                         {step === 0 && (

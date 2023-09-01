@@ -15,7 +15,7 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "types": ["node", "react"],
+        "types": ["node", "react", "kakao.maps.d.ts"],
         "outDir": "./dist" // eslint 오류 방지
     },
     "include": ["src"]

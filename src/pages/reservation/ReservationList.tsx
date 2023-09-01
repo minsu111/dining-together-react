@@ -1,14 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import UserStatusList from '../../components/ReservationList/UserStatusList';
 import OwnerStatusList from '../../components/ReservationList/OwnerStatusList';
+import Button from '../../components/common/Button';
 
 function ReservationList() {
     const user = useSelector((state: RootState) => state.user);
-    
+
+    const navigate = useNavigate();
+    const goToLogin = () => {
+        navigate('/login');
+    };
+
     if (user.userType !== '1' && user.userType !== '2') {
         return (
             <section>
@@ -16,7 +23,8 @@ function ReservationList() {
                     <TopNaviBar pageName="예약조회" />
                 </Header>
                 <Inner>
-                    <h2 className='non-approve'>💁‍♀️ 로그인 후 이용해주세요</h2>
+                    <h2 className="non-approve">💁‍♀️ 로그인 후 이용해주세요</h2>
+                    <Button text="로그인" width="200px" onClick={goToLogin} />
                 </Inner>
             </section>
         );
@@ -41,7 +49,7 @@ function ReservationList() {
                 <TopNaviBar pageName="예약조회" />
             </Header>
             <Inner>
-                <UserStatusList /> 
+                <UserStatusList />
             </Inner>
         </section>
     );
@@ -59,6 +67,7 @@ const Inner = styled.div`
     margin: 0 auto;
     width: 350px;
     position: relative;
+    text-align: center;
 
     .non-approve {
         width: 100%;
@@ -66,5 +75,9 @@ const Inner = styled.div`
         font-size: 20px;
         text-align: center;
         font-weight: 600;
+    }
+
+    h2 {
+        padding-bottom: 20px;
     }
 `;

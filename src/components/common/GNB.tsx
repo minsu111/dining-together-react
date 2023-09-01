@@ -18,8 +18,9 @@ const GNBArea: React.FC = () => {
     const searchActive = location.pathname.includes('/search');
     const myListActive = location.pathname.includes('/reservationList');
     const myPageActive = location.pathname.includes('/my');
+    const LoginActive = location.pathname.includes('/login');
 
-    if ((myListActive || myPageActive) && !token) {
+    if (myPageActive && !token) {
         navigate('/login');
     }
 
@@ -41,7 +42,11 @@ const GNBArea: React.FC = () => {
                         <FontAwesomeIcon icon={faCalendar} />
                     </Link>
                 </li>
-                <li className={`${myPageActive ? 'select_on' : ''}`}>
+                <li
+                    className={`${
+                        myPageActive || LoginActive ? 'select_on' : ''
+                    }`}
+                >
                     <Link to="/my">
                         <FontAwesomeIcon icon={faUser} />
                     </Link>

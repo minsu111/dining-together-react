@@ -118,7 +118,7 @@ function Mypage() {
                     <span>내 정보</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>
-                <InfoMenu onClick={() => goToPage('reservationlist')}>
+                <InfoMenu onClick={() => goToPage('reservationList')}>
                     <span>내 예약 내역</span>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </InfoMenu>

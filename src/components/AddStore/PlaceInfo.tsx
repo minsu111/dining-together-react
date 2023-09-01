@@ -51,7 +51,7 @@ function TableInfo({
             <Inner>
                 <FormSC>
                     <div className="content">
-                        <h4>단체석 타입</h4>
+                        <h4>단체석 타입 (필수)</h4>
                         <TableTypeSelect
                             placeType={placeType}
                             handleChangeInfo={handleChangeInfo}
@@ -59,7 +59,7 @@ function TableInfo({
                     </div>
 
                     <Input
-                        label="단체석 이름"
+                        label="단체석 이름 (필수)"
                         name="placeName"
                         inputType="text"
                         value={placeName}
@@ -70,7 +70,7 @@ function TableInfo({
                     />
 
                     <div className="content">
-                        <h4>단체석 이미지</h4>
+                        <h4>단체석 이미지 (필수)</h4>
                         <StyledLabel htmlFor="mainPic">
                             <FontAwesomeIcon icon={faCamera} />
                             <input
@@ -95,7 +95,7 @@ function TableInfo({
 
                     <div className="inputarea">
                         <Input
-                            label="예약 가능 최소 인원"
+                            label="예약 가능 최소 인원 (필수)"
                             name="minPeople"
                             inputType="number"
                             value={minPeople}
@@ -108,7 +108,7 @@ function TableInfo({
                     </div>
                     <div className="inputarea">
                         <Input
-                            label="예약 가능 최대 인원"
+                            label="예약 가능 최대 인원 (필수)"
                             name="maxPeople"
                             inputType="number"
                             value={maxPeople}
@@ -182,7 +182,7 @@ const FormSC = styled.div`
     }
 
     p {
-        margin-left: 0px;
+        margin-left: -50px;
         padding-bottom: 35px;
     }
 

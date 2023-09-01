@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import { RootState } from '../../app/store';
 
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
@@ -15,13 +16,9 @@ import StoreForm3rd from '../../components/AddStore/StoreForm3rd';
 import StoreForm4th from '../../components/AddStore/StoreForm4th';
 import StoreForm5th from '../../components/AddStore/StoreForm5th';
 
-import axios from 'axios';
-
-
 function AddStore() {
     const user = useSelector((state: RootState) => state.user);
 
-    const userType: string | null = localStorage.getItem('userType');
     const navigate = useNavigate();
 
     // paging
@@ -209,47 +206,18 @@ function AddStore() {
         storeFormData();
     };
 
-    if (userType === '1' || userType === null) {
+    if (user.userType !== '2') {
         return (
             <section>
                 <Header>
                     <TopNaviBarBack pageName="가게등록" prevPath="/my" />
                 </Header>
                 <Inner>
-                    {userType === '1' || userType === null && <h2>비정상적인 접근입니다🙅‍♀️</h2>}
+                    <h2 className="non-approve">비정상적인 접근입니다🙅‍♀️</h2>
                 </Inner>
             </section>
         );
     }
-
-    /* 다음 버튼 눌렀을 때 이벤트 */
-    const handleNextButton = () => {
-        /* 유효성 검사 */
-        if (step === 0) {
-            if (storeName === '' || storeContact=== ''|| location === '' || roadAddress === '' || detailAddress === '' ) {
-                return;
-            }
-        }
-
-        if (step === 1) {
-            if (foodCategory === '' || combineKeywords(mood) === ''|| isParking === '') {
-                return;
-            }
-        }
-
-        if (step === 2) {
-            if (openingHour === '' || openingMinute === ''|| closingHour === '' || closingMinute === '' || dayoff1 === '' || maxNum === '' || cost === '') {
-                return;
-            }
-        }
-
-        if (step === 3) {
-            if (description === '' || keyword1=== '' ) {
-                return;
-            }
-        }
-        setStep((prev) => prev + 1);
-    };
 
     return (
         <section>
@@ -320,29 +288,78 @@ function AddStore() {
                             <Button
                                 text="이전"
                                 width="150px"
-                                backgroundColor="#E2E2E3"
+                                backgroundColor="#d3d7db"
                                 textColor="#000"
                                 onClick={() => {
                                     setStep((prev) => prev - 1);
                                 }}
                             />
                         )}
-                        {step > 0 && step < 4 && (
+                        {step === 0 && (
+                            <Button
+                                text="다음"
+                                onClick={() => {
+                                    setStep((prev) => prev + 1);
+                                }}
+                                disabled={
+                                    storeName === '' ||
+                                    storeContact === '' ||
+                                    location === '' ||
+                                    roadAddress === '' ||
+                                    detailAddress === ''
+                                }
+                            />
+                        )}
+                        {step === 1 && (
                             <Button
                                 text="다음"
                                 width="150px"
-                                onClick={handleNextButton}
+                                onClick={() => {
+                                    setStep((prev) => prev + 1);
+                                }}
+                                disabled={
+                                    foodCategory === '' ||
+                                    combineKeywords(mood) === '' ||
+                                    isParking === ''
+                                }
                             />
                         )}
-                        {step === 0 && (
-                            <Button text="다음" onClick={handleNextButton} />
+                        {step === 2 && (
+                            <Button
+                                text="다음"
+                                width="150px"
+                                onClick={() => {
+                                    setStep((prev) => prev + 1);
+                                }}
+                                disabled={
+                                    openingHour === '' ||
+                                    openingMinute === '' ||
+                                    closingHour === '' ||
+                                    closingMinute === '' ||
+                                    dayoff1 === '' ||
+                                    maxNum === '' ||
+                                    cost === ''
+                                }
+                            />
                         )}
+                        {step === 3 && (
+                            <Button
+                                text="다음"
+                                width="150px"
+                                onClick={() => {
+                                    setStep((prev) => prev + 1);
+                                }}
+                                disabled={description === '' || keyword1 === ''}
+                            />
+                        )}
+
                         {step === 4 && (
                             <Button
                                 type="submit"
                                 text="등록"
                                 width="150px"
                                 onClick={submitStoreInfo}
+                                disabled={storeImageMain === null}
                             />
                         )}
                     </ButtonSC>
@@ -372,8 +389,12 @@ const Inner = styled.div`
         bottom: 20px;
     }
 
-    h2 {
+    .non-approve {
+        width: 100%;
+        margin-top: 100px;
+        font-size: 20px;
         text-align: center;
+        font-weight: 600;
     }
 `;
 

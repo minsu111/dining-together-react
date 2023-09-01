@@ -16,20 +16,20 @@ import CalendarX from '../../assets/calendar-x.svg';
 import DetailInfo from './UserDetailInfo';
 
 type SimpleDataType = {
-    reservedId: number,
-    foodCategory: string,
-    imageUrl: string,
-    location: string,
-    people: number,
-    placeId: number,
-    placeName: string,
-    placeType: string,
-    reservedDate: string,    
-    status: string,
-    storeId: number,
-    storeName: string,
-    userId: number,
-    visitTime: string,
+    reservedId: number;
+    foodCategory: string;
+    imageUrl: string;
+    location: string;
+    people: number;
+    placeId: number;
+    placeName: string;
+    placeType: string;
+    reservedDate: string;
+    status: string;
+    storeId: number;
+    storeName: string;
+    userId: number;
+    visitTime: string;
 };
 
 type TabProps = {
@@ -57,11 +57,13 @@ const Tab: React.FC<TabProps> = ({
     </li>
 );
 
-
 const UserStatusList = () => {
     const user = useSelector((state: RootState) => state.user);
 
-    const [userInfo, setUserInfo] = useState<Record<string, SimpleDataType[]>>({});
+    const [userInfo, setUserInfo] = useState<Record<string, SimpleDataType[]>>(
+        {},
+    );
+    const [isChange, setIsChange] = useState<boolean>(false);
 
     const getUserReservation = async () => {
         try {
@@ -72,7 +74,6 @@ const UserStatusList = () => {
                 HandleError,
             );
             setUserInfo(userInfoResponse);
-
         } catch (error) {
             console.error(error);
         }
@@ -80,7 +81,7 @@ const UserStatusList = () => {
 
     useEffect(() => {
         getUserReservation();
-    }, []);
+    }, [isChange]);
 
     const [currentTab, setCurrentTab] = useState('예약대기');
 
@@ -116,67 +117,102 @@ const UserStatusList = () => {
             setDataList(tempDataList);
         }
     }, [currentTab, userInfo]);
-    
-    
+
+    const handleDday = (date:string) => {
+        const reservationDate = `20${date}`;
+        const givenDate = new Date(reservationDate);
+        const today = new Date();
+        const timeDifference = Number(givenDate) - Number(today);
+
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24) + 1);
+
+        return daysDifference > 0 ? `D - ${daysDifference}` : `D - 0`
+    }
 
     return (
-        
-        <StatusListSC>
-            <ul className="list_status">
-                {tabs.map((tab) => (
-                    <Tab
-                        img={tab.img}
-                        tabName={tab.tabName}
-                        currentTab={currentTab}
-                        handleTabChange={handleTabChange}
-                        key={tab.tabName}
-                    />
-                ))}
-            </ul>
-
-            {dataList.length === 0 ? (
-                <div className='no-exist'>🙅‍♀️ 내역이 존재하지 않습니다</div>
-            ) : (dataList.map((item) => (
-                <ul className="list_booking" key={`${item.reservedDate}-${item.visitTime}`}>
-                    <li>
-                        <span className="d_day">{item.reservedDate}</span>
-                        
-                        <div className="booking_info">
-                            <Link to={`/store/${item.storeId}`} className="restaurant_name">
-                            <div className="img" style={{ backgroundImage: `url(${item.imageUrl})` }} />
-                            </Link>
-                            <ul>
-                                <li className="restaurant_name" >
-                                <Link to={`/store/${item.storeId}`} className="restaurant_name">
-                                    {item.storeName}
-                                </Link>
-                                </li>
-                                <li className="restaurant_info">
-                                    {item.location} · {item.foodCategory}
-                                </li>
-                                <li className="booking_date">
-                                    20{item.reservedDate} · {item.visitTime} · {item.people}명
-                                </li>
-                            </ul>
-
-                            <button
-                                type="button"
-                                className="btn_arrow_right"
-                                onClick={() => handleOpenDetail(item)}
-                            >
-                                <FontAwesomeIcon icon={faArrowRight} />
-                            </button>
-                        </div>
-                    </li>
+        <>
+            <StatusListSC>
+                <ul className="list_status">
+                    {tabs.map((tab) => (
+                        <Tab
+                            img={tab.img}
+                            tabName={tab.tabName}
+                            currentTab={currentTab}
+                            handleTabChange={handleTabChange}
+                            key={tab.tabName}
+                        />
+                    ))}
                 </ul>
-            ))
-            )}
+
+                {dataList.length === 0 ? (
+                    <div className="no-exist">🙅‍♀️ 내역이 존재하지 않습니다</div>
+                ) : (
+                    dataList.map((item) => (
+                        <ul
+                            className="list_booking"
+                            key={`${item.reservedDate}-${item.visitTime}`}
+                        >
+                            <li>
+                                <span className="d_day">
+                                    {handleDday(item.reservedDate)}
+                                </span>
+
+                                <div className="booking_info">
+                                    <Link
+                                        to={`/store/${item.storeId}`}
+                                        className="restaurant_name"
+                                    >
+                                        <div
+                                            className="img"
+                                            style={{
+                                                backgroundImage: `url(${item.imageUrl})`,
+                                            }}
+                                        />
+                                    </Link>
+                                    <ul>
+                                        <li className="restaurant_name">
+                                            <Link
+                                                to={`/store/${item.storeId}`}
+                                                className="restaurant_name"
+                                            >
+                                                {item.storeName}
+                                            </Link>
+                                        </li>
+                                        <li className="restaurant_info">
+                                            {item.location} ·{' '}
+                                            {item.foodCategory}
+                                        </li>
+                                        <li className="booking_date">
+                                            20{item.reservedDate} ·{' '}
+                                            {item.visitTime} · {item.people}명
+                                        </li>
+                                    </ul>
+
+                                    <button
+                                        type="button"
+                                        className="btn_arrow_right"
+                                        onClick={() => handleOpenDetail(item)}
+                                    >
+                                        <FontAwesomeIcon icon={faArrowRight} />
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    ))
+                )}
+            </StatusListSC>
             {dataDetail ? (
-                <DetailInfo detailOpen={detailOpen} setDetailOpen={setDetailOpen} dataDetail={dataDetail} />
+                <DetailInfo
+                    detailOpen={detailOpen}
+                    setDetailOpen={setDetailOpen}
+                    dataDetail={dataDetail}
+                    setIsChange={setIsChange}
+                    isChange={isChange}
+                />
             ) : (
                 ''
             )}
-        </StatusListSC>
+        </>
     );
 };
 
@@ -184,7 +220,7 @@ export default UserStatusList;
 
 const StatusListSC = styled.div`
     margin: 20px 0;
-
+    overflow-y: hidden;
     .no-exist {
         margin-top: 100px;
         text-align: center;
@@ -240,7 +276,6 @@ const StatusListSC = styled.div`
         display: inline-block;
         font-size: 13px;
         font-weight: 600;
-        
     }
 
     .booking_info {

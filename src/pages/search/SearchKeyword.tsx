@@ -15,6 +15,7 @@ function SearchKeyword() {
     const [showResult, setShowResult] = useState(false);
     const [data, setData] = useState<StoreType[]>([]);
     const [page, setPage] = useState(0);
+    let isLastPage = false;
 
     const navigate = useNavigate();
     const handleBackButtonClick = () => {
@@ -30,19 +31,20 @@ function SearchKeyword() {
     };
 
     const keywordSearch = async () => {
+        console.log('isLastPage: ', isLastPage);
+        if (isLastPage) return;
+
         // api 호출
         try {
-            console.log('keywordSearch 호출');
+            const url = `/stores/search?searchItem=${keyword}&page=${page + 1}`;
+            console.log('keywordSearch 호출. url: ', url);
 
-            const result = await axiosRequest(
-                'GET',
-                `/stores/search?searchItem=${keyword}&page=${page + 1}`,
-                {},
-            );
+            const result = await axiosRequest('GET', url, {});
 
+            isLastPage = result.isLastPage;
+            setPage((prev) => prev + 1);
             setTimeout(() => {
-                setData(data.concat(result));
-                setPage((prev) => prev + 1);
+                setData(data.concat(result.stores));
                 setShowResult(true);
             }, 300);
 
@@ -115,6 +117,7 @@ function SearchKeyword() {
                                 setShowResult(false);
                                 setPage(0);
                                 setData([]);
+                                isLastPage = false;
 
                                 keywordSearch();
                             }

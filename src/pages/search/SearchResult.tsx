@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -22,15 +22,14 @@ import SelectSeat from './modal/SelectSeat';
 
 import { SearchModalType } from './modal/enum/Enum';
 import { RootState } from '../../app/store';
-import { setExpectedDate } from './store/FilterSlice';
-import { serializeDate } from '../../utils/utils';
 import Button from '../../components/common/Button';
 
 function SearchResult() {
     const [data, setData] = useState<Store[]>([]);
     const [page, setPage] = useState(0);
+    const [totalCount, setTotalCount] = useState(0);
+    let isLastPage = false;
 
-    const dispatch = useDispatch();
     const filterState = useSelector((state: RootState) => {
         return state.filter;
     });
@@ -54,27 +53,29 @@ function SearchResult() {
     };
 
     const filterSearch = async () => {
+        console.log('isLastPage: ', isLastPage);
+        if (isLastPage) return;
+
         // api 호출
         try {
-            console.log('filterSearch 호출');
+            const url = `/stores/filter?selectedDate=${
+                filterState.expectedDate
+            }&location=${filterState.region}&foodCategory=${
+                filterState.foodType
+            }&minCost=${filterState.priceMin * 10000}&maxCost=${
+                filterState.priceMax * 10000
+            }&mood=${filterState.atmosphere}&room=${filterState.seat}&page=${
+                page + 1
+            }`;
+            console.log('filterSearch 호출. url: ', url);
 
-            const result = await axiosRequest(
-                'GET',
-                `/stores/filter?selectedDate=${
-                    filterState.expectedDate
-                }&location=${filterState.region}&foodCategory=${
-                    filterState.foodType
-                }&minCost=${filterState.priceMin * 10000}&maxCost=${
-                    filterState.priceMax * 10000
-                }&mood=${filterState.atmosphere}&room=${
-                    filterState.seat
-                }&page=${page + 1}`,
-                {},
-            );
+            const result = await axiosRequest('GET', url, {});
 
+            isLastPage = result.isLastPage;
+            setPage((prev) => prev + 1);
             setTimeout(() => {
-                setData(data.concat(result));
-                setPage((prev) => prev + 1);
+                setData(data.concat(result.stores));
+                setTotalCount(result.totalCount);
             }, 300);
 
             // console.log('JSON: ', JSON.stringify(result));
@@ -142,7 +143,7 @@ function SearchResult() {
                     <FilterList onClickFilter={handleModalToggle} />
                     <DevideLine />
                 </HeaderDiv>
-                <StoreCount>{data.length}개의 매장</StoreCount>
+                <StoreCount>{totalCount}개의 매장</StoreCount>
 
                 <ResultDiv id="resultDiv">
                     <InfiniteScroll
@@ -175,6 +176,8 @@ function SearchResult() {
                         onClick={() => {
                             setPage(0);
                             setData([]);
+                            setTotalCount(0);
+                            isLastPage = false;
 
                             filterSearch();
                         }}
@@ -296,4 +299,10 @@ type Store = {
     mood: string;
     isRoom: number;
     imageUrl: string;
+};
+
+type SearchData = {
+    stores: Store[];
+    totalCount: number;
+    isLastPage: boolean;
 };

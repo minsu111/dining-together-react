@@ -21,6 +21,13 @@ const Layout = () => {
         );
     };
 
+    const shouldShowGNBArea =
+        pathname === '/' ||
+        pathname === '/login' ||
+        pathname === '/search' ||
+        pathname === '/reservationList' ||
+        pathname === '/my';
+
     return (
         <Background>
             <BackgroundImg>
@@ -38,22 +45,7 @@ const Layout = () => {
                 <Wrap>
                     <Outlet />
                 </Wrap>
-                {pathname === '/join' ||
-                pathname === '/join/welcome' ||
-                pathname === '/my/info' ||
-                pathname === '/my/infoEdit/name' ||
-                pathname === '/my/infoEdit/phoneNumber' ||
-                pathname === '/store/:storeId' ||
-                pathname === '/search/keyword' ||
-                pathname === '/search/list' ||
-                pathname === '/my/store' ||
-                pathname === '/my/store/fin' ||
-                pathname === '/my/store/detail' ||
-                pathname === '/my/infoEdit/withdraw' ? (
-                    <></>
-                ) : (
-                    <GNBArea />
-                )}
+                {shouldShowGNBArea && <GNBArea />}
             </WholeWrap>
         </Background>
     );

@@ -48,7 +48,11 @@ function StoreItem(props: StoreInfoProps) {
             }
         >
             <div>
-                <img src={props.imgUrl} alt="가게 사진" />
+                <img
+                    style={{ width: 100, height: 100 }}
+                    src={`http://13.209.102.55/${props.imgUrl}`}
+                    alt="가게 사진"
+                />
             </div>
 
             <InfoDiv>
@@ -71,9 +75,10 @@ export default StoreItem;
 
 const Div = styled.div`
     width: 350px;
-    height: 100px;
-    //border: 1px solid;
+    height: 110px;
+    // border: 1px solid;
     display: flex;
+    margin: 20px 0px 20px 10px;
 `;
 
 const InfoDiv = styled.div`
@@ -82,7 +87,7 @@ const InfoDiv = styled.div`
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
 `;
 
 const InfoSubDiv = styled.div`
@@ -99,15 +104,21 @@ const InfoSubDiv = styled.div`
 `;
 
 const StoreName = styled.h1`
-    font-size: 24px;
-    font-weight: 800;
+    font-size: 18px;
+    font-weight: bold;
     cursor: default;
 `;
 
 const StoreDesc = styled.p`
+    margin-top: 5px;
     font-size: 12px;
-    font-weight: bold;
     cursor: default;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 `;
 
 const StoreEtcInfo = styled.p`

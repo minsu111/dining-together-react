@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigationType, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -10,12 +11,60 @@ import Button from '../../components/common/Button';
 import StoreItem from './StoreItem';
 import axiosRequest from '../../api/api';
 
+import { RootState } from '../../app/store';
+import {
+    StoreType,
+    setResultStores,
+    setResultPage,
+    setResultIsLastPage,
+    setSearchKeyword,
+} from './store/FilterSlice';
+
 function SearchKeyword() {
     const [keyword, setKeyword] = useState<string>('');
     const [showResult, setShowResult] = useState(false);
+    const [onClickSearch, setOnClickSearch] = useState(false);
     const [data, setData] = useState<StoreType[]>([]);
     const [page, setPage] = useState(0);
-    let isLastPage = false;
+    const [isLastPage, setIsLastPage] = useState(false);
+
+    const dispatch = useDispatch();
+    const filterState = useSelector((state: RootState) => {
+        return state.filter;
+    });
+
+    const navigationType = useNavigationType();
+
+    useEffect(() => {
+        console.log('navigationType', navigationType);
+        if (navigationType === 'PUSH') {
+            console.log('이 페이지에 처음 접근');
+        } else if (navigationType === 'POP') {
+            console.log('뒤로가기로 돌아옴');
+
+            setData(filterState.resultStores);
+            setPage(filterState.resultPage);
+            setIsLastPage(filterState.resultIsLastPage);
+            setKeyword(filterState.searchKeyword);
+            setShowResult(true);
+        }
+    }, []);
+    // 뒤로가기로 돌아왔을 때를 대비해 데이터를 저장해둔다.
+    useEffect(() => {
+        dispatch(setResultStores(data));
+    }, [data]);
+    useEffect(() => {
+        dispatch(setResultPage(page));
+    }, [page]);
+    useEffect(() => {
+        dispatch(setResultIsLastPage(isLastPage));
+    }, [isLastPage]);
+
+    useEffect(() => {
+        if (onClickSearch) {
+            keywordSearch();
+        }
+    }, [onClickSearch]);
 
     const navigate = useNavigate();
     const handleBackButtonClick = () => {
@@ -31,18 +80,20 @@ function SearchKeyword() {
     };
 
     const keywordSearch = async () => {
-        console.log('isLastPage: ', isLastPage);
-        if (isLastPage) return;
+        // console.log('keywordSearch: ', isLastPage, onClickSearch);
+        if (!onClickSearch && isLastPage) return;
+        setOnClickSearch(false);
 
         // api 호출
         try {
             const url = `/stores/search?searchItem=${keyword}&page=${page + 1}`;
-            console.log('keywordSearch 호출. url: ', url);
+            console.log('keywordSearch 호출. url:', url);
 
             const result = await axiosRequest('GET', url, {});
 
-            isLastPage = result.isLastPage;
+            setIsLastPage(result.isLastPage);
             setPage((prev) => prev + 1);
+            dispatch(setSearchKeyword(keyword));
             setTimeout(() => {
                 setData(data.concat(result.stores));
                 setShowResult(true);
@@ -117,9 +168,8 @@ function SearchKeyword() {
                                 setShowResult(false);
                                 setPage(0);
                                 setData([]);
-                                isLastPage = false;
-
-                                keywordSearch();
+                                setIsLastPage(false);
+                                setOnClickSearch(true);
                             }
                         }}
                         form="keywordForm"
@@ -207,40 +257,3 @@ const ResultDiv = styled.div<ResultDivProps>`
             display: none;
         `}
 `;
-
-type AddressType = {
-    postalCode: string;
-    roadAddress: string;
-    detailAddress: string;
-};
-
-type OperatingHoursType = {
-    openingHour: string;
-    openingMinute: string;
-    closingHour: string;
-    closingMinute: string;
-};
-
-type StoreType = {
-    storeId: number;
-    userId: number;
-    storeName: string;
-    storeContact: string;
-    address: AddressType;
-    description: string;
-    location: string;
-    keyword: string;
-    mood: string;
-    operatingHours: OperatingHoursType;
-    closedDays: string;
-    foodCategory: string;
-    maxNum: number;
-    cost: number;
-    isParking: number;
-    createdAt: string;
-    modifiedAt: string;
-    averageRating: number;
-    reviewCount: number;
-    isDeleted: number;
-    imageUrl: string;
-};

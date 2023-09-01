@@ -23,19 +23,10 @@ function MyInfo() {
 
     // 로그아웃
     const dispatch = useDispatch();
-    const logOut = async () => {
-        try {
-            const result = await axiosRequest('GET', '/user/logout', {});
-            if (result.message === 'Logout Success') {
-                localStorage.removeItem('jwt_token');
-                dispatch(logout());
-                goToHome();
-            } else {
-                alert('로그아웃 실패');
-            }
-        } catch (error: any) {
-            alert('로그아웃 실패');
-        }
+    const logOut = () => {
+        localStorage.removeItem('jwt_token');
+        dispatch(logout());
+        goToHome();
     };
 
     return (

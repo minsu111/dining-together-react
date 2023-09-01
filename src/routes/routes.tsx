@@ -35,7 +35,7 @@ const router = createBrowserRouter([
             { path: '/join/welcome', element: <Welcome /> },
             { path: '/join/terms', element: <Terms /> },
 
-            { path: '/admin', element: <AdminStore /> },
+            // { path: '/admin', element: <AdminStore /> },
 
             { path: '/store/:storeId', element: <StoreDetail /> },
 

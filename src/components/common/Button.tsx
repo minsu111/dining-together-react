@@ -48,6 +48,7 @@ const ButtonSC = styled.button<ButtonSCProps>`
     ${(props)=> props.disabled && `
         background-color: #d3d7db;
         color: #ececec;
+        cursor: default;
     `}
 `;
 

@@ -48,11 +48,11 @@ export default Home;
 
 const TopBar = styled.div`
     position: sticky;
+    top: 0;
     width: 390px;
     height: 50px;
     background-color: #fff;
     padding: 10px 0;
-    border-bottom: 1px solid grey;
     display: flex;
     align-items: center;
     justify-content: center;

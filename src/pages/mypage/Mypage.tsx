@@ -73,18 +73,37 @@ function Mypage() {
                                     <img src={StoreImg} alt="가게아이콘" />
                                     <span>내 가게</span>
                                 </StoreInfoTitle>
-                                <StoreInfo
-                                    onClick={() => {
-                                        goToPage(`store/${ownerData.storeId}`);
-                                    }}
-                                >
-                                    <img
-                                        src={`http://13.209.102.55/${ownerData.imageUrl}`}
-                                        alt="가게이미지"
-                                    />
+                                <StoreInfo>
+                                    <ImgWrapper
+                                        onClick={() => {
+                                            goToPage(
+                                                `store/${ownerData.storeId}`,
+                                            );
+                                        }}
+                                    >
+                                        <img
+                                            src={`http://13.209.102.55/${ownerData.imageUrl}`}
+                                            alt="가게이미지"
+                                        />
+                                    </ImgWrapper>
                                     <StoreInfoText>
-                                        <span>{ownerData.storeName}</span>
-                                        {ownerData.address.roadAddress}
+                                        <ClickText
+                                            onClick={() => {
+                                                goToPage(
+                                                    `store/${ownerData.storeId}`,
+                                                );
+                                            }}
+                                        >
+                                            <span>{ownerData.storeName}</span>
+                                            {ownerData.address.roadAddress}
+                                        </ClickText>
+                                        <AddButton
+                                            onClick={() =>
+                                                goToPage('my/store/detail')
+                                            }
+                                        >
+                                            단체석 추가하기
+                                        </AddButton>
                                     </StoreInfoText>
                                 </StoreInfo>
                             </StoreInfoSection>
@@ -112,6 +131,7 @@ function Mypage() {
 export default Mypage;
 
 const Container = styled.section`
+    height: 330px;
     margin: 0 20px;
 `;
 
@@ -141,6 +161,21 @@ const OwnerBadge = styled.button`
     all: unset;
     width: 40px;
     height: 20px;
+    background-color: #474747;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+    padding: 5px 8px;
+    white-space: nowrap;
+    cursor: default;
+`;
+
+const AddButton = styled.button`
+    all: unset;
+    width: 100px;
+    height: 20px;
     background-color: #ffb100;
     border-radius: 7px;
     color: #fff;
@@ -148,8 +183,9 @@ const OwnerBadge = styled.button`
     font-weight: 800;
     text-align: center;
     padding: 6px 8px;
+    margin: 10px 0;
     white-space: nowrap;
-    cursor: default;
+    z-index: 2;
 `;
 
 const Account = styled.h3`
@@ -181,7 +217,18 @@ const StoreInfo = styled.div`
         width: 110px;
         height: 110px;
         border-radius: 8px;
+        background-size: cover;
+        background-position: 50% 50%;
+        background-size: cover;
+        background-position: 50% 50%;
     }
+`;
+
+const ImgWrapper = styled.div``;
+
+const ClickText = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 const StoreInfoText = styled.div`

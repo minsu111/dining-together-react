@@ -10,7 +10,7 @@ import { setSeat } from '../store/FilterSlice';
 import { SeatType, SearchModalType } from './enum/Enum';
 
 /**
- * 좌석 필터 Modal
+ * 단체석 필터 Modal
  */
 function SelectSeat(props: {
     isOpen: boolean;
@@ -84,7 +84,7 @@ function SelectSeat(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="좌석" />
+            <FilterHeader onClickReset={handleReset} title="단체석" />
             <ContentDiv>
                 <Div>
                     {enumTypes.map((type) => (

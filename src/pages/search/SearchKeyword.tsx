@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import InfiniteScroll from 'react-infinite-scroll-component';
 import backArrowIcon from '../../assets/arrow-left-solid.svg';
 import DevideLine from '../../components/common/DevideLine';
 import SolidLine from './SolidLine';
@@ -12,6 +14,7 @@ function SearchKeyword() {
     const [keyword, setKeyword] = useState<string>('');
     const [showResult, setShowResult] = useState(false);
     const [data, setData] = useState<StoreType[]>([]);
+    const [page, setPage] = useState(0);
 
     const navigate = useNavigate();
     const handleBackButtonClick = () => {
@@ -29,16 +32,21 @@ function SearchKeyword() {
     const keywordSearch = async () => {
         // api 호출
         try {
-            setShowResult(false);
+            console.log('keywordSearch 호출');
 
             const result = await axiosRequest(
                 'GET',
-                `/stores/search?searchItem=${keyword}`,
+                `/stores/search?searchItem=${keyword}&page=${page + 1}`,
                 {},
             );
 
-            setData(result);
-            setShowResult(true);
+            setTimeout(() => {
+                setData(data.concat(result));
+                setPage((prev) => prev + 1);
+                setShowResult(true);
+            }, 300);
+
+            // console.log('JSON: ', JSON.stringify(result));
 
             // console.log('result[0]: ', result[0].storeId);
 
@@ -74,16 +82,25 @@ function SearchKeyword() {
                 </HeaderDiv>
                 <DevideLine />
 
-                <ResultDiv isHidden={!showResult}>
-                    {data.map((store) => (
-                        <StoreItem
-                            isKeywordSearch
-                            storeId={store.storeId}
-                            imgUrl={store.imageUrl}
-                            name={store.storeName}
-                            description={store.description}
-                        />
-                    ))}
+                <ResultDiv isHidden={!showResult} id="resultDiv">
+                    <InfiniteScroll
+                        dataLength={data.length}
+                        next={keywordSearch}
+                        hasMore
+                        // eslint-disable-next-line react/jsx-no-useless-fragment
+                        loader={<></>}
+                        scrollableTarget="resultDiv"
+                    >
+                        {data.map((store) => (
+                            <StoreItem
+                                isKeywordSearch
+                                storeId={store.storeId}
+                                imgUrl={store.imageUrl}
+                                name={store.storeName}
+                                description={store.description}
+                            />
+                        ))}
+                    </InfiniteScroll>
                 </ResultDiv>
             </Div2>
             <FooterDiv>
@@ -94,7 +111,13 @@ function SearchKeyword() {
                         text="검색"
                         onClick={() => {
                             // 입력칸이 비어있지 않은 걸 체크
-                            if (keyword) keywordSearch();
+                            if (keyword) {
+                                setShowResult(false);
+                                setPage(0);
+                                setData([]);
+
+                                keywordSearch();
+                            }
                         }}
                         form="keywordForm"
                     />
@@ -161,16 +184,19 @@ interface ResultDivProps {
     isHidden: boolean;
 }
 const ResultDiv = styled.div<ResultDivProps>`
-    flex: 1;
-    //width: 100%;
-    //height: 100%;
-    padding-top: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
+    // flex: 1;
+    // //width: 100%;
+    // //height: 100%;
+    // padding-top: 20px;
+    // box-sizing: border-box;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // gap: 30px;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 
     ${(props) =>
         props.isHidden &&

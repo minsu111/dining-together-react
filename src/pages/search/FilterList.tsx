@@ -36,7 +36,7 @@ const FilterList: React.FC<FilterListProps> = (props) => {
                     onClick={props.onClickFilter}
                 />
                 <FilterButton
-                    category="좌석"
+                    category="단체석"
                     modalType={SearchModalType.Seat}
                     onClick={props.onClickFilter}
                 />

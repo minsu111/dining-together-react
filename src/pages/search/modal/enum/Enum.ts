@@ -4,7 +4,7 @@ export enum FilterType {
     FoodType = '음식 유형',
     PricePerPerson = '인당가격',
     Atmosphere = '분위기',
-    Seat = '좌석',
+    Seat = '단체석',
 }
 
 export enum SearchModalType {
@@ -49,7 +49,7 @@ export enum AtmosphereType {
     Type5 = '트렌디한',
     Type6 = '심플한',
     Type7 = '전통적인',
-    Type8 = '이색적인',
+    Type8 = '시끌벅적한',
 }
 
 export enum SeatType {

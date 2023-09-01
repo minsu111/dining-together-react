@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import InfiniteScroll from 'react-infinite-scroll-component';
 import TopNaviBarBack from '../../components/common/TopNaviBarBack';
 import SolidLine from './SolidLine';
 import DatetimeSelector from './DatetimeSelector';
@@ -21,23 +23,20 @@ import SelectSeat from './modal/SelectSeat';
 import { SearchModalType } from './modal/enum/Enum';
 import { RootState } from '../../app/store';
 import { setExpectedDate } from './store/FilterSlice';
-import { parseDateString, serializeDate } from '../../utils/utils';
+import { serializeDate } from '../../utils/utils';
 import Button from '../../components/common/Button';
 
 function SearchResult() {
     const [data, setData] = useState<Store[]>([]);
+    const [page, setPage] = useState(0);
 
     const dispatch = useDispatch();
     const filterState = useSelector((state: RootState) => {
         return state.filter;
     });
 
-    // 검색하기 화면 통하지 않고 url로 직접 이 페이지 접근했을 때의 방어처리
     useEffect(() => {
-        if (!filterState.expectedDate) {
-            dispatch(setExpectedDate(serializeDate(new Date())));
-            console.log('1방문예정일 : ', filterState.expectedDate);
-        } else console.log('2방문예정일 : ', filterState.expectedDate);
+        filterSearch();
     }, []);
 
     // TODO: 임시 코드. 이후 수정 예정.
@@ -67,11 +66,16 @@ function SearchResult() {
                     filterState.foodType
                 }&minCost=${filterState.priceMin * 10000}&maxCost=${
                     filterState.priceMax * 10000
-                }&mood=${filterState.atmosphere}&room=${filterState.seat}`,
+                }&mood=${filterState.atmosphere}&room=${
+                    filterState.seat
+                }&page=${page + 1}`,
                 {},
             );
 
-            setData(result);
+            setTimeout(() => {
+                setData(data.concat(result));
+                setPage((prev) => prev + 1);
+            }, 300);
 
             // console.log('JSON: ', JSON.stringify(result));
 
@@ -139,17 +143,27 @@ function SearchResult() {
                     <DevideLine />
                 </HeaderDiv>
                 <StoreCount>{data.length}개의 매장</StoreCount>
-                <ResultDiv>
-                    {data.map((store) => (
-                        <StoreItem
-                            storeId={store.storeId}
-                            imgUrl={store.imageUrl}
-                            name={store.storeName}
-                            description={store.description}
-                            subInfo={`${store.foodCategory} · ${store.location}`}
-                            price={store.cost}
-                        />
-                    ))}
+
+                <ResultDiv id="resultDiv">
+                    <InfiniteScroll
+                        dataLength={data.length}
+                        next={filterSearch}
+                        hasMore
+                        // eslint-disable-next-line react/jsx-no-useless-fragment
+                        loader={<></>}
+                        scrollableTarget="resultDiv"
+                    >
+                        {data.map((store) => (
+                            <StoreItem
+                                storeId={store.storeId}
+                                imgUrl={store.imageUrl}
+                                name={store.storeName}
+                                description={store.description}
+                                subInfo={`${store.foodCategory} · ${store.location}`}
+                                price={store.cost}
+                            />
+                        ))}
+                    </InfiniteScroll>
                 </ResultDiv>
             </Div2>
             <FooterDiv>
@@ -159,9 +173,11 @@ function SearchResult() {
                         type="submit"
                         text="검색"
                         onClick={() => {
+                            setPage(0);
+                            setData([]);
+
                             filterSearch();
                         }}
-                        form="keywordForm"
                     />
                 </div>
             </FooterDiv>
@@ -222,18 +238,21 @@ const HeaderDiv = styled.div`
 
 const StoreCount = styled.p`
     margin-left: 10px;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     font-size: 14px;
     color: darkgray;
 `;
 
 const ResultDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    // width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // gap: 20px;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const FooterDiv = styled.div`

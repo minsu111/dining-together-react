@@ -7,6 +7,7 @@ import { RootState } from '../../app/store';
 import axiosRequest from '../../api/api';
 import HandleError from '../../api/Error';
 import Button from '../common/Button';
+import DimmedLayer from '../common/DimmedLayer';
 
 type SimpleDataType = {
     reservedId: number,
@@ -77,7 +78,6 @@ const DetailInfo = ({
 
     return (
         <DetailInfoSC style={{ display: detailOpen ? '' : 'none' }}>
-            <Bg>
             <InfoSC>
                 <button
                     type="button"
@@ -145,7 +145,6 @@ const DetailInfo = ({
                     )}
                 </div>
             </InfoSC>
-            </Bg>
         </DetailInfoSC>
     );
 };
@@ -154,24 +153,15 @@ export default DetailInfo;
 
 const DetailInfoSC = styled.div`
     width: 100%;
+
 `;
 
-const Bg = styled.div`
-    margin: 0;
-    width: 500px;
-    height: 400px;
-    position: absolute;
-    left: -50px;
-    top: -100px;
-    background-color: rgba(0,0,0,0.4);
-`
 
 const InfoSC = styled.div`
     width: 100%;
     padding: 25px 0;
     background-color: #fff;
     border-radius: 20px 20px 0 0;
-    // position: fixed;
     
     z-index: 100;
     position: sticky;
@@ -255,3 +245,12 @@ const ButtonSC = styled.div`
     display: flex;
     justify-content: center;
 `;
+
+const Div = styled.div`
+position: sticky;
+top:0;
+z-index:100;
+    width: 400px;
+    height: 500px;
+    background: rgba(0,0,0,0.4);
+`

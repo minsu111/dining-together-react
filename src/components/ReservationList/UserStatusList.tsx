@@ -201,6 +201,7 @@ const UserStatusList = () => {
                     ))
                 )}
             </StatusListSC>
+            <BottomSC>
             {dataDetail ? (
                 <DetailInfo
                     detailOpen={detailOpen}
@@ -212,6 +213,7 @@ const UserStatusList = () => {
             ) : (
                 ''
             )}
+            </BottomSC>
         </>
     );
 };
@@ -221,6 +223,8 @@ export default UserStatusList;
 const StatusListSC = styled.div`
     margin: 20px 0;
     overflow-y: hidden;
+
+    padding: 0 7px;
     .no-exist {
         margin-top: 100px;
         text-align: center;
@@ -263,7 +267,7 @@ const StatusListSC = styled.div`
         height: 160px;
         padding: 20px;
         border-radius: 20px;
-        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4);
         box-sizing: border-box;
         margin-bottom: 20px;
     }
@@ -329,4 +333,9 @@ const StatusListSC = styled.div`
         cursor: pointer;
         color: #fff;
     }
+`;
+
+const BottomSC = styled.div`
+    position: sticky;
+    bottom: 30px;
 `;

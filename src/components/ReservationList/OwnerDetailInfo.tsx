@@ -177,12 +177,12 @@ const DetailInfoSC = styled.div`
 `;
 
 const Bg = styled.div`
-    margin: 0;
-    width: 500px;
-    height: 400px;
-    position: absolute;
-    left: -50px;
-    top: -100px;
+    // margin: 0;
+    // width: 500px;
+    // height: 400px;
+    // position: absolute;
+    // left: -50px;
+    // top: -100px;
     background-color: rgba(0,0,0,0.4);
 `
 

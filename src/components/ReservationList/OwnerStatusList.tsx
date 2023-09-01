@@ -14,6 +14,7 @@ import CalendarCheck from '../../assets/calendar-check.svg';
 import CalendarX from '../../assets/calendar-x.svg';
 
 import DetailInfo from './OwnerDetailInfo';
+import DimmedLayer from '../common/DimmedLayer';
 
 type SimpleDataType = {
     reservedId: number;
@@ -129,6 +130,7 @@ const OwnerStatusList = () => {
     }
 
     return (
+        <>
         <StatusListSC>
             <ul className="list_status">
                 {tabs.map((tab) => (
@@ -197,22 +199,27 @@ const OwnerStatusList = () => {
                     </ul>
                 ))
             )}
-            {dataDetail ? (
-                <DetailInfo
-                    detailOpen={detailOpen}
-                    setDetailOpen={setDetailOpen}
-                    dataDetail={dataDetail}
-                    setIsChange={setIsChange}
-                    isChange={isChange}
-                />
-            ) : (
-                ''
-            )}
-        </StatusListSC>
+            </StatusListSC>
+            <BottomSC>
+                <DimmedLayer />
+                {dataDetail ? (
+                    <DetailInfo
+                        detailOpen={detailOpen}
+                        setDetailOpen={setDetailOpen}
+                        dataDetail={dataDetail}
+                        setIsChange={setIsChange}
+                        isChange={isChange}
+                    />
+                ) : (
+                    ''
+                )}
+            </BottomSC>
+        </>
     );
 };
 
 export default OwnerStatusList;
+
 
 const StatusListSC = styled.div`
     margin: 20px 0;
@@ -328,7 +335,11 @@ const StatusListSC = styled.div`
 
     DetailInfo {
         position: fixed;
-        // position: absolute;
         bottom: 0;
     }
+`;
+
+const BottomSC = styled.div`
+    position: sticky;
+    bottom: 30px;
 `;

@@ -144,36 +144,33 @@ const SignUpTest = () => {
     };
 
     return (
-        <div>
-            {!showSignUpForm &&
-                !showExtraInfo &&
-                !viewTerms &&
-                !viewPrivacy && (
-                    <>
-                        <TopNaviBarBack pageName=" " prevPath="/login" />
-                        <Title>
-                            가입 목적을 <br />
-                            알려주세요
-                        </Title>
-                        <Wrapper>
-                            <img
-                                src={LandscapeImg}
-                                alt="가입목적을 알려주세요"
-                                style={{ width: '54%' }}
-                            />
-                            <SeleckUserType
-                                userType={signUpData.userType}
-                                onOptionChange={handleOptionChange}
-                            />
-                            <Button
-                                text="다음"
-                                onClick={handleNextClick}
-                                disabled={!isNextBtnEnabled}
-                            />
-                        </Wrapper>
-                    </>
-                )}
-            {showSignUpForm && !viewTerms && !viewPrivacy && (
+        <Section>
+            {!showSignUpForm && !showExtraInfo && (
+                <>
+                    <TopNaviBarBack pageName=" " prevPath="/login" />
+                    <Title>
+                        가입 목적을 <br />
+                        알려주세요
+                    </Title>
+                    <Wrapper>
+                        <img
+                            src={LandscapeImg}
+                            alt="가입목적을 알려주세요"
+                            style={{ width: '54%' }}
+                        />
+                        <SeleckUserType
+                            userType={signUpData.userType}
+                            onOptionChange={handleOptionChange}
+                        />
+                        <Button
+                            text="다음"
+                            onClick={handleNextClick}
+                            disabled={!isNextBtnEnabled}
+                        />
+                    </Wrapper>
+                </>
+            )}
+            {showSignUpForm && (
                 <>
                     <SignUpForm
                         setSignUpForm={setSignUpForm}
@@ -198,16 +195,17 @@ const SignUpTest = () => {
                     </Wrapper>
                 </>
             )}
-            {showExtraInfo && !viewTerms && !viewPrivacy && (
-                <ExtraInfo signUpData={signUpData} />
-            )}
+            {showExtraInfo && <ExtraInfo signUpData={signUpData} />}
             {viewTerms && <Terms handleOnClose={handleOnClose} />}
             {viewPrivacy && <Privacy handleOnClose={handleOnClose} />}
-        </div>
+        </Section>
     );
 };
 
 export default SignUpTest;
+const Section = styled.section`
+    position: relative;
+`;
 
 const Title = styled.h1`
     font-size: 34px;

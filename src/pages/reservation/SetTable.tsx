@@ -47,8 +47,10 @@ function SetTable(props: SetTableProps){
                         }}
                         />
                         <img alt="" src={`http://13.209.102.55/${table.placeImage}`}style={{width: '150px', height: '100px'}} />
-                        [{table.placeType}] {table.placeName}
-                        <br/>{table.minPeople} ~{table.maxPeople} 명
+                        <TableInfo>
+                            [{table.placeType}] {table.placeName}
+                            <br/>{table.minPeople} ~{table.maxPeople} 명
+                        </TableInfo>
                     </TableBox>)
                 )) : '예약 가능한 좌석이 없습니다.'}<br/>
                 {Object.keys(placeList)[0] === 'isHoliday' && '해당 날짜는 휴무일입니다.' }
@@ -80,4 +82,8 @@ const DrawerBoxTitle = styled.h3`
     font-weight: bolder;
     color: #FFB100;
     margin: 50px 0 20px 0;
+`
+
+const TableInfo = styled.div`
+    margin-top: 5px;
 `

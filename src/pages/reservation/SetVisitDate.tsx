@@ -25,8 +25,13 @@ function SetVisitDate(props:SetVisitDateProps){
         props.updateReserveValue('reservedDate', `${year}-${month}-${date}`);
     },[dateSelected]);
     
-    const openingHour = Number(props.openingHour);
-    const closingHour = Number(props.closingHour)< 12? Number(props.closingHour) +12 : Number(props.closingHour);
+
+    const today = new Date();
+    const hour = today.getHours();
+    console.log(today.toString().slice(0, 15), dateSelected.toString().slice(0,15));
+    console.log(hour);
+    const openingHour = today.toString().slice(0, 15) === dateSelected.toString().slice(0,15) && hour > Number(props.openingHour) ? hour+2 : Number(props.openingHour);
+    const closingHour = Number(props.closingHour)< 12? Number(props.closingHour) +24 : Number(props.closingHour);
     const openingMinute = Number(props.openingMinute);
     const closingMinute = Number(props.closingMinute);
     const HourArray = [];

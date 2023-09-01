@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -18,6 +19,9 @@ import SetVisitDate from './SetVisitDate';
 import SetTable from './SetTable';
 import SetHeadcount from './SetHeadcount';
 import ShowReservation from './ShowReservation';
+import { RootState } from '../../app/store';
+import UserSlice from '../../app/UserSlice';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
 
 function StoreDetail() {
     const storeId = window.location.href.split('/').pop()?.split('?')[0];
@@ -75,7 +79,11 @@ function StoreDetail() {
             console.log('에러');
         }
         
-    }  
+    } 
+
+    const user = useSelector((state: RootState) => state.user);
+    console.log(user.userType);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -151,7 +159,15 @@ function StoreDetail() {
             <DevideLine />
 
             <BottomFixed>
-                <Button text="예약하기" onClick={()=>{setShowModal(current => !current)}} />
+                <Button 
+                text="예약하기" 
+                onClick={()=>{ 
+                    if(user.userType === '1') {
+                        setShowModal(current => !current)
+                    } else{
+                        navigate('/login')}
+                }} 
+                disabled={user.userType==='2'} />
             </BottomFixed>
             
             {showModal && 

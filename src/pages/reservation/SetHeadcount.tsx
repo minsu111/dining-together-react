@@ -64,6 +64,7 @@ const CountButton = styled.button`
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    text-align: center;
     color: ${p => p.disabled ? '#e8e8e8': '#21272A'}
 `
 const CountNum = styled.span`

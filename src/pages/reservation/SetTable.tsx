@@ -48,7 +48,7 @@ function SetTable(props: SetTableProps){
                         />
                         <img alt="" src={`http://13.209.102.55/${table.placeImage}`}style={{width: '150px', height: '100px'}} />
                         <TableInfo>
-                            [{table.placeType}] {table.placeName}
+                            <p>[{table.placeType}] {table.placeName}</p>
                             <br/>{table.minPeople} ~{table.maxPeople} 명
                         </TableInfo>
                     </TableBox>)
@@ -62,10 +62,15 @@ function SetTable(props: SetTableProps){
 export default SetTable;
 
 const TableBoxGroup = styled.div`
-    width: 350px;
+    width: 320px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-wrap: wrap;
+    img{
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    line-height: 10px;
 `
 const TableBox = styled.label`
     input {
@@ -85,5 +90,9 @@ const DrawerBoxTitle = styled.h3`
 `
 
 const TableInfo = styled.div`
-    margin-top: 5px;
+    margin-top: 10px;
+
+    p{
+        font-weight: bold;
+    }
 `

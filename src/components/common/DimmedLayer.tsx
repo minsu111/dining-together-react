@@ -14,4 +14,5 @@ const Layer = styled.div`
     height: 100vh;
     background-color: #000;
     opacity: 44%;
+    z-index: 100;
 `;

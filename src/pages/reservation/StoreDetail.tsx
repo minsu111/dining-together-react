@@ -232,6 +232,7 @@ const Heading = styled.h3`
 const Content = styled.div`
     margin: 15px 26px 20px 26px;    
     font-size: 14px;
+    line-height: 20px;
     td{
         padding: 10px 30px 10px 0;
     }
@@ -248,9 +249,9 @@ const BottomFixed = styled.div`
     background-color: #FFFFFF;
 `
 const SubCategory = styled.p`
-    margin-bottom: 3px;     
+    margin-bottom: 5px;     
     font-size: 14px;
-    color: #D9D9D9;
+    color: grey;
 `
 const StoreImgSlide = styled.div`
     .slider .slick-prev{

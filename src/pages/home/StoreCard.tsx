@@ -30,6 +30,7 @@ const Image = styled.img`
     width: 124px;
     height: 124px;
     border-radius: 10px;
+    object-fit: cover;
 `;
 const Card = styled.div`
     width: 124px;
@@ -37,11 +38,13 @@ const Card = styled.div`
     margin-left: 10px;
     h5 {
         margin-top: 3px;
+        padding-left: 3px;
         font-size: 14px;
         font-weight: bold;
     }
     p {
-        font-size: 12px;
+        padding-left: 3px;
         margin-top: 3px;
+        font-size: 12px;
     }
     `;

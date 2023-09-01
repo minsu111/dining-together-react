@@ -34,7 +34,7 @@ function MyInfo() {
             <TopNaviBarBack pageName="내 정보" prevPath="/my" />
             <Container>
                 <MenuWrapper>
-                    <MenuName>가입 계정 (이매일)</MenuName>
+                    <MenuName>가입 계정 (이메일)</MenuName>
                     <div style={{ marginTop: '4px' }}>{user.userEmail}</div>
                 </MenuWrapper>
                 <hr />

@@ -219,10 +219,7 @@ const StoreInfo = styled.div`
         width: 110px;
         height: 110px;
         border-radius: 8px;
-        background-size: cover;
-        background-position: 50% 50%;
-        background-size: cover;
-        background-position: 50% 50%;
+        object-fit: cover;
     }
 `;
 

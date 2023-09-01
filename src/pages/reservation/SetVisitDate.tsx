@@ -52,7 +52,7 @@ function SetVisitDate(props:SetVisitDateProps){
     <>   
         <Calendar dateSelected={dateSelected} setDateSelected={(value)=>{setDateSelected(value as Date)}}/>
         <VisitTime>
-            <h4>방문 시간을 입력해 주세요</h4>
+            <Notice>방문 시간을 입력해 주세요</Notice>
             <Select placeholder={' '} value={props.visitTime} onChange={(event)=>props.updateReserveValue('visitTime', event.target.value)}>
                 {TimeArray.map(e=>{
                     return(
@@ -74,4 +74,8 @@ width: 300px;
 select {
     border-color: #AFBCCF;
 }
+`
+const Notice = styled.p`
+    margin-bottom: 5px;
+    font-weight: bold;
 `

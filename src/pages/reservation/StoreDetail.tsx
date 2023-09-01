@@ -202,33 +202,34 @@ function StoreDetail() {
 }
 
 export default StoreDetail;
+
 const Heading = styled.h3`
+    margin: 22px 0 0 20px;
     font-size: 18px;
     font-weight: bolder;
-    margin: 22px 0 0 20px;
 `
 const Content = styled.div`
+    margin: 15px 26px 20px 26px;    
     font-size: 14px;
-    margin: 15px 26px 20px 26px;
     td{
         padding: 10px 30px 10px 0;
     }
 `
 const BottomFixed = styled.div`
+    z-index: 10;
     position: sticky;
     bottom: -20px;
     width: 100vw;
     max-width: 390px;
-    text-align: center;
     padding: 10px 0;
-    background-color: #FFFFFF;
-    z-index: 10;
     border-top: 1px solid #D9D9D9;
+    text-align: center;
+    background-color: #FFFFFF;
 `
 const SubCategory = styled.p`
+    margin-bottom: 3px;     
     font-size: 14px;
     color: #D9D9D9;
-    margin-bottom: 3px;
 `
 const StoreImgSlide = styled.div`
     .slider .slick-prev{
@@ -243,7 +244,7 @@ const StoreImgSlide = styled.div`
     }
 
     .slider .slick-next{
-        right: 0px;
+        right: 0;
         z-index: 10;
         width: 40px;
         height: 40px;
@@ -254,16 +255,18 @@ const StoreImgSlide = styled.div`
     }
 `
 const DrawerBox = styled.div `
-    width: 390px;
-    background-color:#FFFFFF;
-    position: sticky;
-    bottom:0;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
     z-index: 100;
     display: flex;
     flex-direction: column;
     align-items: center;
+    bottom:-20px;
+    width: 390px;
+    background-color:#FFFFFF;
+    position: sticky;
+    
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    
     min-height: 300px;
     justify-content: space-between
 `
@@ -272,9 +275,7 @@ const BoxPageButton = styled.div`
     display: flex;
     justify-content: space-evenly;
     margin: 30px 0 15px 0;
-    margin-bottom: 100px;
 `
-
 const StoreImg = styled.img`
     width: 100%;
     height: 250px;   

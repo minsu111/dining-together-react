@@ -202,17 +202,17 @@ const UserStatusList = () => {
                 )}
             </StatusListSC>
             <BottomSC>
-            {dataDetail ? (
-                <DetailInfo
-                    detailOpen={detailOpen}
-                    setDetailOpen={setDetailOpen}
-                    dataDetail={dataDetail}
-                    setIsChange={setIsChange}
-                    isChange={isChange}
-                />
-            ) : (
-                ''
-            )}
+                {dataDetail ? (
+                    <DetailInfo
+                        detailOpen={detailOpen}
+                        setDetailOpen={setDetailOpen}
+                        dataDetail={dataDetail}
+                        setIsChange={setIsChange}
+                        isChange={isChange}
+                    />
+                ) : (
+                    ''
+                )}
             </BottomSC>
         </>
     );
@@ -223,8 +223,8 @@ export default UserStatusList;
 const StatusListSC = styled.div`
     margin: 20px 0;
     overflow-y: hidden;
-
     padding: 0 7px;
+    
     .no-exist {
         margin-top: 100px;
         text-align: center;
@@ -293,7 +293,6 @@ const StatusListSC = styled.div`
     }
 
     .booking_info .img {
-        // border: 1px solid #000;
         width: 60px;
         height: 60px;
         border-radius: 7px;
@@ -333,6 +332,7 @@ const StatusListSC = styled.div`
         cursor: pointer;
         color: #fff;
     }
+    
 `;
 
 const BottomSC = styled.div`

@@ -201,7 +201,6 @@ const OwnerStatusList = () => {
             )}
             </StatusListSC>
             <BottomSC>
-                <DimmedLayer />
                 {dataDetail ? (
                     <DetailInfo
                         detailOpen={detailOpen}
@@ -223,6 +222,8 @@ export default OwnerStatusList;
 
 const StatusListSC = styled.div`
     margin: 20px 0;
+    overflow-y: hidden;
+    padding: 0 7px;
 
     .no-exist {
         margin-top: 100px;
@@ -292,7 +293,6 @@ const StatusListSC = styled.div`
     }
 
     .booking_info .img {
-        // border: 1px solid #000;
         width: 60px;
         height: 60px;
         border-radius: 7px;
@@ -333,10 +333,6 @@ const StatusListSC = styled.div`
         color: #fff;
     }
 
-    DetailInfo {
-        position: fixed;
-        bottom: 0;
-    }
 `;
 
 const BottomSC = styled.div`

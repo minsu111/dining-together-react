@@ -7,7 +7,6 @@ import { RootState } from '../../app/store';
 import axiosRequest from '../../api/api';
 import HandleError from '../../api/Error';
 import Button from '../common/Button';
-import DimmedLayer from '../common/DimmedLayer';
 
 type SimpleDataType = {
     reservedId: number,
@@ -153,7 +152,6 @@ export default DetailInfo;
 
 const DetailInfoSC = styled.div`
     width: 100%;
-
 `;
 
 
@@ -245,12 +243,3 @@ const ButtonSC = styled.div`
     display: flex;
     justify-content: center;
 `;
-
-const Div = styled.div`
-position: sticky;
-top:0;
-z-index:100;
-    width: 400px;
-    height: 500px;
-    background: rgba(0,0,0,0.4);
-`

@@ -84,7 +84,11 @@ function SelectFoodType(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="음식 유형" />
+            <FilterHeader
+                onClickReset={handleReset}
+                title="음식 유형"
+                showResetBtn
+            />
             <ContentDiv>
                 <Div>
                     {enumTypes.map((type) => (

@@ -98,7 +98,11 @@ function SelectRegion(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="지역" />
+            <FilterHeader
+                onClickReset={handleReset}
+                title="지역"
+                showResetBtn
+            />
             <ContentDiv>
                 <Div>
                     <CityDiv>

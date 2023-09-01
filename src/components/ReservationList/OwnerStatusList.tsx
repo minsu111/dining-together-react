@@ -158,14 +158,10 @@ const OwnerStatusList = () => {
                             </span>
 
                             <div className="booking_info">
-                                <Link
-                                    to={`/store/${item.storeId}`}
-                                    className="restaurant_name"
-                                >
-                                    <div
-                                        className="img"
+                                <Link to={`/store/${item.storeId}`} className="restaurant_name">
+                                    <div className="img"
                                         style={{
-                                            backgroundImage: `url(${item.imageUrl})`,
+                                            backgroundImage: `url(http://13.209.102.55/${item.imageUrl})`,
                                         }}
                                     />
                                 </Link>
@@ -273,12 +269,13 @@ const StatusListSC = styled.div`
     }
 
     .d_day {
-        padding: 3px 12px;
+        padding: 5px 12px;
         border: 2px solid #ffb100;
         border-radius: 15px;
         margin-bottom: 20px;
-        display: inline-block;
-        font-size: 13px;
+        display: block;
+        width: 60px;
+        font-size: 12.5px;
         font-weight: 600;
     }
 
@@ -288,8 +285,9 @@ const StatusListSC = styled.div`
         align-items: center;
     }
 
-    .booking_info ul {
+    .booking_info > ul {
         width: 60%;
+        text-align: left;
     }
 
     .booking_info .img {

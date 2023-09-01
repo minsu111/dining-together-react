@@ -76,10 +76,6 @@ const ExtraInfo = ({ signUpData }: ExtraInfoProps) => {
         location: selectedRegion,
         meetingTypes,
     };
-    console.log(
-        '🚀 ~ file: ExtraInfo.tsx:72 ~ ExtraInfo ~ updatedsignUpData:',
-        updatedsignUpData,
-    );
 
     const navigate = useNavigate();
     const goToWelcome = () => {

@@ -8,16 +8,9 @@ import axiosRequest from '../../api/api';
 type SignUpFormProps = {
     setSignUpForm: (key: string, value: string) => void;
     handleStartBtn: (key: string, value: boolean) => void;
-    inputData: any;
-    setInputData: any;
 };
 
-const SignUpForm = ({
-    inputData,
-    setInputData,
-    setSignUpForm,
-    handleStartBtn,
-}: SignUpFormProps) => {
+const SignUpForm = ({ setSignUpForm, handleStartBtn }: SignUpFormProps) => {
     const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
@@ -93,34 +86,16 @@ const SignUpForm = ({
             } else {
                 setStateDuplicate(2);
             }
-            console.log(
-                '🚀 ~ file: SignUpForm.tsx:55 ~ checkDuplication ~ result:',
-                result,
-            );
         } catch (error: any) {
-            console.log(
-                '🚀 ~ file: SignUpForm.tsx:56 ~ checkDuplication ~ error:',
-                error,
-            );
+            console.log(error);
         }
     };
 
     const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('🚀 ~ file: SignUpForm.tsx:28 ~ handleBlur ~ e:', e);
-
         setSignUpForm('email', email);
         setSignUpForm('password', pw);
         setSignUpForm('name', name);
         setSignUpForm('phoneNum', phoneNum);
-
-        // 인풋값 업데이트
-        setInputData({
-            email,
-            pw,
-            name,
-            phoneNum,
-            pwConfirm,
-        });
     };
 
     return (

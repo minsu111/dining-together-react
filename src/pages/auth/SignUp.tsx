@@ -35,6 +35,15 @@ const SignUpTest = () => {
         phoneNum: '',
         password: '',
     });
+
+    const [inputData, setInputData] = useState({
+        email: '',
+        name: '',
+        phoneNum: '',
+        password1: '',
+        password2: '',
+    });
+
     const handleStartBtn = useCallback((key: string, value: boolean) => {
         setCheckState((prev) => ({ ...prev, [key]: value }));
     }, []);
@@ -167,9 +176,10 @@ const SignUpTest = () => {
             {showSignUpForm && !viewTerms && !viewPrivacy && (
                 <>
                     <SignUpForm
-                        // signUpData={signUpData}
                         setSignUpForm={setSignUpForm}
                         handleStartBtn={handleStartBtn}
+                        inputData={inputData}
+                        setInputData={setInputData}
                     />
                     <AgreementCheckBox
                         handleStartBtn={handleStartBtn}

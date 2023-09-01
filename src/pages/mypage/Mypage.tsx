@@ -112,6 +112,7 @@ function Mypage() {
 export default Mypage;
 
 const Container = styled.section`
+    height: 330px;
     margin: 0 20px;
 `;
 
@@ -181,6 +182,10 @@ const StoreInfo = styled.div`
         width: 110px;
         height: 110px;
         border-radius: 8px;
+        background-size: cover;
+        background-position: 50% 50%;
+        background-size: cover;
+        background-position: 50% 50%;
     }
 `;
 

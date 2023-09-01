@@ -58,7 +58,7 @@ const GNBAreaSC = styled.div`
     height: 65px;
     position: fixed;
     bottom: 0;
-    left: 65%;
+    left: 50%;
     transform: translate(-50%, 0);
     background-color: #fff;
 
@@ -66,7 +66,7 @@ const GNBAreaSC = styled.div`
         width: 100%;
         height: 100%;
         display: flex;
-        border-top: 2px solid #d9d9d9;
+        border-top: 1px solid #d9d9d9;
     }
 
     li {

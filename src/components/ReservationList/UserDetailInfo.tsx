@@ -2,15 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import DimmedLayer from '../common/DimmedLayer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import axiosRequest from '../../api/api';
+import HandleError from '../../api/Error';
 import Button from '../common/Button';
 
 type SimpleDataType = {
-    dDay: number;
-    restaurant: string;
-    category: string;
-    status: string;
-    bookingInfo: string;
+    reservedId: number,
+    foodCategory: string,
+    imageUrl: string,
+    location: string,
+    people: number,
+    placeId: number,
+    placeName: string,
+    placeType: string,
+    reservedDate: string,    
+    status: string,
+    storeId: number,
+    storeName: string,
+    userId: number,
+    visitTime: string,
 };
 
 type DetailInfoProps = {
@@ -24,9 +36,44 @@ const DetailInfo = ({
     setDetailOpen,
     dataDetail,
 }: DetailInfoProps) => {
+
+    const user = useSelector((state: RootState) => state.user);
+    const formattedReservedDate = (rawDate: string): string => {
+        const parts = rawDate.split('-');
+        if (parts.length === 3) {
+            const [year, month, day] = parts;
+            const formattedDate = `20${year}-${month}-${day}`;
+            const dateObj = new Date(formattedDate);
+            
+            const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+            const dayOfWeek = weekdays[dateObj.getDay()];
+            
+            return `${formattedDate} (${dayOfWeek})`;
+        }
+        return rawDate;
+    };
+
+
+    const reservationCancel = async () => {
+        try {
+            const cancelStatus = await axiosRequest(
+                'PUT',
+                `/reserve/${dataDetail.reservedId}`,
+                {
+                    status: '예약취소',
+                },
+                setDetailOpen(false),
+                HandleError,
+            );
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <DetailInfoSC style={{ display: detailOpen ? '' : 'none' }}>
-            <DimmedLayer />
+            <Bg>
             <InfoSC>
                 <button
                     type="button"
@@ -41,33 +88,28 @@ const DetailInfo = ({
                     <BookingInfoSC>
                         <div className="title_detail_info">
                             <h4>예약 내용</h4>
-                            <span>예약번호 : 1234567</span>
-                            {/* <span>{dataDetail.status}</span> */}
+                            <span>예약번호 : {dataDetail.reservedId}</span>
                         </div>
                         <table>
                             <tr>
-                                <td>예약신청일</td>
-                                <td>2023.00.00 (월)</td>
-                            </tr>
-                            <tr>
                                 <td>예약식당</td>
-                                <td>식당 상호명</td>
+                                <td>{dataDetail.storeName}</td>
                             </tr>
                             <tr>
                                 <td>예약일자</td>
-                                <td>2023.00.00 (화) 오후 7:00</td>
+                                <td>{formattedReservedDate(dataDetail.reservedDate)} {dataDetail.visitTime}</td>
                             </tr>
                             <tr>
                                 <td>예약인원</td>
-                                <td>n명</td>
+                                <td>{dataDetail.people}명</td>
                             </tr>
                             <tr>
                                 <td>예약옵션</td>
-                                <td>[홀] A 테이블</td>
+                                <td>[{dataDetail.placeType}] {dataDetail.placeName}</td>
                             </tr>
                             <tr>
                                 <td>예약상태</td>
-                                <td>예약대기</td>
+                                <td>{dataDetail.status}</td>
                             </tr>
                         </table>
                     </BookingInfoSC>
@@ -80,23 +122,26 @@ const DetailInfo = ({
                         <table>
                             <tr>
                                 <td>예약자명</td>
-                                <td>예약자 이름</td>
+                                <td>{user.userName}</td>
                             </tr>
                             <tr>
                                 <td>연락처</td>
-                                <td>01012345678</td>
+                                <td>{user.userPhoneNum}</td>
                             </tr>
                             <tr>
                                 <td>이메일</td>
-                                <td>elice@gmail.com</td>
+                                <td>{user.userEmail}</td>
                             </tr>
                         </table>
                     </UserInfoSC>
+                    {dataDetail.status === '예약대기' && (
                     <ButtonSC>
-                        <Button text="예약취소" onClick={() => {}} />
+                        <Button text="예약취소" onClick={reservationCancel} />
                     </ButtonSC>
+                    )}
                 </div>
             </InfoSC>
+            </Bg>
         </DetailInfoSC>
     );
 };
@@ -105,8 +150,17 @@ export default DetailInfo;
 
 const DetailInfoSC = styled.div`
     width: 100%;
-    // display: none;
 `;
+
+const Bg = styled.div`
+    margin: 0;
+    width: 500px;
+    height: 300px;
+    position: absolute;
+    left: -50px;
+    top: -100px;
+    background-color: rgba(0,0,0,0.4);
+`
 
 const InfoSC = styled.div`
     width: 100%;
@@ -115,7 +169,7 @@ const InfoSC = styled.div`
     border-radius: 20px 20px 0 0;
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: 60px;
 
     .btn_close {
         position: absolute;
@@ -145,6 +199,13 @@ const InfoSC = styled.div`
         align-items: center;
         font-size: 14px;
         margin-bottom: 10px;
+    }
+
+    .title_detail_info > span {
+        padding: 5px 8px;
+        background-color: #fff;
+        border-radius: 15px;
+        border: 1px solid #ffb100;
     }
 
     .title_detail_info h4 {

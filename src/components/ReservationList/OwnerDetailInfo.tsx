@@ -191,7 +191,8 @@ bottom: 60px;
         top: -50px;
         transform: translateX(-50%);
         font-size: 32px;
-        color: #ffb100;
+        // color: #ffb100;
+        color: #999;
         cursor: pointer;
     }
 

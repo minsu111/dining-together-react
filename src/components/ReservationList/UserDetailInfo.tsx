@@ -76,7 +76,7 @@ const DetailInfo = ({
     };
 
     return (
-        <DetailInfoSC style={{ display: detailOpen ? '' : 'none' }}>
+        <DetailInfoSC style={{ display: detailOpen ? '' : 'none' }} className='info-wrap'>
             <InfoSC>
                 <button
                     type="button"
@@ -172,7 +172,8 @@ const InfoSC = styled.div`
         top: -50px;
         transform: translateX(-50%);
         font-size: 32px;
-        color: #ffb100;
+        // color: #ffb100;
+        color: #999;
         cursor: pointer;
     }
 

@@ -78,7 +78,11 @@ function SelectAtmosphere(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="분위기" />
+            <FilterHeader
+                onClickReset={handleReset}
+                title="분위기"
+                showResetBtn
+            />
             <ContentDiv>
                 <Div>
                     {enumTypes.map((type) => (

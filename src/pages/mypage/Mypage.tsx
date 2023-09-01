@@ -131,7 +131,7 @@ function Mypage() {
 export default Mypage;
 
 const Container = styled.section`
-    height: 330px;
+    height: 46vh;
     margin: 0 20px;
 `;
 
@@ -142,7 +142,6 @@ const TitleSection = styled.section`
 
 const TitleWrapper = styled.div`
     display: flex;
-    /* justify-content: center; */
     align-items: center;
 `;
 
@@ -151,6 +150,9 @@ const Title = styled.h1`
     line-height: 45px;
     padding: 10px 0;
     margin-right: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     span {
         font-weight: 700;
@@ -194,7 +196,7 @@ const Account = styled.h3`
 `;
 
 const StoreInfoSection = styled.section`
-    height: 22vw;
+    height: 22vh;
 `;
 
 const StoreInfoTitle = styled.h3`

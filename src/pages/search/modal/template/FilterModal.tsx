@@ -7,13 +7,17 @@ import Button from '../../../../components/common/Button';
 
 export function FilterHeader(props: {
     title: string;
+    showResetBtn: boolean;
     onClickReset: () => void;
 }) {
     return (
         <div style={{ width: '100%' }}>
             <HeaderDiv>
                 <Title>{props.title}</Title>
-                <ResetButton onClick={props.onClickReset}>
+                <ResetButton
+                    onClick={props.onClickReset}
+                    style={{ display: props.showResetBtn ? 'block' : 'none' }}
+                >
                     <FontAwesomeIcon
                         icon={faRotate}
                         style={{ color: '#FFB100' }}
@@ -40,6 +44,20 @@ export function FilterFooter(props: {
                 onClick={props.onClose}
             />
             <Button text="적용" width="230px" onClick={props.onConfirm} />
+        </FooterDiv>
+    );
+}
+
+export function FilterFooterOnlyClose(props: { onClose: () => void }) {
+    return (
+        <FooterDiv>
+            <Button
+                text="닫기"
+                // width="100px"
+                backgroundColor="#F2F2F2"
+                textColor="black"
+                onClick={props.onClose}
+            />
         </FooterDiv>
     );
 }

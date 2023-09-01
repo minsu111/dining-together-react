@@ -131,7 +131,11 @@ function SelectPricePerPerson(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="인당 가격" />
+            <FilterHeader
+                onClickReset={handleReset}
+                title="인당 가격"
+                showResetBtn
+            />
             <ContentDiv>
                 <Div>
                     <SubTitle>가격 범위</SubTitle>

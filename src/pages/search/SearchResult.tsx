@@ -35,12 +35,8 @@ function SearchResult() {
         return state.filter;
     });
 
-    // 검색하기 화면 통하지 않고 url로 직접 이 페이지 접근했을 때의 방어처리
     useEffect(() => {
-        if (!filterState.expectedDate) {
-            dispatch(setExpectedDate(serializeDate(new Date())));
-            // console.log('1방문예정일 : ', filterState.expectedDate);
-        } // else console.log('2방문예정일 : ', filterState.expectedDate);
+        filterSearch();
     }, []);
 
     // TODO: 임시 코드. 이후 수정 예정.

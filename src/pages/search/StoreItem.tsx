@@ -48,11 +48,7 @@ function StoreItem(props: StoreInfoProps) {
             }
         >
             <div>
-                <img
-                    style={{ width: 100, height: 100 }}
-                    src={`http://13.209.102.55/${props.imgUrl}`}
-                    alt="가게 사진"
-                />
+                <ImgDiv imgUrl={`http://13.209.102.55/${props.imgUrl}`} />
             </div>
 
             <InfoDiv>
@@ -79,6 +75,18 @@ const Div = styled.div`
     // border: 1px solid;
     display: flex;
     margin: 20px 0px 20px 10px;
+`;
+
+type ImgProps = {
+    imgUrl: string;
+};
+const ImgDiv = styled.div<ImgProps>`
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    background-image: url(${(props) => props.imgUrl});
+    background-size: cover;
+    background-position: 50% 50%;
 `;
 
 const InfoDiv = styled.div`

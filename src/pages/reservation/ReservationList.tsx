@@ -52,6 +52,7 @@ export default ReservationList;
 const Header = styled.header`
     width: 100%;
     border-bottom: 1px solid #999;
+    padding-left: 20px;
 `;
 
 const Inner = styled.div`

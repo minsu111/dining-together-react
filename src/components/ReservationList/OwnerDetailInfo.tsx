@@ -23,6 +23,9 @@ type SimpleDataType = {
     storeName: string,
     userId: number,
     visitTime: string,
+    name: string,
+    phoneNum: string,
+    email: string,
 };
 
 type DetailInfoProps = {
@@ -144,15 +147,15 @@ const DetailInfo = ({
                         <table>
                             <tr>
                                 <td>예약자명</td>
-                                <td>{user.userName}</td>
+                                <td>{dataDetail.name}</td>
                             </tr>
                             <tr>
                                 <td>연락처</td>
-                                <td>{user.userPhoneNum}</td>
+                                <td>{dataDetail.phoneNum}</td>
                             </tr>
                             <tr>
                                 <td>이메일</td>
-                                <td>{user.userEmail}</td>
+                                <td>{dataDetail.email}</td>
                             </tr>
                         </table>
                     </UserInfoSC>

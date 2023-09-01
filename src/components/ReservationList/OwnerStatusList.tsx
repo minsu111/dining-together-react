@@ -31,6 +31,9 @@ type SimpleDataType = {
     storeName: string;
     userId: number;
     visitTime: string;
+    name: string;
+    phoneNum: string,
+    email: string,
 };
 
 type TabProps = {
@@ -72,6 +75,7 @@ const OwnerStatusList = () => {
                 {},
                 HandleError,
             );
+            console.log(ownerReservationInfo)
             setOwnerInfo(ownerReservationInfo);
         } catch (error) {
             console.error(error);

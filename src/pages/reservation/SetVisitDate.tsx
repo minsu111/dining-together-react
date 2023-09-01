@@ -13,7 +13,11 @@ type SetVisitDateProps = {
 }
 
 function SetVisitDate(props:SetVisitDateProps){
-    const [dateSelected, setDateSelected] = React.useState<Date>(new Date());
+    const filterDateString:string = window.location.href.split('selectedDate=').pop() || '';
+    const milliseconds = Date.parse(filterDateString);
+    const filterDate = new Date(milliseconds);
+    const [dateSelected, setDateSelected] = React.useState<Date>(filterDate);
+
     useEffect(()=>{
         const year = dateSelected?.getFullYear().toString().slice(2);
         const month = (`0${(Number(dateSelected?.getMonth())+1).toString()}`).slice(-2);

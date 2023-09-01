@@ -35,9 +35,11 @@ function Home() {
                     <img alt="" src={Banner03} />
                 </Slider>
             </Banner>
-            {Object.keys(storeList).map((key) => {
-                return <RecommendList title={key} storeList={storeList} />;
-            })}
+            <HomeContent>
+                {Object.keys(storeList).map((key) => {
+                    return <RecommendList title={key} storeList={storeList} />;
+                })}
+            </HomeContent>
         </>
     );
 }
@@ -45,8 +47,7 @@ function Home() {
 export default Home;
 
 const TopBar = styled.div`
-    position: fixed;
-    top: 0;
+    position: sticky;
     width: 390px;
     height: 50px;
     background-color: #fff;
@@ -57,9 +58,7 @@ const TopBar = styled.div`
     justify-content: center;
     z-index: 100;
 `;
-
 const Banner = styled.div`
-    margin-top: 50px;
     .slider .slick-prev{
         left: 0;
         z-index: 100;
@@ -78,4 +77,7 @@ const Banner = styled.div`
     .slider .slick-next:before{
         font-size: 40px;
     }
+`
+const HomeContent = styled.div`
+    margin-bottom: 80px;
 `

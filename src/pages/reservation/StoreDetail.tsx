@@ -20,8 +20,9 @@ import SetHeadcount from './SetHeadcount';
 import ShowReservation from './ShowReservation';
 
 function StoreDetail() {
-    const storeId = window.location.href.split('/').pop();
+    const storeId = window.location.href.split('/').pop()?.split('?')[0];
     const [storeDetail, setStoreDetail] = useState<Record<string, any>>({});
+
     useEffect(()=>{
         const GetStoreDetail = async () => {
             try {
@@ -74,16 +75,16 @@ function StoreDetail() {
             console.log('에러');
         }
         
-    }
+    }  
 
     return (
-        <Section>
+        <>
             <TopNaviBarBack pageName='' prevPath='' />
-            <StoreImg>
+            <StoreImgSlide>
                 <Slider className='slider' autoplay speed={1000} infinite pauseOnHover>
-                    <img alt="" src={storeDetail.imageUrl}/>
+                    <StoreImg alt="" src={`http://13.209.102.55/${storeDetail.imageUrl}`}/>
                 </Slider>
-            </StoreImg>
+            </StoreImgSlide>
             <Heading>
                 <SubCategory>{storeDetail.foodCategory}</SubCategory>
                 {storeDetail.storeName}
@@ -99,7 +100,7 @@ function StoreDetail() {
                 <table>
                     <tr>
                         <td>전화번호</td>
-                        <td>{storeDetail.storeContact}</td>
+                        <td>{storeDetail.storeContact && storeDetail.storeContact.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}</td>
                     </tr>
                     <tr>
                         <td>운영시간</td>
@@ -113,7 +114,7 @@ function StoreDetail() {
                     </tr>
                     <tr>
                         <td>수용 인원</td>
-                        <td>{storeDetail.maxNum}</td>
+                        <td>{storeDetail.maxNum}명</td>
                     </tr>
                     <tr>
                         <td>룸 유무</td>
@@ -121,7 +122,7 @@ function StoreDetail() {
                     </tr>
                     <tr>
                         <td>인당 금액</td>
-                        <td>{storeDetail.cost}</td>
+                        <td>{storeDetail.cost && storeDetail.cost.toLocaleString('ko-KR')}</td>
                     </tr>
                     <tr>
                         <td>주차장</td>
@@ -137,6 +138,7 @@ function StoreDetail() {
             <Content>
             {storeDetail && storeDetail.address && (
             <StoreMap address={storeDetail.address.roadAddress} />)}
+                <br/>
                 {storeDetail.address?.roadAddress}{' '}
                 {storeDetail.address?.detailAddress} 
             </Content>
@@ -195,27 +197,11 @@ function StoreDetail() {
                 </BoxPageButton>
             </DrawerBox>
             </>}
-        </Section>
+        </>
     );
 }
 
 export default StoreDetail;
-
-const Section = styled.section`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 390px;
-
-    left: 50%;
-    transform: translate(-50%, 0);
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #e8e8e8;
-`;
 const Heading = styled.h3`
     font-size: 18px;
     font-weight: bolder;
@@ -223,27 +209,28 @@ const Heading = styled.h3`
 `
 const Content = styled.div`
     font-size: 14px;
-        margin: 15px 0 20px 26px;
+    margin: 15px 26px 20px 26px;
     td{
         padding: 10px 30px 10px 0;
     }
 `
 const BottomFixed = styled.div`
-    position: fixed;
-    bottom: 0;
+    position: sticky;
+    bottom: -20px;
     width: 100vw;
     max-width: 390px;
     text-align: center;
     padding: 10px 0;
     background-color: #FFFFFF;
-    margin-bottom: 60px;
+    z-index: 10;
+    border-top: 1px solid #D9D9D9;
 `
 const SubCategory = styled.p`
     font-size: 14px;
     color: #D9D9D9;
     margin-bottom: 3px;
 `
-const StoreImg = styled.div`
+const StoreImgSlide = styled.div`
     .slider .slick-prev{
         left: 0;
         z-index: 10;
@@ -269,8 +256,8 @@ const StoreImg = styled.div`
 const DrawerBox = styled.div `
     width: 390px;
     background-color:#FFFFFF;
-    position: fixed;
-    bottom:0px;
+    position: sticky;
+    bottom:0;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     z-index: 100;
@@ -286,4 +273,10 @@ const BoxPageButton = styled.div`
     justify-content: space-evenly;
     margin: 30px 0 15px 0;
     margin-bottom: 100px;
+`
+
+const StoreImg = styled.img`
+    width: 100%;
+    height: 250px;   
+    object-fit: cover;
 `

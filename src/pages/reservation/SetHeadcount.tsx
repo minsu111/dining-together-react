@@ -19,7 +19,16 @@ function SetHeadcount(props: SetHeadcountProps){
             <DrawerBoxTitle>인원 수를 선택해주세요.</DrawerBoxTitle>
             <BorderBox>
                 <CountButton type="button" onClick={()=>{setHeadcount(headcount-1)}} disabled={headcount<=props.minPeople}>−</CountButton>
-                <CountNum>{headcount}</CountNum>
+                <CountNum>
+                    <input 
+                    type="number" 
+                    value={headcount} 
+                    onChange={(e) => setHeadcount(Number(e.target.value))}
+                    onBlur={(e)=> (Number(e.target.value)>props.maxPeople || Number(e.target.value)<props.minPeople)
+                        && setHeadcount(props.minPeople)
+                    }
+                    />
+                </CountNum>
                 <CountButton type="button" onClick={()=>{setHeadcount(headcount+1)}} disabled={headcount>=props.maxPeople}>+</CountButton>
             </BorderBox>
         </>
@@ -58,7 +67,11 @@ const CountButton = styled.button`
     color: ${p => p.disabled ? '#e8e8e8': '#21272A'}
 `
 const CountNum = styled.span`
-    font-size: 50px;
-    font-weight: bold;
     color: #21272A;
+    input {
+        width: 100px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 50px;
+    }
 `

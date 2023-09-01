@@ -18,7 +18,7 @@ const TotalFilterButton: React.FC<Props> = (props) => {
         >
             <FontAwesomeIcon
                 icon={faFilter}
-                style={{ width: 24, height: 24, paddingTop: 5 }}
+                style={{ width: 24, height: 24, paddingTop: 2 }}
             />
         </Button>
     );

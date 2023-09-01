@@ -3,18 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Modal from 'react-modal';
-import { FilterHeader, FilterFooter, ContentDiv } from './template/FilterModal';
+import {
+    FilterHeader,
+    FilterFooter,
+    ContentDiv,
+    FilterFooterOnlyClose,
+} from './template/FilterModal';
 import FilterButtonInModal from './FilterButtonInModal';
 
 import { RootState } from '../../../app/store';
-import {
-    setRegion,
-    setFoodType,
-    setPriceMin,
-    setPriceMax,
-    setAtmosphere,
-    setSeat,
-} from '../store/FilterSlice';
+// import {
+//     setRegion,
+//     setFoodType,
+//     setPriceMin,
+//     setPriceMax,
+//     setAtmosphere,
+//     setSeat,
+// } from '../store/FilterSlice';
 import { FilterType, SearchModalType } from './enum/Enum';
 import { MAX_PRICE, MIN_PRICE } from './SelectPricePerPerson';
 
@@ -81,16 +86,16 @@ function TotalFilter(props: {
         props.onToggleFilterDisplay(SearchModalType.Total);
     };
 
-    const handleConfirm = () => {
-        dispatch(setRegion([]));
-        dispatch(setFoodType([]));
-        dispatch(setPriceMin(MIN_PRICE));
-        dispatch(setPriceMax(MAX_PRICE));
-        dispatch(setAtmosphere([]));
-        dispatch(setSeat([]));
+    // const handleConfirm = () => {
+    //     dispatch(setRegion([]));
+    //     dispatch(setFoodType([]));
+    //     dispatch(setPriceMin(MIN_PRICE));
+    //     dispatch(setPriceMax(MAX_PRICE));
+    //     dispatch(setAtmosphere([]));
+    //     dispatch(setSeat([]));
 
-        handleClose();
-    };
+    //     handleClose();
+    // };
 
     return (
         <Modal
@@ -112,7 +117,11 @@ function TotalFilter(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="필터" />
+            <FilterHeader
+                onClickReset={handleReset}
+                title="필터"
+                showResetBtn={false}
+            />
             <ContentDiv>
                 <Div>
                     <FilterButtonInModal
@@ -143,7 +152,7 @@ function TotalFilter(props: {
                 </Div>
             </ContentDiv>
 
-            <FilterFooter onClose={handleClose} onConfirm={handleConfirm} />
+            <FilterFooterOnlyClose onClose={handleClose} />
         </Modal>
     );
 }

@@ -84,7 +84,11 @@ function SelectSeat(props: {
                 },
             }}
         >
-            <FilterHeader onClickReset={handleReset} title="단체석" />
+            <FilterHeader
+                onClickReset={handleReset}
+                title="단체석"
+                showResetBtn
+            />
             <ContentDiv>
                 <Div>
                     {enumTypes.map((type) => (

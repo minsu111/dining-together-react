@@ -96,7 +96,6 @@ const DetailInfo = ({
 
     return (
         <DetailInfoSC style={{ display: detailOpen ? '' : 'none' }}>
-            <Bg>
             <InfoSC>
                 <button
                     type="button"
@@ -165,7 +164,6 @@ const DetailInfo = ({
                     )}
                 </div>
             </InfoSC>
-            </Bg>
         </DetailInfoSC>
     );
 };
@@ -176,26 +174,16 @@ const DetailInfoSC = styled.div`
     width: 100%;
 `;
 
-const Bg = styled.div`
-    // margin: 0;
-    // width: 500px;
-    // height: 400px;
-    // position: absolute;
-    // left: -50px;
-    // top: -100px;
-    background-color: rgba(0,0,0,0.4);
-`
-
 const InfoSC = styled.div`
-    width: 100%;
-    padding: 25px 0;
-    background-color: #fff;
-    border-radius: 20px 20px 0 0;
-    position: fixed;
-    // position: sticky;
-    background-color: #fff;
-    left: 0;
-    bottom: 60px;
+width: 100%;
+padding: 25px 0;
+background-color: #fff;
+border-radius: 20px 20px 0 0;
+
+z-index: 100;
+position: sticky;
+left: 0;
+bottom: 60px;
 
     .btn_close {
         position: absolute;

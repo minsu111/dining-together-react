@@ -10,22 +10,6 @@ type RecommendListProps = {
 };
 
 const RecommendList = (props: RecommendListProps) => {
-    const Title = styled.h3`
-        font-size: 20px;
-        font-weight: bold;
-        margin: 10px;
-    `;
-    const Container = styled.div`
-        margin: 30px 0 0 20px;
-        .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
-            display: none;
-          }
-          .react-horizontal-scrolling-menu--scroll-container {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-    `;
-
     const [duration, setDuration] = React.useState(500);
 
     const onWheel = (api: React.ContextType<typeof VisibilityContext>, ev: React.WheelEvent) => {
@@ -64,3 +48,19 @@ const RecommendList = (props: RecommendListProps) => {
 };
 
 export default RecommendList;
+
+const Title = styled.h3`
+        font-size: 20px;
+        font-weight: bold;
+        margin: 10px;
+    `;
+    const Container = styled.div`
+        margin: 30px 0 0 20px;
+        .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+            display: none;
+          }
+          .react-horizontal-scrolling-menu--scroll-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+    `;

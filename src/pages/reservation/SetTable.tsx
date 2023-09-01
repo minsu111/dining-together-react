@@ -11,16 +11,7 @@ type SetTableProps = {
 }
 
 function SetTable(props: SetTableProps){
-    interface Place {
-        placeId: number;
-        placeName: string;
-        placeType: string;
-        placeImage: string;
-        maxPeople: number;
-        minPeople: number;
-      }
-
-    const [placeList, setPlaceList] = useState<Place[]>([]);
+    const [placeList, setPlaceList] = useState<Record<string, any>[]>([]);
     useEffect(()=>{
         const PlaceList = async () => {
             try {
@@ -36,10 +27,10 @@ function SetTable(props: SetTableProps){
     const [selectedTable, setSelectedTable] = useState('');
     return(
         <>
-            <DrawerBoxTitle>테이블을 선택해주세요.</DrawerBoxTitle>
+            <DrawerBoxTitle>단체석을 선택해주세요.</DrawerBoxTitle>
             <TableBoxGroup>
-                {placeList[0] ? (
-                placeList.map((table, index)=>(
+                {placeList[0] ?
+                (placeList.map((table, index)=>(
                     <TableBox htmlFor={`table${index}`} >
                         <input 
                         type="radio" 
@@ -55,11 +46,12 @@ function SetTable(props: SetTableProps){
                         props.updateMinPeople(table.minPeople);
                         }}
                         />
-                        <img alt="" src={table.placeImage} style={{width: '150px', height: '100px'}} />
+                        <img alt="" src={`http://13.209.102.55/${table.placeImage}`}style={{width: '150px', height: '100px'}} />
                         [{table.placeType}] {table.placeName}
                         <br/>{table.minPeople} ~{table.maxPeople} 명
                     </TableBox>)
-                )): '예약 가능한 테이블이 없습니다.' }
+                )) : '예약 가능한 좌석이 없습니다.'}<br/>
+                {Object.keys(placeList)[0] === 'isHoliday' && '해당 날짜는 휴무일입니다.' }
             </ TableBoxGroup>
         </>
     )

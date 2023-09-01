@@ -1,52 +1,69 @@
 import React from 'react';
 import styled from 'styled-components';
-import GNBArea from '../../components/common/GNB';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import axiosRequest from '../../api/api';
+import HandleError from '../../api/Error';
 import TopNaviBar from '../../components/common/TopNaviBar';
-import StatusList from '../../components/ReservationList/StatusList';
-import DetailInfo from '../../components/ReservationList/DetailInfo';
+import UserStatusList from '../../components/ReservationList/UserStatusList';
+import OwnerStatusList from '../../components/ReservationList/OwnerStatusList';
 
 function ReservationList() {
+    const user = useSelector((state: RootState) => state.user);
+    
+    if (user.userType !== '1' && user.userType !== '2') {
+        return (
+            <section>
+                <Header>
+                    <TopNaviBar pageName="예약조회" />
+                </Header>
+                <Inner>
+                    <div className='no-approach'>💁‍♀️ 로그인 후 이용해주세요</div>
+                </Inner>
+            </section>
+        );
+    }
+
+    if (user.userType === '2') {
+        return (
+            <section>
+                <Header>
+                    <TopNaviBar pageName="예약조회" />
+                </Header>
+                <Inner>
+                    <OwnerStatusList />
+                </Inner>
+            </section>
+        );
+    }
+
     return (
         <section>
-            <header>
+            <Header>
                 <TopNaviBar pageName="예약조회" />
-            </header>
+            </Header>
             <Inner>
-                <StatusList />
+                <UserStatusList /> 
             </Inner>
-            {/* <DetailInfo /> */}
         </section>
     );
 }
 
 export default ReservationList;
 
-const WholeWrap = styled.div`
+const Header = styled.header`
     width: 100%;
-    height: 100vh;
-    background-color: #f2f2f2;
-    position: relative;
-`;
-
-const Wrap = styled.div`
-    width: 390px;
-    height: 844px;
-    background-color: #fff;
-    border-radius: 20px;
-    border: 3px solid #999;
-    overflow-y: scroll;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    border-bottom: 1px solid #999;
 `;
 
 const Inner = styled.div`
     margin: 0 auto;
     width: 350px;
+    // height: auto;
     position: relative;
+
+    .no-approach {
+        margin-top: 100px;
+        text-align: center;
+    }
 `;

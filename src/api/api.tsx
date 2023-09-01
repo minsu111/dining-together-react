@@ -63,7 +63,6 @@ const axiosRequest = async (
         if (!HandleError) {
             throw error;
         }
-        console.log(error);
         HandleError(error, setPopupState);
         return '';
     }

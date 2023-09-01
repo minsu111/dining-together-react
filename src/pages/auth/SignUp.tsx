@@ -175,8 +175,6 @@ const SignUpTest = () => {
                     <SignUpForm
                         setSignUpForm={setSignUpForm}
                         handleStartBtn={handleStartBtn}
-                        inputData={inputData}
-                        setInputData={setInputData}
                     />
                     <AgreementCheckBox
                         handleStartBtn={handleStartBtn}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigationType } from 'react-router-dom';
 import { styled } from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -23,20 +24,63 @@ import SelectSeat from './modal/SelectSeat';
 import { SearchModalType } from './modal/enum/Enum';
 import { RootState } from '../../app/store';
 import Button from '../../components/common/Button';
+import {
+    StoreType,
+    setResultStores,
+    setResultTotalCount,
+    setResultPage,
+    setResultIsLastPage,
+} from './store/FilterSlice';
 
 function SearchResult() {
-    const [data, setData] = useState<Store[]>([]);
+    const [onClickSearch, setOnClickSearch] = useState(false);
+    const [data, setData] = useState<StoreType[]>([]);
     const [page, setPage] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
-    let isLastPage = false;
+    const [isLastPage, setIsLastPage] = useState(false);
 
+    const dispatch = useDispatch();
     const filterState = useSelector((state: RootState) => {
         return state.filter;
     });
 
+    const navigationType = useNavigationType();
+
     useEffect(() => {
-        filterSearch();
+        console.log('navigationType', navigationType);
+        if (navigationType === 'PUSH') {
+            console.log('이 페이지에 처음 접근');
+            filterSearch();
+        } else if (navigationType === 'POP') {
+            console.log('뒤로가기로 돌아옴');
+
+            setData(filterState.resultStores);
+            setTotalCount(filterState.resultTotalCount);
+            setPage(filterState.resultPage);
+            setIsLastPage(filterState.resultIsLastPage);
+        }
     }, []);
+
+    // 뒤로가기로 돌아왔을 때를 대비해 데이터를 저장해둔다.
+    useEffect(() => {
+        dispatch(setResultStores(data));
+    }, [data]);
+    useEffect(() => {
+        dispatch(setResultPage(page));
+        console.log('~~~~~~page:', page);
+    }, [page]);
+    useEffect(() => {
+        dispatch(setResultTotalCount(totalCount));
+    }, [totalCount]);
+    useEffect(() => {
+        dispatch(setResultIsLastPage(isLastPage));
+    }, [isLastPage]);
+
+    useEffect(() => {
+        if (onClickSearch) {
+            filterSearch();
+        }
+    }, [onClickSearch]);
 
     // TODO: 임시 코드. 이후 수정 예정.
     const [modalStateArray, setModalStateArray] = useState([
@@ -53,8 +97,9 @@ function SearchResult() {
     };
 
     const filterSearch = async () => {
-        console.log('isLastPage: ', isLastPage);
-        if (isLastPage) return;
+        // console.log('filterSearch: ', isLastPage, onClickSearch);
+        if (!onClickSearch && isLastPage) return;
+        setOnClickSearch(false);
 
         // api 호출
         try {
@@ -67,11 +112,11 @@ function SearchResult() {
             }&mood=${filterState.atmosphere}&room=${filterState.seat}&page=${
                 page + 1
             }`;
-            console.log('filterSearch 호출. url: ', url);
+            console.log('filterSearch 호출. url:', url);
 
             const result = await axiosRequest('GET', url, {});
 
-            isLastPage = result.isLastPage;
+            setIsLastPage(result.isLastPage);
             setPage((prev) => prev + 1);
             setTimeout(() => {
                 setData(data.concat(result.stores));
@@ -177,9 +222,8 @@ function SearchResult() {
                             setPage(0);
                             setData([]);
                             setTotalCount(0);
-                            isLastPage = false;
-
-                            filterSearch();
+                            setIsLastPage(false);
+                            setOnClickSearch(true);
                         }}
                     />
                 </div>
@@ -262,47 +306,3 @@ const FooterDiv = styled.div`
     display: flex;
     flex-direction: column;
 `;
-
-type Address = {
-    postalCode: string;
-    roadAddress: string;
-    detailAddress: string;
-};
-
-type OperatingHours = {
-    openingHour: string;
-    openingMinute: string;
-    closingHour: string;
-    closingMinute: string;
-};
-
-type Store = {
-    storeId: number;
-    userId: number;
-    storeName: string;
-    storeContact: string;
-    address: Address | string; // Address 혹은 string으로 처리
-    description: string;
-    operatingHours: OperatingHours | string; // OperatingHours 혹은 string으로 처리
-    closedDays: string;
-    foodCategory: string;
-    maxNum: number;
-    cost: number;
-    isParking: number;
-    createdAt: string;
-    modifiedAt: string;
-    averageRating: number;
-    reviewCount: number;
-    isDeleted: number;
-    location: string;
-    keyword: string;
-    mood: string;
-    isRoom: number;
-    imageUrl: string;
-};
-
-type SearchData = {
-    stores: Store[];
-    totalCount: number;
-    isLastPage: boolean;
-};

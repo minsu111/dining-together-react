@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
@@ -31,9 +31,15 @@ function Login() {
 
     const navigate = useNavigate();
     const goToHome = () => {
-        navigate('/');
+        navigate('/', { replace: true });
     };
     const dispatch = useDispatch();
+    const token = localStorage.getItem('jwt_token');
+    useEffect(() => {
+        if (token) {
+            goToHome();
+        }
+    }, []);
 
     const getUserInfo = async (userId: string) => {
         try {

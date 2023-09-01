@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import axiosRequest from '../../api/api';
-import HandleError from '../../api/Error';
 import TopNaviBar from '../../components/common/TopNaviBar';
 import UserStatusList from '../../components/ReservationList/UserStatusList';
 import OwnerStatusList from '../../components/ReservationList/OwnerStatusList';
@@ -18,7 +16,7 @@ function ReservationList() {
                     <TopNaviBar pageName="예약조회" />
                 </Header>
                 <Inner>
-                    <div className='no-approach'>💁‍♀️ 로그인 후 이용해주세요</div>
+                    <h2 className='non-approve'>💁‍♀️ 로그인 후 이용해주세요</h2>
                 </Inner>
             </section>
         );
@@ -59,11 +57,13 @@ const Header = styled.header`
 const Inner = styled.div`
     margin: 0 auto;
     width: 350px;
-    // height: auto;
     position: relative;
 
-    .no-approach {
+    .non-approve {
+        width: 100%;
         margin-top: 100px;
+        font-size: 20px;
         text-align: center;
+        font-weight: 600;
     }
 `;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -29,12 +29,16 @@ type DetailInfoProps = {
     detailOpen: boolean;
     setDetailOpen: (value: boolean) => void;
     dataDetail: SimpleDataType;
+    setIsChange: (value: boolean) => void;
+    isChange: boolean;
 };
 
 const DetailInfo = ({
     detailOpen,
     setDetailOpen,
     dataDetail,
+    setIsChange,
+    isChange,
 }: DetailInfoProps) => {
 
     const user = useSelector((state: RootState) => state.user);
@@ -53,7 +57,6 @@ const DetailInfo = ({
         return rawDate;
     };
 
-
     const reservationCancel = async () => {
         try {
             const cancelStatus = await axiosRequest(
@@ -65,7 +68,8 @@ const DetailInfo = ({
                 setDetailOpen(false),
                 HandleError,
             );
-
+            if(cancelStatus && cancelStatus.message === 'Reservation updated successfully')  
+                setIsChange(!isChange)
         } catch (error) {
             console.error(error);
         }
@@ -155,7 +159,7 @@ const DetailInfoSC = styled.div`
 const Bg = styled.div`
     margin: 0;
     width: 500px;
-    height: 300px;
+    height: 400px;
     position: absolute;
     left: -50px;
     top: -100px;
@@ -167,7 +171,10 @@ const InfoSC = styled.div`
     padding: 25px 0;
     background-color: #fff;
     border-radius: 20px 20px 0 0;
-    position: fixed;
+    // position: fixed;
+    
+    z-index: 100;
+    position: sticky;
     left: 0;
     bottom: 60px;
 

@@ -32,7 +32,6 @@ type SimpleDataType = {
     visitTime: string;
 };
 
-
 type TabProps = {
     img: string;
     tabName: string;
@@ -59,10 +58,11 @@ const Tab: React.FC<TabProps> = ({
 );
 
 const OwnerStatusList = () => {
-
-    const [ownerInfo, setOwnerInfo] = useState<Record<string, SimpleDataType[]>>(
-        {},
-    );
+    const user = useSelector((state: RootState) => state.user);
+    const [ownerInfo, setOwnerInfo] = useState<
+        Record<string, SimpleDataType[]>
+    >({});
+    const [isChange, setIsChange] = useState<boolean>(false);
     const getOwnerReservation = async () => {
         try {
             const ownerReservationInfo = await axiosRequest(
@@ -71,9 +71,7 @@ const OwnerStatusList = () => {
                 {},
                 HandleError,
             );
-            
             setOwnerInfo(ownerReservationInfo);
-
         } catch (error) {
             console.error(error);
         }
@@ -81,7 +79,7 @@ const OwnerStatusList = () => {
 
     useEffect(() => {
         getOwnerReservation();
-    }, []);
+    }, [isChange]);
 
     const [currentTab, setCurrentTab] = useState('예약대기');
 
@@ -92,39 +90,13 @@ const OwnerStatusList = () => {
     /* 팝업 open - true/ false */
     const [detailOpen, setDetailOpen] = useState<boolean>(false);
 
-    useEffect(() => {
-        // 탭에 맞는 예약 데이터를 선택하여 데이터 상태를 업데이트
-        if(ownerInfo && currentTab){
-            if (ownerInfo[currentTab]) {
-                console.log(currentTab)
-                console.log(ownerInfo[currentTab])
-                setDataList(ownerInfo[currentTab]);
-            }
-        }
-    }, [currentTab, ownerInfo]);
-
-
-    
-    
-    const handleTabChange = async (tab: string) => {
+    const handleTabChange = (tab: string) => {
         if (tab !== currentTab) {
             setCurrentTab(tab);
             setDataList([]);
-
-            try {
-                const ownerReservationInfo = await axiosRequest(
-                    'GET',
-                    `/stores/reserve`,
-                    {},
-                    HandleError,
-                );
-                setOwnerInfo(ownerReservationInfo);
-            } catch (error) {
-                console.error(error);
-            }
         }
     };
-    
+
     const tabs = [
         { img: CalendarMinus, tabName: '예약대기' },
         { img: CalendarHeart, tabName: '방문예정' },
@@ -137,6 +109,24 @@ const OwnerStatusList = () => {
         setDetailOpen(true);
     };
 
+    useEffect(() => {
+        // 탭에 맞는 예약 데이터를 선택하여 데이터 상태를 업데이트
+        if (ownerInfo[currentTab]) {
+            const tempDataList = ownerInfo[currentTab];
+            setDataList(tempDataList);
+        }
+    }, [currentTab, ownerInfo]);
+
+    const handleDday = (date:string) => {
+        const reservationDate = `20${date}`;
+        const givenDate = new Date(reservationDate);
+        const today = new Date();
+        const timeDifference = Number(givenDate) - Number(today);
+
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24) + 1);
+
+        return daysDifference > 0 ? `D - ${daysDifference}` : `D - 0`
+    }
 
     return (
         <StatusListSC>
@@ -153,44 +143,68 @@ const OwnerStatusList = () => {
             </ul>
 
             {dataList.length === 0 ? (
-                <div className='no-exist'>🙅‍♀️ 내역이 존재하지 않습니다</div>
-            ) : (dataList.map((item) => (
-                <ul className="list_booking" key={`${item.reservedDate}-${item.visitTime}`}>
-                    <li>
-                        <span className="d_day">{item.reservedDate}</span>
-                        
-                        <div className="booking_info">
-                            <Link to={`/store/${item.storeId}`} className="restaurant_name">
-                            <div className="img" style={{ backgroundImage: `url(${item.imageUrl})` }} />
-                            </Link>
-                            <ul>
-                                <li className="restaurant_name" >
-                                <Link to={`/store/${item.storeId}`} className="restaurant_name">
-                                    {item.storeName}
-                                </Link>
-                                </li>
-                                <li className="restaurant_info">
-                                    {item.location} · {item.foodCategory}
-                                </li>
-                                <li className="booking_date">
-                                    20{item.reservedDate} · {item.visitTime} · {item.people}명
-                                </li>
-                            </ul>
+                <div className="no-exist">🙅‍♀️ 내역이 존재하지 않습니다</div>
+            ) : (
+                dataList.map((item) => (
+                    <ul
+                        className="list_booking"
+                        key={`${item.reservedDate}-${item.visitTime}`}
+                    >
+                        <li>
+                            <span className="d_day">
+                                {handleDday(item.reservedDate)}
+                            </span>
 
-                            <button
-                                type="button"
-                                className="btn_arrow_right"
-                                onClick={() => handleOpenDetail(item)}
-                            >
-                                <FontAwesomeIcon icon={faArrowRight} />
-                            </button>
-                        </div>
-                    </li>
-                </ul>
-            ))
+                            <div className="booking_info">
+                                <Link
+                                    to={`/store/${item.storeId}`}
+                                    className="restaurant_name"
+                                >
+                                    <div
+                                        className="img"
+                                        style={{
+                                            backgroundImage: `url(${item.imageUrl})`,
+                                        }}
+                                    />
+                                </Link>
+                                <ul>
+                                    <li className="restaurant_name">
+                                        <Link
+                                            to={`/store/${item.storeId}`}
+                                            className="restaurant_name"
+                                        >
+                                            {item.storeName}
+                                        </Link>
+                                    </li>
+                                    <li className="restaurant_info">
+                                        {item.location} · {item.foodCategory}
+                                    </li>
+                                    <li className="booking_date">
+                                        20{item.reservedDate} · {item.visitTime}{' '}
+                                        · {item.people}명
+                                    </li>
+                                </ul>
+
+                                <button
+                                    type="button"
+                                    className="btn_arrow_right"
+                                    onClick={() => handleOpenDetail(item)}
+                                >
+                                    <FontAwesomeIcon icon={faArrowRight} />
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                ))
             )}
             {dataDetail ? (
-                <DetailInfo detailOpen={detailOpen} setDetailOpen={setDetailOpen} dataDetail={dataDetail} />
+                <DetailInfo
+                    detailOpen={detailOpen}
+                    setDetailOpen={setDetailOpen}
+                    dataDetail={dataDetail}
+                    setIsChange={setIsChange}
+                    isChange={isChange}
+                />
             ) : (
                 ''
             )}

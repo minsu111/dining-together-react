@@ -29,12 +29,16 @@ type DetailInfoProps = {
     detailOpen: boolean;
     setDetailOpen: (value: boolean) => void;
     dataDetail: SimpleDataType;
+    setIsChange: (value: boolean) => void;
+    isChange: boolean;
 };
 
 const DetailInfo = ({
     detailOpen,
     setDetailOpen,
     dataDetail,
+    setIsChange,
+    isChange,
 }: DetailInfoProps) => {
 
     const user = useSelector((state: RootState) => state.user);
@@ -64,7 +68,8 @@ const DetailInfo = ({
                 setDetailOpen(false),
                 HandleError,
             );
-
+            if(cancelStatus && cancelStatus.message === 'Reservation updated successfully')  
+                setIsChange(!isChange)
         } catch (error) {
             console.error(error);
         }
@@ -81,6 +86,8 @@ const DetailInfo = ({
                 setDetailOpen(false),
                 HandleError,
             );
+            if(approveStatus && approveStatus.message === 'Reservation updated successfully')  
+                setIsChange(!isChange)
 
         } catch (error) {
             console.error(error);
@@ -172,7 +179,7 @@ const DetailInfoSC = styled.div`
 const Bg = styled.div`
     margin: 0;
     width: 500px;
-    height: 300px;
+    height: 400px;
     position: absolute;
     left: -50px;
     top: -100px;
@@ -185,6 +192,8 @@ const InfoSC = styled.div`
     background-color: #fff;
     border-radius: 20px 20px 0 0;
     position: fixed;
+    // position: sticky;
+    background-color: #fff;
     left: 0;
     bottom: 60px;
 

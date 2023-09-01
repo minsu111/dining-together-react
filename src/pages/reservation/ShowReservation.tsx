@@ -15,11 +15,11 @@ function ShowReservation(props: ShowReservationProps){
     return(
         <>
             <DrawerBoxTitle>예약이 완료되었습니다.</DrawerBoxTitle>
-            {props.storeName}
+            <StoreName>{props.storeName}</StoreName>
             <BorderBox>
                 <FlexBox><img alt="" src={CalendarIcon} />{props.reservedDate}</FlexBox>
                 <FlexBox><img alt="" src={WatchIcon} />{props.visitTime}</FlexBox>
-                <FlexBox><img alt="" src={PeopleIcon} />{props.people}</FlexBox>
+                <FlexBox><img alt="" src={PeopleIcon} />{props.people}명</FlexBox>
             </BorderBox>
         </>
     )
@@ -46,4 +46,8 @@ const FlexBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`
+const StoreName = styled.div`
+    font-weight: bold;
+    margin-bottom: 10px;
 `

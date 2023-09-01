@@ -13,7 +13,11 @@ type SetVisitDateProps = {
 }
 
 function SetVisitDate(props:SetVisitDateProps){
-    const [dateSelected, setDateSelected] = React.useState<Date>(new Date());
+    const filterDateString:string = window.location.href.split('selectedDate=').pop() || '';
+    const milliseconds = Date.parse(filterDateString);
+    const filterDate = new Date(milliseconds);
+    const [dateSelected, setDateSelected] = React.useState<Date>(filterDate);
+
     useEffect(()=>{
         const year = dateSelected?.getFullYear().toString().slice(2);
         const month = (`0${(Number(dateSelected?.getMonth())+1).toString()}`).slice(-2);
@@ -48,7 +52,7 @@ function SetVisitDate(props:SetVisitDateProps){
     <>   
         <Calendar dateSelected={dateSelected} setDateSelected={(value)=>{setDateSelected(value as Date)}}/>
         <VisitTime>
-            <h4>방문 시간을 입력해 주세요</h4>
+            <Notice>방문 시간을 입력해 주세요</Notice>
             <Select placeholder={' '} value={props.visitTime} onChange={(event)=>props.updateReserveValue('visitTime', event.target.value)}>
                 {TimeArray.map(e=>{
                     return(
@@ -70,4 +74,8 @@ width: 300px;
 select {
     border-color: #AFBCCF;
 }
+`
+const Notice = styled.p`
+    margin-bottom: 5px;
+    font-weight: bold;
 `
